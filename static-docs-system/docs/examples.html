@@ -1,0 +1,435 @@
+<h1>Code Examples</h1>
+
+<p>
+Practical examples showing how to use and extend the documentation system.
+</p>
+
+<h2>Example Org-mode Files</h2>
+
+<h3>Basic Documentation Page</h3>
+
+<p>
+A simple documentation page in Org-mode:
+</p>
+
+<pre><code>#+TITLE: Getting Started with Python
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+
+Python is a versatile programming language perfect for beginners.
+
+* Installation
+
+** On macOS
+
+#+BEGIN_SRC bash
+brew install python3
+#+END_SRC
+
+** On Linux
+
+#+BEGIN_SRC bash
+sudo apt-get install python3
+#+END_SRC
+
+* Your First Program
+
+Create a file called =hello.py=:
+
+#+BEGIN_SRC python
+def greet(name):
+    return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    print(greet("World"))
+#+END_SRC
+
+Run it:
+
+#+BEGIN_SRC bash
+python3 hello.py
+#+END_SRC
+
+* Next Steps
+
+- Read the [[file:python-basics.org][Python Basics]] guide
+- Explore [[file:advanced-topics.org][Advanced Topics]]
+</code></pre>
+
+<h3>Technical Reference Page</h3>
+
+<p>
+A more structured reference page:
+</p>
+
+<pre><code>#+TITLE: API Functions Reference
+#+OPTIONS: toc:2 num:nil html-style:nil
+
+* Overview
+
+This document describes all available API functions.
+
+* Authentication Functions
+
+** login(username, password)
+
+Authenticate a user with credentials.
+
+- *Parameters*
+  - =username= (string): User's username
+  - =password= (string): User's password
+- *Returns*: Authentication token (string)
+- *Throws*: =AuthenticationError= if credentials invalid
+
+*Example:*
+
+#+BEGIN_SRC python
+token = login("alice", "secret123")
+#+END_SRC
+
+** logout(token)
+
+Invalidate an authentication token.
+
+- *Parameters*
+  - =token= (string): Authentication token
+- *Returns*: None
+
+* Data Functions
+
+** fetch_user(user_id)
+
+Retrieve user information by ID.
+
+- *Parameters*
+  - =user_id= (integer): Unique user identifier
+- *Returns*: User object with properties:
+  - =id= (int): User ID
+  - =name= (string): Full name
+  - =email= (string): Email address
+  - =created_at= (datetime): Account creation date
+</code></pre>
+
+<h3>Tutorial Page</h3>
+
+<p>
+Step-by-step tutorial format:
+</p>
+
+<pre><code>#+TITLE: Building a REST API
+#+OPTIONS: toc:1 num:t html-style:nil
+
+* Prerequisites
+
+Before starting, ensure you have:
+
+- Python 3.8 or higher
+- pip package manager
+- Basic understanding of HTTP
+
+* Step 1: Set Up Project
+
+Create a new directory and virtual environment:
+
+#+BEGIN_SRC bash
+mkdir my-api
+cd my-api
+python3 -m venv venv
+source venv/bin/activate
+#+END_SRC
+
+* Step 2: Install Dependencies
+
+#+BEGIN_SRC bash
+pip install flask flask-restful
+#+END_SRC
+
+* Step 3: Create Basic API
+
+Create =app.py=:
+
+#+BEGIN_SRC python
+from flask import Flask
+from flask_restful import Resource, Api
+
+app = Flask(__name__)
+api = Api(app)
+
+class HelloWorld(Resource):
+    def get(self):
+        return {'message': 'Hello, World!'}
+
+api.add_resource(HelloWorld, '/')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+#+END_SRC
+
+* Step 4: Test the API
+
+Run the server:
+
+#+BEGIN_SRC bash
+python app.py
+#+END_SRC
+
+Test with curl:
+
+#+BEGIN_SRC bash
+curl http://localhost:5000/
+#+END_SRC
+
+Expected output:
+
+#+BEGIN_SRC json
+{
+  "message": "Hello, World!"
+}
+#+END_SRC
+</code></pre>
+
+<h2>Org Export Configurations</h2>
+
+<h3>Minimal Export (Recommended)</h3>
+
+<pre><code>#+OPTIONS: toc:nil          # No table of contents
+#+OPTIONS: num:nil          # No section numbering
+#+OPTIONS: html-style:nil   # No inline styles
+#+OPTIONS: html-scripts:nil # No JavaScript
+#+OPTIONS: html-postamble:nil  # No footer
+</code></pre>
+
+<h3>Export with TOC</h3>
+
+<pre><code>#+OPTIONS: toc:2            # 2 levels in TOC
+#+OPTIONS: num:nil          # No numbering
+#+OPTIONS: html-style:nil   # No inline styles
+</code></pre>
+
+<h3>Export with Numbering</h3>
+
+<pre><code>#+OPTIONS: toc:2            # Table of contents
+#+OPTIONS: num:t            # Number sections
+#+OPTIONS: html-style:nil   # No inline styles
+</code></pre>
+
+<h2>Emacs Configuration</h2>
+
+<h3>Basic Org Export Setup</h3>
+
+<p>
+Add to your <code>.emacs</code> or <code>init.el</code>:
+</p>
+
+<pre><code>;; Org-mode HTML export configuration
+(require 'ox-html)
+
+;; Don't include default CSS
+(setq org-html-head-include-default-style nil)
+
+;; Don't include scripts
+(setq org-html-head-include-scripts nil)
+
+;; Use HTML5
+(setq org-html-html5-fancy t)
+(setq org-html-doctype "html5")
+
+;; No validation link
+(setq org-html-validation-link nil)
+</code></pre>
+
+<h3>Custom Export Command</h3>
+
+<pre><code>;; Custom export function
+(defun my/org-export-to-docs ()
+  "Export current org file to HTML body only in docs directory."
+  (interactive)
+  (let* ((base-name (file-name-sans-extension
+                     (file-name-nondirectory (buffer-file-name))))
+         (output-file (concat "../docs/" base-name ".html")))
+    (org-html-export-to-html nil nil nil t)
+    (rename-file (concat base-name ".html") output-file t)
+    (message "Exported to %s" output-file)))
+
+;; Bind to a key
+(define-key org-mode-map (kbd "C-c e d") 'my/org-export-to-docs)
+</code></pre>
+
+<h3>Batch Export Script</h3>
+
+<p>
+Create <code>export-all-org.el</code>:
+</p>
+
+<pre><code>(require 'ox-html)
+
+;; Configure export
+(setq org-html-head-include-default-style nil)
+(setq org-html-head-include-scripts nil)
+(setq org-html-validation-link nil)
+
+;; Export function
+(defun batch-export-org-files ()
+  "Export all .org files in current directory to HTML."
+  (dolist (file (directory-files "." t "\\.org$"))
+    (with-current-buffer (find-file-noselect file)
+      (org-html-export-to-html nil nil nil t)
+      (kill-buffer))))
+
+(batch-export-org-files)
+</code></pre>
+
+<p>
+Use it:
+</p>
+
+<pre><code>emacs --batch -l export-all-org.el --kill
+</code></pre>
+
+<h2>Navigation Updates</h2>
+
+<h3>Adding a New Page</h3>
+
+<p>
+In <code>index.html</code>, add to navigation:
+</p>
+
+<pre><code>&lt;ul class="nav-menu" id="navMenu"&gt;
+    &lt;!-- Existing items... --&gt;
+
+    &lt;li class="nav-section"&gt;New Section&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" data-page="my-new-page"&gt;My New Page&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<h3>Adding Subsections</h3>
+
+<p>
+Create nested navigation with CSS:
+</p>
+
+<pre><code>&lt;ul class="nav-menu"&gt;
+    &lt;li class="nav-section"&gt;Guides&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" data-page="intro"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+
+    &lt;!-- Subsection --&gt;
+    &lt;li style="padding-left: 20px;"&gt;
+        &lt;a href="#" data-page="intro-basics"&gt;Basics&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li style="padding-left: 20px;"&gt;
+        &lt;a href="#" data-page="intro-advanced"&gt;Advanced&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<h2>Search Index Updates</h2>
+
+<h3>Adding Pages to Search</h3>
+
+<p>
+In <code>assets/js/search.js</code>, update the index:
+</p>
+
+<pre><code>searchIndex = [
+    // ... existing entries ...
+
+    {
+        title: "Python Tutorial",
+        url: "docs/python-tutorial.html",
+        content: "python programming tutorial beginner guide installation hello world functions classes",
+        excerpt: "Complete Python tutorial for beginners covering installation, basics, and first programs."
+    },
+
+    {
+        title: "Advanced Python Patterns",
+        url: "docs/python-advanced.html",
+        content: "python advanced patterns decorators generators context managers metaclasses",
+        excerpt: "Advanced Python programming patterns and best practices for experienced developers."
+    }
+];
+</code></pre>
+
+<h3>Optimizing Search Keywords</h3>
+
+<p>
+Tips for effective search keywords:
+</p>
+
+<ul>
+<li>Include synonyms: "tutorial guide walkthrough"</li>
+<li>Add common typos: "python pyton"</li>
+<li>Include abbreviations: "api application programming interface"</li>
+<li>Add related terms: "install setup configure deployment"</li>
+</ul>
+
+<h2>Styling Examples</h2>
+
+<h3>Custom Color Scheme</h3>
+
+<pre><code>:root {
+    --primary-color: #1a202c;      /* Dark slate */
+    --secondary-color: #4299e1;    /* Blue */
+    --background: #f7fafc;         /* Light gray */
+    --sidebar-bg: #edf2f7;        /* Lighter gray */
+    --border-color: #cbd5e0;      /* Medium gray */
+}
+</code></pre>
+
+<h3>Dark Mode</h3>
+
+<pre><code>:root {
+    --primary-color: #e2e8f0;      /* Light text */
+    --secondary-color: #63b3ed;    /* Light blue */
+    --background: #1a202c;         /* Dark background */
+    --sidebar-bg: #2d3748;        /* Dark sidebar */
+    --border-color: #4a5568;      /* Dark border */
+    --text-color: #e2e8f0;        /* Light text */
+    --code-bg: #2d3748;           /* Dark code */
+}
+</code></pre>
+
+<h2>Complete Workflow Example</h2>
+
+<ol>
+<li>
+<p>Create <code>tutorial.org</code>:</p>
+<pre><code>#+TITLE: My Tutorial
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+This is my tutorial content...
+</code></pre>
+</li>
+
+<li>
+<p>Export in Emacs: <code>C-c C-e h b</code></p>
+</li>
+
+<li>
+<p>Move to docs:</p>
+<pre><code>mv tutorial.html docs/
+</code></pre>
+</li>
+
+<li>
+<p>Update <code>index.html</code> navigation:</p>
+<pre><code>&lt;li&gt;&lt;a href="#" data-page="tutorial"&gt;Tutorial&lt;/a&gt;&lt;/li&gt;
+</code></pre>
+</li>
+
+<li>
+<p>Update <code>assets/js/search.js</code>:</p>
+<pre><code>{
+    title: "Tutorial",
+    url: "docs/tutorial.html",
+    content: "tutorial guide introduction",
+    excerpt: "Tutorial introduction"
+}
+</code></pre>
+</li>
+
+<li>
+<p>Test: Open <code>index.html</code> and verify!</p>
+</li>
+</ol>

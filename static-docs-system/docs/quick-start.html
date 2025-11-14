@@ -1,0 +1,155 @@
+<h1>Quick Start Guide</h1>
+
+<p>
+Get your documentation up and running in minutes!
+</p>
+
+<h2>Step 1: Write Content in Org-mode</h2>
+
+<p>
+Create your documentation in Emacs using Org-mode. Here's a simple example:
+</p>
+
+<pre><code>#+TITLE: My Documentation Page
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+
+This is my documentation content.
+
+** Features
+
+- Feature one
+- Feature two
+- Feature three
+
+** Code Example
+
+#+BEGIN_SRC python
+def hello_world():
+    print("Hello, World!")
+#+END_SRC
+</code></pre>
+
+<h2>Step 2: Export to HTML</h2>
+
+<p>
+In Emacs, export your Org file to HTML <strong>body only</strong>:
+</p>
+
+<ol>
+<li>Open your <code>.org</code> file in Emacs</li>
+<li>Press <code>C-c C-e</code> to open the export dispatcher</li>
+<li>Press <code>h</code> for HTML export</li>
+<li>Press <code>b</code> for "body only" export</li>
+</ol>
+
+<p>
+This creates a clean HTML file without <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, or <code>&lt;body&gt;</code> tags - just the content.
+</p>
+
+<h2>Step 3: Add to Documentation</h2>
+
+<ol>
+<li>Save the exported HTML file to the <code>docs/</code> directory</li>
+<li>Name it descriptively, e.g., <code>my-feature.html</code></li>
+</ol>
+
+<h2>Step 4: Update Navigation</h2>
+
+<p>
+Edit <code>index.html</code> and add your page to the navigation menu:
+</p>
+
+<pre><code>&lt;ul class="nav-menu" id="navMenu"&gt;
+    &lt;!-- Add your page here --&gt;
+    &lt;li&gt;&lt;a href="#" data-page="my-feature"&gt;My Feature&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<p>
+The <code>data-page</code> attribute should match your filename without the <code>.html</code> extension.
+</p>
+
+<h2>Step 5: Update Search Index</h2>
+
+<p>
+Edit <code>assets/js/search.js</code> and add your page to the search index:
+</p>
+
+<pre><code>searchIndex = [
+    // ... existing entries ...
+    {
+        title: "My Feature",
+        url: "docs/my-feature.html",
+        content: "keywords describing your content",
+        excerpt: "Brief description of the page"
+    }
+];
+</code></pre>
+
+<h2>Step 6: Test</h2>
+
+<ol>
+<li>Open <code>index.html</code> in your browser</li>
+<li>Click on your new page in the navigation</li>
+<li>Try searching for keywords from your page</li>
+</ol>
+
+<h2>Tips for Success</h2>
+
+<h3>Org-mode Export Settings</h3>
+
+<p>
+Add these settings at the top of your Org files for optimal export:
+</p>
+
+<pre><code>#+OPTIONS: toc:nil          # No table of contents
+#+OPTIONS: num:nil          # No section numbers
+#+OPTIONS: html-style:nil   # No inline styles
+#+OPTIONS: html-scripts:nil # No scripts
+</code></pre>
+
+<h3>File Naming</h3>
+
+<ul>
+<li>Use lowercase with hyphens: <code>user-guide.html</code></li>
+<li>Be descriptive: <code>api-authentication.html</code> not <code>auth.html</code></li>
+<li>Keep names short but clear</li>
+</ul>
+
+<h3>Content Organization</h3>
+
+<ul>
+<li>Start with a clear H1 heading</li>
+<li>Use H2 and H3 for subsections</li>
+<li>Include code examples where helpful</li>
+<li>Add links to related pages</li>
+</ul>
+
+<h2>Example Workflow</h2>
+
+<p>
+Here's a complete example workflow:
+</p>
+
+<ol>
+<li>Create <code>tutorial.org</code> in Emacs</li>
+<li>Write your content using Org-mode syntax</li>
+<li>Export: <code>C-c C-e h b</code> (HTML body only)</li>
+<li>Move <code>tutorial.html</code> to <code>docs/</code> folder</li>
+<li>Update navigation in <code>index.html</code></li>
+<li>Update search index in <code>assets/js/search.js</code></li>
+<li>Open and test!</li>
+</ol>
+
+<h2>Next Steps</h2>
+
+<p>
+Ready for more details? Check out:
+</p>
+
+<ul>
+<li><a href="#user-guide">User Guide</a> - Comprehensive documentation</li>
+<li><a href="#examples">Examples</a> - More Org-mode examples</li>
+</ul>

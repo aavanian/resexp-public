@@ -1,0 +1,112 @@
+<h1>Installation</h1>
+
+<p>
+This documentation system is designed to be simple and portable. There's no traditional "installation" required - just copy and use!
+</p>
+
+<h2>Requirements</h2>
+
+<p>
+The only requirement is a modern web browser that supports:
+</p>
+
+<ul>
+<li>HTML5</li>
+<li>CSS3</li>
+<li>ES6 JavaScript</li>
+<li>Fetch API</li>
+</ul>
+
+<p>
+Any browser from the last 5 years should work perfectly, including:
+</p>
+
+<ul>
+<li>Chrome/Chromium (version 60+)</li>
+<li>Firefox (version 60+)</li>
+<li>Safari (version 12+)</li>
+<li>Edge (version 79+)</li>
+</ul>
+
+<h2>Setup</h2>
+
+<h3>Option 1: USB Drive</h3>
+
+<ol>
+<li>Copy the entire documentation folder to a USB drive</li>
+<li>Open <code>index.html</code> in your web browser</li>
+<li>Done! No server needed.</li>
+</ol>
+
+<h3>Option 2: Local Storage</h3>
+
+<ol>
+<li>Copy the documentation folder to your computer</li>
+<li>Double-click <code>index.html</code> to open</li>
+<li>Bookmark the page for easy access</li>
+</ol>
+
+<h3>Option 3: Network Share</h3>
+
+<ol>
+<li>Place the folder on a network share</li>
+<li>Team members can access via <code>file://</code> protocol</li>
+<li>Everyone sees the same documentation</li>
+</ol>
+
+<h2>File Structure</h2>
+
+<pre><code>documentation/
+├── index.html           # Main entry point
+├── docs/               # Documentation HTML files
+│   ├── welcome.html
+│   ├── installation.html
+│   └── ...
+├── assets/
+│   ├── css/           # Styles (embedded in index.html)
+│   └── js/            # JavaScript functionality
+│       ├── search.js
+│       └── navigation.js
+└── sample-org/        # Example Org-mode files
+    └── example.org
+</code></pre>
+
+<h2>Browser Configuration</h2>
+
+<p>
+Some browsers may have restrictions on loading local files. If you encounter issues:
+</p>
+
+<h3>Firefox</h3>
+
+<p>
+Works out of the box! Firefox handles <code>file://</code> protocol perfectly.
+</p>
+
+<h3>Chrome</h3>
+
+<p>
+Chrome may block local file loading. If needed, start Chrome with:
+</p>
+
+<pre><code>chrome --allow-file-access-from-files
+</code></pre>
+
+<p>
+Or simply use Firefox for viewing documentation from <code>file://</code> protocol.
+</p>
+
+<h3>Safari</h3>
+
+<ol>
+<li>Open Safari Preferences</li>
+<li>Go to "Advanced" tab</li>
+<li>Enable "Show Develop menu"</li>
+<li>In Develop menu, disable "Local File Restrictions"</li>
+</ol>
+
+<h2>Next Steps</h2>
+
+<p>
+Now that you have the system set up, check out the <a href="#quick-start">Quick Start</a> guide to learn how to add your own content!
+</p>

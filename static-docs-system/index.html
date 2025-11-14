@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background: #ffffff;
+            --sidebar-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #333;
+            --link-color: #3498db;
+            --link-hover: #2980b9;
+            --code-bg: #f4f4f4;
+            --search-highlight: #fff3cd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Search Box */
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .search-results {
+            display: none;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-top: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: var(--sidebar-bg);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .search-result-excerpt {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .search-highlight {
+            background: var(--search-highlight);
+            font-weight: bold;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 5px;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .nav-menu .nav-section {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 40px;
+            max-width: 900px;
+        }
+
+        .content-frame {
+            background: white;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 2.5em; margin-top: 0; }
+        h2 { font-size: 2em; border-bottom: 2px solid var(--border-color); padding-bottom: 0.3em; }
+        h3 { font-size: 1.5em; }
+        h4 { font-size: 1.25em; }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        ul, ol {
+            margin-bottom: 1em;
+            margin-left: 2em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--secondary-color);
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            background: var(--sidebar-bg);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background: var(--sidebar-bg);
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Documentation</h1>
+                <p style="font-size: 0.9em; color: #666;">Offline Static Docs</p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text"
+                       class="search-box"
+                       id="searchInput"
+                       placeholder="Search documentation..."
+                       autocomplete="off">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#" data-page="welcome" class="active">Welcome</a></li>
+                    <li class="nav-section">Getting Started</li>
+                    <li><a href="#" data-page="installation">Installation</a></li>
+                    <li><a href="#" data-page="quick-start">Quick Start</a></li>
+                    <li class="nav-section">Documentation</li>
+                    <li><a href="#" data-page="user-guide">User Guide</a></li>
+                    <li><a href="#" data-page="api-reference">API Reference</a></li>
+                    <li class="nav-section">Examples</li>
+                    <li><a href="#" data-page="examples">Code Examples</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="content-frame" id="contentFrame">
+                <div class="loading">Loading content...</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/search.js"></script>
+    <script src="assets/js/navigation.js"></script>
+</body>
+</html>

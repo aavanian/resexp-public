@@ -1,0 +1,276 @@
+#+TITLE: Example Documentation Page
+#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
+#+OPTIONS: html-postamble:nil
+
+* Introduction
+
+This is an example Org-mode file that demonstrates how to write documentation that will be exported to HTML for the static documentation system.
+
+** Purpose
+
+This file shows:
+- Basic Org-mode syntax
+- How to structure content
+- Code examples
+- Export settings
+
+* Writing Content
+
+** Headings
+
+Use asterisks for headings:
+- =*= for level 1 (H1)
+- =**= for level 2 (H2)
+- =***= for level 3 (H3)
+- And so on...
+
+** Text Formatting
+
+- *Bold text* with =*bold*=
+- /Italic text/ with =/italic/=
+- =Code text= with ~=code=~
+- ~Verbatim~ with =~verbatim~=
+- +Strikethrough+ with =+strikethrough+=
+
+** Lists
+
+Unordered lists use dashes:
+
+- First item
+- Second item
+  - Nested item
+  - Another nested item
+- Third item
+
+Ordered lists use numbers:
+
+1. First step
+2. Second step
+3. Third step
+
+** Links
+
+Link to other pages using:
+
+- Internal links: =[[file:other-page.org][Other Page]]=
+- External links: =[[https://example.com][Example Site]]=
+- Anchor links: =[[#section-name][Jump to section]]=
+
+* Code Examples
+
+** Inline Code
+
+Use =code= for inline code references, like =print("hello")= or =def function()=.
+
+** Code Blocks
+
+For multi-line code, use source blocks:
+
+#+BEGIN_SRC python
+def factorial(n):
+    """Calculate factorial of n."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+# Example usage
+result = factorial(5)
+print(f"5! = {result}")
+#+END_SRC
+
+You can specify the language for syntax highlighting:
+
+#+BEGIN_SRC javascript
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(greet('World'));
+#+END_SRC
+
+#+BEGIN_SRC bash
+#!/bin/bash
+# Example shell script
+
+for file in *.org; do
+    echo "Processing: $file"
+    emacs "$file" --batch --eval "(org-html-export-to-html nil nil nil t)" --kill
+done
+#+END_SRC
+
+** Command Examples
+
+Show command-line examples:
+
+#+BEGIN_SRC bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python app.py
+
+# Run tests
+pytest tests/
+#+END_SRC
+
+* Tables
+
+Create tables using pipe characters:
+
+| Feature       | Status | Priority |
+|---------------+--------+----------|
+| Search        | Done   | High     |
+| Navigation    | Done   | High     |
+| Mobile View   | Done   | Medium   |
+| Dark Mode     | TODO   | Low      |
+
+* Quotes and Notes
+
+Use block quotes for important callouts:
+
+#+BEGIN_QUOTE
+*Important:* This documentation system works entirely offline. No internet connection required!
+#+END_QUOTE
+
+Or use example blocks:
+
+#+BEGIN_EXAMPLE
+This is an example block that preserves
+    whitespace and formatting
+        exactly as written.
+#+END_EXAMPLE
+
+* Images
+
+To include images:
+
+1. Create an =assets/images/= directory
+2. Place your images there
+3. Reference them in Org files:
+
+#+BEGIN_EXAMPLE
+[[file:../assets/images/screenshot.png]]
+#+END_EXAMPLE
+
+With a caption:
+
+#+BEGIN_EXAMPLE
+#+CAPTION: Screenshot of the documentation system
+[[file:../assets/images/screenshot.png]]
+#+END_EXAMPLE
+
+* Export Settings
+
+** Recommended Header
+
+Include these settings at the top of your Org files:
+
+#+BEGIN_EXAMPLE
+#+TITLE: Your Page Title
+#+OPTIONS: toc:nil          # No table of contents
+#+OPTIONS: num:nil          # No section numbering
+#+OPTIONS: html-style:nil   # No inline styles
+#+OPTIONS: html-scripts:nil # No JavaScript
+#+OPTIONS: html-postamble:nil  # No footer
+#+END_EXAMPLE
+
+** Optional Settings
+
+For longer documents with a table of contents:
+
+#+BEGIN_EXAMPLE
+#+OPTIONS: toc:2            # Include TOC with 2 levels
+#+END_EXAMPLE
+
+For numbered sections:
+
+#+BEGIN_EXAMPLE
+#+OPTIONS: num:t            # Number sections
+#+END_EXAMPLE
+
+* Exporting to HTML
+
+** In Emacs
+
+1. Open this file in Emacs
+2. Press =C-c C-e= to open the export dispatcher
+3. Press =h= for HTML export
+4. Press =b= for "body only" (recommended)
+
+This creates a clean HTML file with just the content, no =<html>= wrapper.
+
+** Body Only Export
+
+The "body only" export is crucial because:
+- Creates clean HTML without full page structure
+- No conflicting styles
+- Integrates seamlessly with the documentation template
+- Smaller file size
+
+** Full Export vs Body Only
+
+*Don't use full export* - it includes:
+- =<!DOCTYPE html>=
+- =<html>= and =<head>= tags
+- Default Org-mode CSS
+- Extra metadata
+
+*Do use body only* - it includes:
+- Just the content inside =<body>=
+- Your headings, paragraphs, and code
+- No extra HTML structure
+- Perfect for the documentation system
+
+* Best Practices
+
+** File Organization
+
+- Keep source =.org= files in =sample-org/= directory
+- Export HTML files to =docs/= directory
+- Use descriptive filenames: =user-authentication.org=
+
+** Content Structure
+
+1. Start with clear H1 title
+2. Use H2 for main sections
+3. Use H3 for subsections
+4. Keep hierarchy consistent
+
+** Writing Style
+
+- Be concise and clear
+- Use examples liberally
+- Include code snippets
+- Link to related pages
+- Add notes for important points
+
+** Code Examples
+
+- Always specify language in source blocks
+- Add comments to explain complex code
+- Show both code and expected output
+- Use realistic examples
+
+* Next Steps
+
+After writing your Org file:
+
+1. Export to HTML (body only)
+2. Move HTML to =docs/= directory
+3. Update navigation in =index.html=
+4. Update search index in =assets/js/search.js=
+5. Test by opening =index.html=
+
+See the [[file:../docs/quick-start.html][Quick Start Guide]] for detailed instructions.
+
+* Resources
+
+- [[https://orgmode.org/manual/][Org Mode Manual]]
+- [[https://orgmode.org/worg/org-tutorials/][Org Mode Tutorials]]
+- [[https://orgmode.org/manual/HTML-Export.html][HTML Export Documentation]]
+
+* Conclusion
+
+This example demonstrates the key features of Org-mode for creating documentation. The simplicity of Org syntax combined with powerful export capabilities makes it ideal for maintaining long-term, offline documentation.
+
+Happy documenting!

@@ -1,0 +1,248 @@
+<h1>User Guide</h1>
+
+<p>
+Complete guide to using and customizing your static documentation system.
+</p>
+
+<h2>System Overview</h2>
+
+<p>
+This documentation system is built on three core principles:
+</p>
+
+<ol>
+<li><strong>Simplicity</strong>: Pure HTML/CSS/JS, no build process</li>
+<li><strong>Portability</strong>: Works from any location, even offline</li>
+<li><strong>Longevity</strong>: No dependencies means it works for years</li>
+</ol>
+
+<h2>Components</h2>
+
+<h3>Navigation System</h3>
+
+<p>
+The sidebar navigation (<code>assets/js/navigation.js</code>) handles:
+</p>
+
+<ul>
+<li>Loading page content dynamically</li>
+<li>Managing browser history (back/forward buttons)</li>
+<li>Caching pages for faster subsequent loads</li>
+<li>Highlighting the active page</li>
+</ul>
+
+<h3>Search System</h3>
+
+<p>
+The search functionality (<code>assets/js/search.js</code>) provides:
+</p>
+
+<ul>
+<li>Real-time search as you type</li>
+<li>Keyword highlighting in results</li>
+<li>Title and content matching with scoring</li>
+<li>Simple index format for easy updates</li>
+</ul>
+
+<h3>Styling</h3>
+
+<p>
+All CSS is embedded in <code>index.html</code> for:
+</p>
+
+<ul>
+<li>No external file dependencies</li>
+<li>Guaranteed consistent styling</li>
+<li>Easy customization in one place</li>
+</ul>
+
+<h2>Customization</h2>
+
+<h3>Changing Colors</h3>
+
+<p>
+Edit the CSS variables in <code>index.html</code>:
+</p>
+
+<pre><code>:root {
+    --primary-color: #2c3e50;      /* Dark blue-gray */
+    --secondary-color: #3498db;    /* Bright blue */
+    --background: #ffffff;         /* White */
+    --sidebar-bg: #f8f9fa;        /* Light gray */
+    --border-color: #dee2e6;      /* Border gray */
+    --text-color: #333;           /* Dark text */
+    --link-color: #3498db;        /* Link blue */
+    --link-hover: #2980b9;        /* Darker blue */
+    --code-bg: #f4f4f4;          /* Code background */
+    --search-highlight: #fff3cd;  /* Yellow highlight */
+}
+</code></pre>
+
+<h3>Changing Layout</h3>
+
+<p>
+The sidebar width can be adjusted:
+</p>
+
+<pre><code>.sidebar {
+    width: 280px;  /* Change this value */
+}
+
+.main-content {
+    margin-left: 280px;  /* Should match sidebar width */
+}
+</code></pre>
+
+<h3>Adding Custom Sections</h3>
+
+<p>
+To add a new section to the navigation:
+</p>
+
+<pre><code>&lt;li class="nav-section"&gt;My New Section&lt;/li&gt;
+&lt;li&gt;&lt;a href="#" data-page="my-page"&gt;My Page&lt;/a&gt;&lt;/li&gt;
+</code></pre>
+
+<h2>Org-mode Integration</h2>
+
+<h3>Export Configuration</h3>
+
+<p>
+Create a <code>.dir-locals.el</code> file in your org documentation directory:
+</p>
+
+<pre><code>((org-mode . ((org-html-doctype . "html5")
+              (org-html-html5-fancy . t)
+              (org-html-validation-link . nil))))
+</code></pre>
+
+<h3>Batch Export Script</h3>
+
+<p>
+For exporting multiple files, create a bash script:
+</p>
+
+<pre><code>#!/bin/bash
+# export-all.sh
+
+for file in *.org; do
+    emacs "$file" \
+        --batch \
+        --eval "(progn (org-html-export-to-html nil nil nil t))" \
+        --kill
+
+    # Move to docs directory
+    html_file="${file%.org}.html"
+    mv "$html_file" ../docs/
+done
+</code></pre>
+
+<h3>Recommended Org Settings</h3>
+
+<p>
+For consistent exports, use these options in your Org files:
+</p>
+
+<pre><code>#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
+#+OPTIONS: html-postamble:nil
+#+HTML_HEAD:
+</code></pre>
+
+<h2>Best Practices</h2>
+
+<h3>Content Organization</h3>
+
+<ul>
+<li><strong>One topic per page</strong>: Keep pages focused</li>
+<li><strong>Clear hierarchy</strong>: Use headings consistently</li>
+<li><strong>Cross-link</strong>: Link related pages together</li>
+<li><strong>Examples</strong>: Include practical code examples</li>
+</ul>
+
+<h3>Search Optimization</h3>
+
+<p>
+When adding pages to the search index:
+</p>
+
+<ul>
+<li>Include relevant keywords in <code>content</code> field</li>
+<li>Write clear, descriptive <code>excerpt</code> text</li>
+<li>Use the exact page <code>title</code> from your HTML</li>
+</ul>
+
+<h3>File Management</h3>
+
+<ul>
+<li>Keep source <code>.org</code> files in <code>sample-org/</code></li>
+<li>Export only to <code>docs/</code> directory</li>
+<li>Use version control (Git) to track changes</li>
+</ul>
+
+<h2>Troubleshooting</h2>
+
+<h3>Page Won't Load</h3>
+
+<ul>
+<li>Check filename matches <code>data-page</code> attribute</li>
+<li>Ensure file is in <code>docs/</code> directory</li>
+<li>Verify file has <code>.html</code> extension</li>
+<li>Check browser console for errors</li>
+</ul>
+
+<h3>Search Not Finding Page</h3>
+
+<ul>
+<li>Verify page is in search index</li>
+<li>Check keywords in <code>content</code> field</li>
+<li>Try different search terms</li>
+</ul>
+
+<h3>Styling Issues</h3>
+
+<ul>
+<li>Ensure HTML is exported as "body only"</li>
+<li>Remove any inline styles from Org export</li>
+<li>Check for conflicting CSS in exported HTML</li>
+</ul>
+
+<h2>Advanced Topics</h2>
+
+<h3>Adding Table of Contents</h3>
+
+<p>
+You can add a TOC to individual pages using Org-mode:
+</p>
+
+<pre><code>#+OPTIONS: toc:2  # Two levels of headings
+</code></pre>
+
+<h3>Syntax Highlighting</h3>
+
+<p>
+Org-mode can export code blocks with syntax highlighting. Configure in Emacs:
+</p>
+
+<pre><code>(setq org-html-htmlize-output-type 'inline-css)
+</code></pre>
+
+<h3>Adding Images</h3>
+
+<ol>
+<li>Create <code>assets/images/</code> directory</li>
+<li>Store images there</li>
+<li>Reference in Org-mode: <code>[[file:../assets/images/my-image.png]]</code></li>
+</ol>
+
+<h2>Maintenance</h2>
+
+<p>
+This system requires minimal maintenance:
+</p>
+
+<ul>
+<li><strong>Update content</strong>: Just export new HTML from your Org files</li>
+<li><strong>Add pages</strong>: Follow the quick start process</li>
+<li><strong>Backup</strong>: Copy the entire folder periodically</li>
+<li><strong>No updates needed</strong>: The code is stable and dependency-free</li>
+</ul>
