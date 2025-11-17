@@ -1,0 +1,63 @@
+# Docker Compose configuration for Option A: nginx
+#
+# This configuration runs the Flask backend with nginx as the web server
+# handling client certificate authentication directly.
+#
+# Usage:
+#   docker-compose -f docker-compose.nginx.yml up -d
+#
+# Access the site at: https://localhost
+
+version: '3.8'
+
+services:
+  # Backend Flask application
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: client-cert-backend-nginx
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=0
+    networks:
+      - cert-auth-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # nginx web server with client certificate authentication
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: client-cert-nginx
+    ports:
+      - "80:80"      # HTTP (redirects to HTTPS)
+      - "443:443"    # HTTPS with client certificate auth
+    volumes:
+      # Mount certificates
+      - ./certs/ca/ca-cert.pem:/etc/nginx/certs/ca-cert.pem:ro
+      - ./certs/server/server-cert.pem:/etc/nginx/certs/server-cert.pem:ro
+      - ./certs/server/server-key.pem:/etc/nginx/certs/server-key.pem:ro
+      # Optional: Mount CRL if using certificate revocation
+      # - ./certs/ca/crl/crl.pem:/etc/nginx/certs/crl.pem:ro
+    depends_on:
+      - backend
+    networks:
+      - cert-auth-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  cert-auth-network:
+    driver: bridge

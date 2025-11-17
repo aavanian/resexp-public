@@ -1,0 +1,166 @@
+# Caddyfile - Caddy web server configuration for client certificate authentication
+#
+# This configuration demonstrates how Caddy can act as a reverse proxy
+# that handles client certificate verification and passes certificate
+# information to the backend application via headers.
+#
+# Caddy provides simpler configuration compared to nginx while maintaining
+# strong security features and automatic HTTPS (with public CAs).
+
+{
+    # Global options
+    admin off  # Disable admin API for production
+
+    # For development with self-signed certs
+    auto_https off
+
+    # Logging
+    log {
+        output stdout
+        format console
+        level INFO
+    }
+}
+
+# Main site configuration
+# For production, replace with your actual domain
+# For development, use localhost or 127.0.0.1
+https://localhost:443 {
+    # TLS configuration with client certificate authentication
+    tls /etc/caddy/certs/server-cert.pem /etc/caddy/certs/server-key.pem {
+        # Client certificate authentication configuration
+        # Require client certificates signed by our CA
+        client_auth {
+            # Mode can be: request, require, verify_if_given
+            # - request: ask for cert but don't require it (allows public pages)
+            # - require: must have valid cert (all pages protected)
+            # - verify_if_given: verify cert if provided, allow access without
+            mode request
+
+            # Trusted CA certificate(s) for verifying client certificates
+            trusted_ca_cert_file /etc/caddy/certs/ca-cert.pem
+
+            # Optional: Certificate Revocation List
+            # Uncomment when you want to use CRL
+            # trusted_leaf_certs_file /etc/caddy/certs/crl.pem
+        }
+
+        # TLS version and cipher configuration
+        protocols tls1.2 tls1.3
+
+        # Curves for ECDHE
+        curves x25519 secp384r1 secp521r1
+    }
+
+    # Logging for this site
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+
+    # Health check endpoint
+    handle /health {
+        respond "healthy" 200
+    }
+
+    # Reverse proxy to backend application
+    reverse_proxy backend:5000 {
+        # Standard reverse proxy headers
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+
+        # Pass client certificate information to backend
+        # Caddy provides these via placeholders that we forward as headers
+
+        # Client certificate subject (Distinguished Name)
+        header_up X-Client-Cert-Subject {http.request.tls.client.subject}
+
+        # Common Name from certificate
+        header_up X-Client-Cert-CN {http.request.tls.client.subject.common_name}
+
+        # Email from certificate
+        header_up X-Client-Cert-Email {http.request.tls.client.subject.email}
+
+        # Organizational Unit (used for permissions)
+        header_up X-Client-Cert-OU {http.request.tls.client.subject.organizational_unit}
+
+        # Serial number
+        header_up X-Client-Cert-Serial {http.request.tls.client.serial}
+
+        # Certificate verification status
+        # Caddy sets this to "1" if verified, empty otherwise
+        header_up X-Client-Cert-Verified {http.request.tls.client.verified}
+
+        # Certificate validity dates
+        header_up X-Client-Cert-Not-Before {http.request.tls.client.not_before}
+        header_up X-Client-Cert-Not-After {http.request.tls.client.not_after}
+
+        # Issuer information
+        header_up X-Client-Cert-Issuer {http.request.tls.client.issuer}
+
+        # Certificate fingerprint (SHA256)
+        header_up X-Client-Cert-Fingerprint {http.request.tls.client.fingerprint}
+
+        # Health check configuration
+        health_uri /health
+        health_interval 30s
+        health_timeout 5s
+    }
+
+    # Optional: Error pages
+    handle_errors {
+        respond "{http.error.status_code} {http.error.status_text}"
+    }
+}
+
+# HTTP to HTTPS redirect
+http://localhost:80 {
+    redir https://{host}{uri} permanent
+}
+
+# Alternative configuration: Require certificate for specific paths only
+# Uncomment and modify as needed
+#
+# https://localhost:443 {
+#     tls /etc/caddy/certs/server-cert.pem /etc/caddy/certs/server-key.pem {
+#         client_auth {
+#             mode request
+#             trusted_ca_cert_file /etc/caddy/certs/ca-cert.pem
+#         }
+#         protocols tls1.2 tls1.3
+#     }
+#
+#     # Public pages - no certificate required
+#     handle / {
+#         reverse_proxy backend:5000
+#     }
+#
+#     # Protected pages - require valid certificate
+#     @authenticated {
+#         path /admin* /family*
+#     }
+#
+#     handle @authenticated {
+#         # Require valid client certificate
+#         @no_cert {
+#             not {
+#                 expression {http.request.tls.client.verified} == "1"
+#             }
+#         }
+#
+#         handle @no_cert {
+#             respond "Client certificate required" 403
+#         }
+#
+#         reverse_proxy backend:5000 {
+#             header_up X-Client-Cert-Subject {http.request.tls.client.subject}
+#             header_up X-Client-Cert-CN {http.request.tls.client.subject.common_name}
+#             header_up X-Client-Cert-Email {http.request.tls.client.subject.email}
+#             header_up X-Client-Cert-OU {http.request.tls.client.subject.organizational_unit}
+#             header_up X-Client-Cert-Serial {http.request.tls.client.serial}
+#             header_up X-Client-Cert-Verified {http.request.tls.client.verified}
+#         }
+#     }
+# }

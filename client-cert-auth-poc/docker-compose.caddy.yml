@@ -1,0 +1,72 @@
+# Docker Compose configuration for Option B: Caddy
+#
+# This configuration runs the Flask backend with Caddy as a reverse proxy
+# handling client certificate authentication.
+#
+# Usage:
+#   docker-compose -f docker-compose.caddy.yml up -d
+#
+# Access the site at: https://localhost
+
+version: '3.8'
+
+services:
+  # Backend Flask application
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: client-cert-backend-caddy
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=0
+    networks:
+      - cert-auth-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Caddy reverse proxy with client certificate authentication
+  caddy:
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile
+    container_name: client-cert-caddy
+    ports:
+      - "80:80"      # HTTP (redirects to HTTPS)
+      - "443:443"    # HTTPS with client certificate auth
+    volumes:
+      # Mount certificates
+      - ./certs/ca/ca-cert.pem:/etc/caddy/certs/ca-cert.pem:ro
+      - ./certs/server/server-cert.pem:/etc/caddy/certs/server-cert.pem:ro
+      - ./certs/server/server-key.pem:/etc/caddy/certs/server-key.pem:ro
+      # Caddy data (for automatic HTTPS in production)
+      - caddy_data:/data
+      - caddy_config:/config
+      # Logs
+      - ./logs/caddy:/var/log/caddy
+      # Optional: Mount CRL if using certificate revocation
+      # - ./certs/ca/crl/crl.pem:/etc/caddy/certs/crl.pem:ro
+    depends_on:
+      - backend
+    networks:
+      - cert-auth-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  cert-auth-network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
