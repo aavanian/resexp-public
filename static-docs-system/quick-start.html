@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Documentation</title>
+    <title>Quick Start - Documentation</title>
     <style>
         * {
             margin: 0;
@@ -269,10 +269,10 @@
             <!-- Navigation Menu -->
             <nav>
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="active">Welcome</a></li>
+                    <li><a href="index.html" class="">Welcome</a></li>
                     <li class="nav-section">Getting Started</li>
                     <li><a href="installation.html" class="">Installation</a></li>
-                    <li><a href="quick-start.html" class="">Quick Start</a></li>
+                    <li><a href="quick-start.html" class="active">Quick Start</a></li>
                     <li class="nav-section">Documentation</li>
                     <li><a href="user-guide.html" class="">User Guide</a></li>
                     <li><a href="api-reference.html" class="">API Reference</a></li>
@@ -284,49 +284,100 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <h1>Welcome to the Documentation</h1>
+            <h1>Quick Start Guide</h1>
 
 <p>
-This is a standalone static documentation system designed to run entirely offline from a USB drive or local file system. <strong>No server required!</strong>
+Get your documentation up and running in minutes!
 </p>
 
-<h2>Key Features</h2>
-
-<ul>
-<li><strong>Offline-First</strong>: Works perfectly from <code>file://</code> protocol</li>
-<li><strong>No CORS Issues</strong>: Uses direct HTML links, not JavaScript loading</li>
-<li><strong>Client-Side Search</strong>: Fast built-in search functionality</li>
-<li><strong>No Dependencies</strong>: All assets embedded, no CDN links</li>
-<li><strong>Responsive Design</strong>: Works on desktop, tablet, and mobile</li>
-<li><strong>Org-mode Integration</strong>: Export directly from Emacs</li>
-</ul>
-
-<h2>How It Works</h2>
+<h2>Step 1: Write Content in Org-mode</h2>
 
 <p>
-This system uses a simple but robust approach:
+Create your documentation in Emacs using Org-mode:
+</p>
+
+<pre><code>#+TITLE: My Documentation Page
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+
+This is my documentation content.
+
+** Features
+
+- Feature one
+- Feature two
+
+** Code Example
+
+#+BEGIN_SRC python
+def hello():
+    print("Hello, World!")
+#+END_SRC
+</code></pre>
+
+<h2>Step 2: Export to HTML</h2>
+
+<p>
+In Emacs, export your Org file to HTML <strong>body only</strong>:
 </p>
 
 <ol>
-<li>Each page is a complete, standalone HTML file</li>
-<li>Navigation uses normal <code>&lt;a href="page.html"&gt;</code> links</li>
-<li>Search is embedded JavaScript on each page</li>
-<li>No dynamic file loading = no CORS issues!</li>
+<li>Open your <code>.org</code> file in Emacs</li>
+<li>Press <code>C-c C-e</code> to open export dispatcher</li>
+<li>Press <code>h</code> for HTML export</li>
+<li>Press <code>b</code> for "body only"</li>
 </ol>
 
-<h2>Getting Started</h2>
+<p>
+This creates clean HTML without <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, or <code>&lt;body&gt;</code> tags.
+</p>
+
+<h2>Step 3: Add to Content Directory</h2>
 
 <ol>
-<li>Read the <a href="installation.html">Installation</a> guide</li>
-<li>Follow the <a href="quick-start.html">Quick Start</a> tutorial</li>
-<li>Explore the <a href="user-guide.html">User Guide</a></li>
+<li>Save the exported HTML to the <code>content/</code> directory</li>
+<li>Name it descriptively, e.g., <code>my-feature.html</code></li>
 </ol>
 
-<blockquote>
+<h2>Step 4: Update Template Navigation</h2>
+
 <p>
-<strong>Note:</strong> This system is designed for long-term stability. It will work for years without any maintenance or updates.
+Edit <code>templates/page-template.html</code> and add your page to the nav menu:
 </p>
-</blockquote>
+
+<pre><code>&lt;ul class="nav-menu"&gt;
+    &lt;!-- Add your page here --&gt;
+    &lt;li&gt;&lt;a href="my-feature.html"&gt;My Feature&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<h2>Step 5: Update Build Script</h2>
+
+<p>
+Edit <code>build.py</code> and add your page to the pages list:
+</p>
+
+<pre><code>pages = [
+    # ... existing pages ...
+    ('my-feature', 'My Feature', 'content/my-feature.html', 'my-feature.html'),
+]
+</code></pre>
+
+<h2>Step 6: Build and Test</h2>
+
+<pre><code>python3 build.py
+</code></pre>
+
+<p>
+Then open <code>index.html</code> in your browser!
+</p>
+
+<h2>Complete Example</h2>
+
+<p>
+See <code>sample-org/example.org</code> for a comprehensive example with all Org-mode features.
+</p>
 
         </main>
     </div>

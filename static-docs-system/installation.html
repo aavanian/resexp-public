@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Documentation</title>
+    <title>Installation - Documentation</title>
     <style>
         * {
             margin: 0;
@@ -269,9 +269,9 @@
             <!-- Navigation Menu -->
             <nav>
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="active">Welcome</a></li>
+                    <li><a href="index.html" class="">Welcome</a></li>
                     <li class="nav-section">Getting Started</li>
-                    <li><a href="installation.html" class="">Installation</a></li>
+                    <li><a href="installation.html" class="active">Installation</a></li>
                     <li><a href="quick-start.html" class="">Quick Start</a></li>
                     <li class="nav-section">Documentation</li>
                     <li><a href="user-guide.html" class="">User Guide</a></li>
@@ -284,49 +284,68 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <h1>Welcome to the Documentation</h1>
+            <h1>Installation</h1>
 
 <p>
-This is a standalone static documentation system designed to run entirely offline from a USB drive or local file system. <strong>No server required!</strong>
+There's no traditional "installation" - just download and use!
 </p>
 
-<h2>Key Features</h2>
+<h2>Requirements</h2>
+
+<p>
+Any modern web browser:
+</p>
 
 <ul>
-<li><strong>Offline-First</strong>: Works perfectly from <code>file://</code> protocol</li>
-<li><strong>No CORS Issues</strong>: Uses direct HTML links, not JavaScript loading</li>
-<li><strong>Client-Side Search</strong>: Fast built-in search functionality</li>
-<li><strong>No Dependencies</strong>: All assets embedded, no CDN links</li>
-<li><strong>Responsive Design</strong>: Works on desktop, tablet, and mobile</li>
-<li><strong>Org-mode Integration</strong>: Export directly from Emacs</li>
+<li>Chrome/Chromium 60+</li>
+<li>Firefox 60+</li>
+<li>Safari 12+</li>
+<li>Edge 79+</li>
 </ul>
 
-<h2>How It Works</h2>
+<h2>Setup Options</h2>
 
-<p>
-This system uses a simple but robust approach:
-</p>
+<h3>Option 1: USB Drive</h3>
 
 <ol>
-<li>Each page is a complete, standalone HTML file</li>
-<li>Navigation uses normal <code>&lt;a href="page.html"&gt;</code> links</li>
-<li>Search is embedded JavaScript on each page</li>
-<li>No dynamic file loading = no CORS issues!</li>
+<li>Copy the entire folder to a USB drive</li>
+<li>Double-click <code>index.html</code></li>
+<li>Done!</li>
 </ol>
 
-<h2>Getting Started</h2>
+<h3>Option 2: Local Storage</h3>
 
 <ol>
-<li>Read the <a href="installation.html">Installation</a> guide</li>
-<li>Follow the <a href="quick-start.html">Quick Start</a> tutorial</li>
-<li>Explore the <a href="user-guide.html">User Guide</a></li>
+<li>Copy the folder to your computer</li>
+<li>Double-click <code>index.html</code> to open</li>
+<li>Bookmark for easy access</li>
 </ol>
 
-<blockquote>
+<h3>Option 3: Network Share</h3>
+
+<ol>
+<li>Place folder on network share</li>
+<li>Team members access via <code>file://</code> protocol</li>
+</ol>
+
+<h2>Why This Works</h2>
+
 <p>
-<strong>Note:</strong> This system is designed for long-term stability. It will work for years without any maintenance or updates.
+Unlike other documentation systems, this one uses <strong>direct HTML links</strong> instead of JavaScript to load content. This means:
 </p>
-</blockquote>
+
+<ul>
+<li>✅ No CORS issues</li>
+<li>✅ Works in ALL browsers</li>
+<li>✅ No configuration needed</li>
+<li>✅ True offline capability</li>
+</ul>
+
+<h2>Next Steps</h2>
+
+<p>
+Check out the <a href="quick-start.html">Quick Start</a> guide to learn how to add your own content!
+</p>
 
         </main>
     </div>

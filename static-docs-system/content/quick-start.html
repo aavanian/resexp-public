@@ -1,0 +1,94 @@
+<h1>Quick Start Guide</h1>
+
+<p>
+Get your documentation up and running in minutes!
+</p>
+
+<h2>Step 1: Write Content in Org-mode</h2>
+
+<p>
+Create your documentation in Emacs using Org-mode:
+</p>
+
+<pre><code>#+TITLE: My Documentation Page
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+
+This is my documentation content.
+
+** Features
+
+- Feature one
+- Feature two
+
+** Code Example
+
+#+BEGIN_SRC python
+def hello():
+    print("Hello, World!")
+#+END_SRC
+</code></pre>
+
+<h2>Step 2: Export to HTML</h2>
+
+<p>
+In Emacs, export your Org file to HTML <strong>body only</strong>:
+</p>
+
+<ol>
+<li>Open your <code>.org</code> file in Emacs</li>
+<li>Press <code>C-c C-e</code> to open export dispatcher</li>
+<li>Press <code>h</code> for HTML export</li>
+<li>Press <code>b</code> for "body only"</li>
+</ol>
+
+<p>
+This creates clean HTML without <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, or <code>&lt;body&gt;</code> tags.
+</p>
+
+<h2>Step 3: Add to Content Directory</h2>
+
+<ol>
+<li>Save the exported HTML to the <code>content/</code> directory</li>
+<li>Name it descriptively, e.g., <code>my-feature.html</code></li>
+</ol>
+
+<h2>Step 4: Update Template Navigation</h2>
+
+<p>
+Edit <code>templates/page-template.html</code> and add your page to the nav menu:
+</p>
+
+<pre><code>&lt;ul class="nav-menu"&gt;
+    &lt;!-- Add your page here --&gt;
+    &lt;li&gt;&lt;a href="my-feature.html"&gt;My Feature&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<h2>Step 5: Update Build Script</h2>
+
+<p>
+Edit <code>build.py</code> and add your page to the pages list:
+</p>
+
+<pre><code>pages = [
+    # ... existing pages ...
+    ('my-feature', 'My Feature', 'content/my-feature.html', 'my-feature.html'),
+]
+</code></pre>
+
+<h2>Step 6: Build and Test</h2>
+
+<pre><code>python3 build.py
+</code></pre>
+
+<p>
+Then open <code>index.html</code> in your browser!
+</p>
+
+<h2>Complete Example</h2>
+
+<p>
+See <code>sample-org/example.org</code> for a comprehensive example with all Org-mode features.
+</p>

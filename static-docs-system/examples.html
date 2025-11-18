@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Documentation</title>
+    <title>Code Examples - Documentation</title>
     <style>
         * {
             margin: 0;
@@ -269,7 +269,7 @@
             <!-- Navigation Menu -->
             <nav>
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="active">Welcome</a></li>
+                    <li><a href="index.html" class="">Welcome</a></li>
                     <li class="nav-section">Getting Started</li>
                     <li><a href="installation.html" class="">Installation</a></li>
                     <li><a href="quick-start.html" class="">Quick Start</a></li>
@@ -277,56 +277,108 @@
                     <li><a href="user-guide.html" class="">User Guide</a></li>
                     <li><a href="api-reference.html" class="">API Reference</a></li>
                     <li class="nav-section">Examples</li>
-                    <li><a href="examples.html" class="">Code Examples</a></li>
+                    <li><a href="examples.html" class="active">Code Examples</a></li>
                 </ul>
             </nav>
         </aside>
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <h1>Welcome to the Documentation</h1>
+            <h1>Code Examples</h1>
 
-<p>
-This is a standalone static documentation system designed to run entirely offline from a USB drive or local file system. <strong>No server required!</strong>
-</p>
+<p>Practical examples for working with the documentation system.</p>
 
-<h2>Key Features</h2>
+<h2>Sample Org-mode File</h2>
 
-<ul>
-<li><strong>Offline-First</strong>: Works perfectly from <code>file://</code> protocol</li>
-<li><strong>No CORS Issues</strong>: Uses direct HTML links, not JavaScript loading</li>
-<li><strong>Client-Side Search</strong>: Fast built-in search functionality</li>
-<li><strong>No Dependencies</strong>: All assets embedded, no CDN links</li>
-<li><strong>Responsive Design</strong>: Works on desktop, tablet, and mobile</li>
-<li><strong>Org-mode Integration</strong>: Export directly from Emacs</li>
-</ul>
+<p>A complete example showing all Org-mode features:</p>
 
-<h2>How It Works</h2>
+<pre><code>#+TITLE: Example Documentation
+#+OPTIONS: toc:nil num:nil html-style:nil
 
-<p>
-This system uses a simple but robust approach:
-</p>
+* Introduction
 
-<ol>
-<li>Each page is a complete, standalone HTML file</li>
-<li>Navigation uses normal <code>&lt;a href="page.html"&gt;</code> links</li>
-<li>Search is embedded JavaScript on each page</li>
-<li>No dynamic file loading = no CORS issues!</li>
-</ol>
+This is a sample documentation page.
 
-<h2>Getting Started</h2>
+* Code Examples
 
-<ol>
-<li>Read the <a href="installation.html">Installation</a> guide</li>
-<li>Follow the <a href="quick-start.html">Quick Start</a> tutorial</li>
-<li>Explore the <a href="user-guide.html">User Guide</a></li>
-</ol>
+** Python
 
-<blockquote>
-<p>
-<strong>Note:</strong> This system is designed for long-term stability. It will work for years without any maintenance or updates.
-</p>
-</blockquote>
+#+BEGIN_SRC python
+def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+print(factorial(5))  # 120
+#+END_SRC
+
+** JavaScript
+
+#+BEGIN_SRC javascript
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(greet('World'));
+#+END_SRC
+
+* Tables
+
+| Feature       | Status | Notes          |
+|---------------+--------+----------------|
+| Search        | Done   | Works great    |
+| Navigation    | Done   | Direct links   |
+| Responsive    | Done   | Mobile-ready   |
+
+* Lists
+
+- First item
+- Second item
+  - Nested item
+  - Another nested
+- Third item
+
+* Links
+
+See the [[file:user-guide.org][User Guide]] for more information.
+</code></pre>
+
+<h2>Build Script Example</h2>
+
+<p>Adding a new page to the build script:</p>
+
+<pre><code>pages = [
+    # Existing pages
+    ('index', 'Welcome', 'content/welcome.html', 'index.html'),
+    
+    # Your new page
+    ('my-tutorial', 'My Tutorial', 'content/my-tutorial.html', 'my-tutorial.html'),
+]
+</code></pre>
+
+<h2>Workflow Example</h2>
+
+<pre><code># 1. Create Org file
+emacs sample-org/tutorial.org
+
+# 2. Export to HTML body only
+# In Emacs: C-c C-e h b
+
+# 3. Move to content directory
+mv tutorial.html content/
+
+# 4. Update template navigation
+# Edit templates/page-template.html
+
+# 5. Update build script
+# Edit build.py
+
+# 6. Build pages
+python3 build.py
+
+# 7. Open and test
+open index.html
+</code></pre>
 
         </main>
     </div>

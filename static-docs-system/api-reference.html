@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Documentation</title>
+    <title>API Reference - Documentation</title>
     <style>
         * {
             margin: 0;
@@ -269,13 +269,13 @@
             <!-- Navigation Menu -->
             <nav>
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="active">Welcome</a></li>
+                    <li><a href="index.html" class="">Welcome</a></li>
                     <li class="nav-section">Getting Started</li>
                     <li><a href="installation.html" class="">Installation</a></li>
                     <li><a href="quick-start.html" class="">Quick Start</a></li>
                     <li class="nav-section">Documentation</li>
                     <li><a href="user-guide.html" class="">User Guide</a></li>
-                    <li><a href="api-reference.html" class="">API Reference</a></li>
+                    <li><a href="api-reference.html" class="active">API Reference</a></li>
                     <li class="nav-section">Examples</li>
                     <li><a href="examples.html" class="">Code Examples</a></li>
                 </ul>
@@ -284,49 +284,98 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <h1>Welcome to the Documentation</h1>
+            <h1>API Reference</h1>
 
-<p>
-This is a standalone static documentation system designed to run entirely offline from a USB drive or local file system. <strong>No server required!</strong>
-</p>
+<p>Technical reference for the documentation system.</p>
 
-<h2>Key Features</h2>
+<h2>Build Script</h2>
+
+<h3>build.py</h3>
+
+<p>Main build script that generates pages from template and content.</p>
+
+<p><strong>Functions:</strong></p>
+
+<h4>read_file(path)</h4>
+
+<p>Read file content.</p>
 
 <ul>
-<li><strong>Offline-First</strong>: Works perfectly from <code>file://</code> protocol</li>
-<li><strong>No CORS Issues</strong>: Uses direct HTML links, not JavaScript loading</li>
-<li><strong>Client-Side Search</strong>: Fast built-in search functionality</li>
-<li><strong>No Dependencies</strong>: All assets embedded, no CDN links</li>
-<li><strong>Responsive Design</strong>: Works on desktop, tablet, and mobile</li>
-<li><strong>Org-mode Integration</strong>: Export directly from Emacs</li>
+<li><strong>Parameters:</strong> <code>path</code> (Path) - File path</li>
+<li><strong>Returns:</strong> str - File content</li>
 </ul>
 
-<h2>How It Works</h2>
+<h4>build_page(page_id, title, content_html, template)</h4>
 
-<p>
-This system uses a simple but robust approach:
-</p>
+<p>Build a complete HTML page from template.</p>
 
-<ol>
-<li>Each page is a complete, standalone HTML file</li>
-<li>Navigation uses normal <code>&lt;a href="page.html"&gt;</code> links</li>
-<li>Search is embedded JavaScript on each page</li>
-<li>No dynamic file loading = no CORS issues!</li>
-</ol>
+<ul>
+<li><strong>Parameters:</strong>
+  <ul>
+  <li><code>page_id</code> (str) - Page identifier</li>
+  <li><code>title</code> (str) - Page title</li>
+  <li><code>content_html</code> (str) - HTML content</li>
+  <li><code>template</code> (str) - Template HTML</li>
+  </ul>
+</li>
+<li><strong>Returns:</strong> str - Complete HTML page</li>
+</ul>
 
-<h2>Getting Started</h2>
+<h2>Template Placeholders</h2>
 
-<ol>
-<li>Read the <a href="installation.html">Installation</a> guide</li>
-<li>Follow the <a href="quick-start.html">Quick Start</a> tutorial</li>
-<li>Explore the <a href="user-guide.html">User Guide</a></li>
-</ol>
+<p>The template uses these placeholders:</p>
 
-<blockquote>
-<p>
-<strong>Note:</strong> This system is designed for long-term stability. It will work for years without any maintenance or updates.
-</p>
-</blockquote>
+<table>
+<thead>
+<tr>
+<th>Placeholder</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{TITLE}}</code></td>
+<td>Page title</td>
+</tr>
+<tr>
+<td><code>{{CONTENT}}</code></td>
+<td>Main content from Org export</td>
+</tr>
+<tr>
+<td><code></code></td>
+<td>Active class for index nav item</td>
+</tr>
+<tr>
+<td><code></code></td>
+<td>Active class for installation</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Search JavaScript</h2>
+
+<h3>performSearch(query)</h3>
+
+<p>Search indexed documents.</p>
+
+<ul>
+<li><strong>Parameters:</strong> <code>query</code> (string) - Search query</li>
+<li><strong>Returns:</strong> Array - Matching results with scores</li>
+</ul>
+
+<h3>highlightText(text, query)</h3>
+
+<p>Add highlighting to matching terms.</p>
+
+<ul>
+<li><strong>Parameters:</strong>
+  <ul>
+  <li><code>text</code> (string) - Text to highlight</li>
+  <li><code>query</code> (string) - Search query</li>
+  </ul>
+</li>
+<li><strong>Returns:</strong> string - HTML with highlights</li>
+</ul>
 
         </main>
     </div>

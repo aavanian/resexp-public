@@ -1,10 +1,10 @@
 #+TITLE: Example Documentation Page
-#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
-#+OPTIONS: html-postamble:nil
+#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil html-postamble:nil
 
 * Introduction
 
-This is an example Org-mode file that demonstrates how to write documentation that will be exported to HTML for the static documentation system.
+This is an example Org-mode file demonstrating how to write documentation
+that will be exported to HTML for the static documentation system.
 
 ** Purpose
 
@@ -22,19 +22,17 @@ Use asterisks for headings:
 - =*= for level 1 (H1)
 - =**= for level 2 (H2)
 - =***= for level 3 (H3)
-- And so on...
 
 ** Text Formatting
 
 - *Bold text* with =*bold*=
 - /Italic text/ with =/italic/=
 - =Code text= with ~=code=~
-- ~Verbatim~ with =~verbatim~=
 - +Strikethrough+ with =+strikethrough+=
 
 ** Lists
 
-Unordered lists use dashes:
+Unordered lists use dashes or asterisks:
 
 - First item
 - Second item
@@ -48,34 +46,26 @@ Ordered lists use numbers:
 2. Second step
 3. Third step
 
-** Links
-
-Link to other pages using:
-
-- Internal links: =[[file:other-page.org][Other Page]]=
-- External links: =[[https://example.com][Example Site]]=
-- Anchor links: =[[#section-name][Jump to section]]=
-
 * Code Examples
 
 ** Inline Code
 
-Use =code= for inline code references, like =print("hello")= or =def function()=.
+Use =code= for inline code, like =print("hello")= or =def function()=.
 
 ** Code Blocks
 
 For multi-line code, use source blocks:
 
 #+BEGIN_SRC python
-def factorial(n):
-    """Calculate factorial of n."""
+def fibonacci(n):
+    """Calculate Fibonacci number."""
     if n <= 1:
-        return 1
-    return n * factorial(n - 1)
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
 
 # Example usage
-result = factorial(5)
-print(f"5! = {result}")
+for i in range(10):
+    print(f"fib({i}) = {fibonacci(i)}")
 #+END_SRC
 
 You can specify the language for syntax highlighting:
@@ -94,23 +84,7 @@ console.log(greet('World'));
 
 for file in *.org; do
     echo "Processing: $file"
-    emacs "$file" --batch --eval "(org-html-export-to-html nil nil nil t)" --kill
 done
-#+END_SRC
-
-** Command Examples
-
-Show command-line examples:
-
-#+BEGIN_SRC bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the application
-python app.py
-
-# Run tests
-pytest tests/
 #+END_SRC
 
 * Tables
@@ -124,12 +98,27 @@ Create tables using pipe characters:
 | Mobile View   | Done   | Medium   |
 | Dark Mode     | TODO   | Low      |
 
+* Links
+
+To link to other pages:
+
+- Internal: =[[file:other-page.org][Other Page]]=
+- External: =[[https://example.com][Example Site]]=
+- Same page: =[[#section-name][Jump to section]]=
+
+For example:
+
+See the [[file:user-guide.org][User Guide]] for more information.
+
+Visit [[https://orgmode.org][Org Mode]] website for documentation.
+
 * Quotes and Notes
 
-Use block quotes for important callouts:
+Use block quotes for callouts:
 
 #+BEGIN_QUOTE
-*Important:* This documentation system works entirely offline. No internet connection required!
+*Important:* This documentation system works entirely offline.
+No internet connection required!
 #+END_QUOTE
 
 Or use example blocks:
@@ -138,25 +127,6 @@ Or use example blocks:
 This is an example block that preserves
     whitespace and formatting
         exactly as written.
-#+END_EXAMPLE
-
-* Images
-
-To include images:
-
-1. Create an =assets/images/= directory
-2. Place your images there
-3. Reference them in Org files:
-
-#+BEGIN_EXAMPLE
-[[file:../assets/images/screenshot.png]]
-#+END_EXAMPLE
-
-With a caption:
-
-#+BEGIN_EXAMPLE
-#+CAPTION: Screenshot of the documentation system
-[[file:../assets/images/screenshot.png]]
 #+END_EXAMPLE
 
 * Export Settings
@@ -174,32 +144,18 @@ Include these settings at the top of your Org files:
 #+OPTIONS: html-postamble:nil  # No footer
 #+END_EXAMPLE
 
-** Optional Settings
+** Exporting to HTML
 
-For longer documents with a table of contents:
+In Emacs:
 
-#+BEGIN_EXAMPLE
-#+OPTIONS: toc:2            # Include TOC with 2 levels
-#+END_EXAMPLE
-
-For numbered sections:
-
-#+BEGIN_EXAMPLE
-#+OPTIONS: num:t            # Number sections
-#+END_EXAMPLE
-
-* Exporting to HTML
-
-** In Emacs
-
-1. Open this file in Emacs
-2. Press =C-c C-e= to open the export dispatcher
+1. Open your =.org= file
+2. Press =C-c C-e= to open export dispatcher
 3. Press =h= for HTML export
-4. Press =b= for "body only" (recommended)
+4. Press =b= for "body only"
 
-This creates a clean HTML file with just the content, no =<html>= wrapper.
+This creates clean HTML with just the content.
 
-** Body Only Export
+** Why "Body Only"?
 
 The "body only" export is crucial because:
 - Creates clean HTML without full page structure
@@ -207,26 +163,12 @@ The "body only" export is crucial because:
 - Integrates seamlessly with the documentation template
 - Smaller file size
 
-** Full Export vs Body Only
-
-*Don't use full export* - it includes:
-- =<!DOCTYPE html>=
-- =<html>= and =<head>= tags
-- Default Org-mode CSS
-- Extra metadata
-
-*Do use body only* - it includes:
-- Just the content inside =<body>=
-- Your headings, paragraphs, and code
-- No extra HTML structure
-- Perfect for the documentation system
-
 * Best Practices
 
 ** File Organization
 
 - Keep source =.org= files in =sample-org/= directory
-- Export HTML files to =docs/= directory
+- Export HTML files to =content/= directory
 - Use descriptive filenames: =user-authentication.org=
 
 ** Content Structure
@@ -242,26 +184,18 @@ The "body only" export is crucial because:
 - Use examples liberally
 - Include code snippets
 - Link to related pages
-- Add notes for important points
 
-** Code Examples
-
-- Always specify language in source blocks
-- Add comments to explain complex code
-- Show both code and expected output
-- Use realistic examples
-
-* Next Steps
+* Complete Workflow
 
 After writing your Org file:
 
-1. Export to HTML (body only)
-2. Move HTML to =docs/= directory
-3. Update navigation in =index.html=
-4. Update search index in =assets/js/search.js=
-5. Test by opening =index.html=
-
-See the [[file:../docs/quick-start.html][Quick Start Guide]] for detailed instructions.
+1. Export to HTML (body only): =C-c C-e h b=
+2. Move HTML to =content/= directory
+3. Update navigation in =templates/page-template.html=
+4. Update build script =build.py=
+5. Update search index in template
+6. Run =python3 build.py=
+7. Test by opening generated HTML file
 
 * Resources
 
@@ -271,6 +205,9 @@ See the [[file:../docs/quick-start.html][Quick Start Guide]] for detailed instru
 
 * Conclusion
 
-This example demonstrates the key features of Org-mode for creating documentation. The simplicity of Org syntax combined with powerful export capabilities makes it ideal for maintaining long-term, offline documentation.
+This example demonstrates the key features of Org-mode for creating
+documentation. The simplicity of Org syntax combined with powerful
+export capabilities makes it ideal for maintaining long-term, offline
+documentation.
 
 Happy documenting!

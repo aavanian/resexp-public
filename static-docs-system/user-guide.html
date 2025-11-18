@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Documentation</title>
+    <title>User Guide - Documentation</title>
     <style>
         * {
             margin: 0;
@@ -269,12 +269,12 @@
             <!-- Navigation Menu -->
             <nav>
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="active">Welcome</a></li>
+                    <li><a href="index.html" class="">Welcome</a></li>
                     <li class="nav-section">Getting Started</li>
                     <li><a href="installation.html" class="">Installation</a></li>
                     <li><a href="quick-start.html" class="">Quick Start</a></li>
                     <li class="nav-section">Documentation</li>
-                    <li><a href="user-guide.html" class="">User Guide</a></li>
+                    <li><a href="user-guide.html" class="active">User Guide</a></li>
                     <li><a href="api-reference.html" class="">API Reference</a></li>
                     <li class="nav-section">Examples</li>
                     <li><a href="examples.html" class="">Code Examples</a></li>
@@ -284,49 +284,80 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <h1>Welcome to the Documentation</h1>
+            <h1>User Guide</h1>
 
-<p>
-This is a standalone static documentation system designed to run entirely offline from a USB drive or local file system. <strong>No server required!</strong>
-</p>
+<p>Complete guide to using and customizing your static documentation system.</p>
 
-<h2>Key Features</h2>
+<h2>System Architecture</h2>
+
+<p>This system consists of:</p>
 
 <ul>
-<li><strong>Offline-First</strong>: Works perfectly from <code>file://</code> protocol</li>
-<li><strong>No CORS Issues</strong>: Uses direct HTML links, not JavaScript loading</li>
-<li><strong>Client-Side Search</strong>: Fast built-in search functionality</li>
-<li><strong>No Dependencies</strong>: All assets embedded, no CDN links</li>
-<li><strong>Responsive Design</strong>: Works on desktop, tablet, and mobile</li>
-<li><strong>Org-mode Integration</strong>: Export directly from Emacs</li>
+<li><strong>Template</strong> (<code>templates/page-template.html</code>) - Base HTML structure</li>
+<li><strong>Content</strong> (<code>content/*.html</code>) - Your documentation (from Org-mode)</li>
+<li><strong>Build Script</strong> (<code>build.py</code>) - Generates complete pages</li>
+<li><strong>Pages</strong> (<code>*.html</code>) - Complete, standalone HTML files</li>
 </ul>
 
 <h2>How It Works</h2>
 
-<p>
-This system uses a simple but robust approach:
-</p>
-
 <ol>
-<li>Each page is a complete, standalone HTML file</li>
-<li>Navigation uses normal <code>&lt;a href="page.html"&gt;</code> links</li>
-<li>Search is embedded JavaScript on each page</li>
-<li>No dynamic file loading = no CORS issues!</li>
+<li>Write content in Org-mode</li>
+<li>Export to HTML (body only)</li>
+<li>Place in <code>content/</code> directory</li>
+<li>Run <code>python3 build.py</code></li>
+<li>Complete pages are generated with template, navigation, and search</li>
 </ol>
 
-<h2>Getting Started</h2>
+<h2>Customization</h2>
+
+<h3>Changing Colors</h3>
+
+<p>Edit CSS variables in <code>templates/page-template.html</code>:</p>
+
+<pre><code>:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --bg: #ffffff;
+    /* ... more colors ... */
+}
+</code></pre>
+
+<h3>Adding New Pages</h3>
 
 <ol>
-<li>Read the <a href="installation.html">Installation</a> guide</li>
-<li>Follow the <a href="quick-start.html">Quick Start</a> tutorial</li>
-<li>Explore the <a href="user-guide.html">User Guide</a></li>
+<li>Create content in <code>content/new-page.html</code></li>
+<li>Add to nav menu in template</li>
+<li>Add to build script pages list</li>
+<li>Add to search index in template</li>
+<li>Run <code>python3 build.py</code></li>
 </ol>
 
-<blockquote>
-<p>
-<strong>Note:</strong> This system is designed for long-term stability. It will work for years without any maintenance or updates.
-</p>
-</blockquote>
+<h2>Search System</h2>
+
+<p>Search index is embedded in each page. To add pages to search:</p>
+
+<p>Edit the <code>searchIndex</code> array in <code>templates/page-template.html</code>:</p>
+
+<pre><code>const searchIndex = [
+    {
+        title: "My Page",
+        url: "my-page.html",
+        content: "keywords for searching",
+        excerpt: "Brief description"
+    }
+];
+</code></pre>
+
+<h2>Deployment</h2>
+
+<p>Just copy the generated <code>*.html</code> files (not the source files!) to your deployment location:</p>
+
+<ul>
+<li>USB drive</li>
+<li>Network share</li>
+<li>Zip file for distribution</li>
+</ul>
 
         </main>
     </div>
