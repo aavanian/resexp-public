@@ -54,7 +54,9 @@ function performSearch(query) {
     // Try lunr search first
     if (searchIndex) {
         try {
-            const results = searchIndex.search(query);
+            // Add trailing wildcard to each term for progressive search
+            const wildcardQuery = query.trim().split(/\s+/).map(term => term + '*').join(' ');
+            const results = searchIndex.search(wildcardQuery);
             return results.map(result => {
                 const doc = searchDocuments.find(d => d.id === result.ref);
                 return {
@@ -85,10 +87,17 @@ function simpleSearch(query) {
             let score = 0;
             const titleLower = doc.title.toLowerCase();
             const bodyLower = doc.body.toLowerCase();
+            const titleWords = titleLower.split(/\s+/);
+            const bodyWords = bodyLower.split(/\s+/);
 
-            words.forEach(word => {
-                if (titleLower.includes(word)) score += 10;
-                if (bodyLower.includes(word)) score += 5;
+            words.forEach(queryWord => {
+                // Check for partial matches at word boundaries (progressive search)
+                titleWords.forEach(word => {
+                    if (word.startsWith(queryWord)) score += 10;
+                });
+                bodyWords.forEach(word => {
+                    if (word.startsWith(queryWord)) score += 5;
+                });
             });
 
             return { ...doc, score };
