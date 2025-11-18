@@ -47,14 +47,16 @@ This system demonstrates that you don't need complex build processes for offline
 static-docs-system/
 ├── style.css               # Shared CSS for all pages
 ├── search.js               # Lunr.js search implementation
-├── Makefile                # Batch export utility
+├── search-index.js         # Auto-generated search index
+├── build-search-index.py   # Script to build search index
+├── Makefile                # Build: export + generate index
 ├── docs/
 │   ├── index.org           # Source files
-│   ├── index.html          # Exported HTML
+│   ├── index.html          # Exported HTML (generated)
 │   ├── setup.org
-│   ├── setup.html
+│   ├── setup.html          # (generated)
 │   ├── example.org
-│   └── example.html
+│   └── example.html        # (generated)
 └── README.md               # This file
 ```
 
@@ -69,6 +71,7 @@ Every Org file includes this header:
 #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
 #+HTML_HEAD: <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
+#+HTML_HEAD: <script src="../search-index.js"></script>
 #+HTML_HEAD: <script src="../search.js"></script>
 
 #+BEGIN_EXPORT html
@@ -96,6 +99,7 @@ Every Org file includes this header:
 - `#+HTML_HEAD:` - Includes CSS and JavaScript
   - `style.css` - Shared styles
   - `lunr.min.js` - Search library (from CDN)
+  - `search-index.js` - Auto-generated search index
   - `search.js` - Search implementation
 - `#+BEGIN_EXPORT html` - Adds navigation bar with search
 
@@ -123,27 +127,28 @@ wget https://unpkg.com/lunr@2.3.9/lunr.min.js
 #+HTML_HEAD: <script src="../lunr.min.js"></script>
 ```
 
-### Adding Pages to Search Index
+### Search Index Auto-Generation
 
-Edit `search.js` and update the `searchDocuments` array:
+The search index is **automatically generated** from your HTML files!
 
-```javascript
-const searchDocuments = [
-    {
-        id: 'my-page',
-        title: 'My New Page',
-        url: 'my-page.html',
-        body: 'keywords describing your page content search terms'
-    },
-    // ... more pages
-];
+When you run `make`, it:
+1. Exports all `.org` files to HTML
+2. Extracts content from each HTML file
+3. Generates `search-index.js` with the index
+
+**No manual maintenance needed!** The index is rebuilt every time you export.
+
+To manually rebuild just the index:
+
+```bash
+python3 build-search-index.py
 ```
 
-**Tips for good search:**
-- Include relevant keywords in `body`
-- Use synonyms and related terms
-- Include common search phrases
-- Update whenever you add new pages
+Or:
+
+```bash
+make index
+```
 
 ## Adding a New Page
 
@@ -160,24 +165,25 @@ const searchDocuments = [
    Your content here...
    ```
 
-4. **Export**: `C-c C-e h h` in Emacs
-
-5. **Update navigation** in all `.org` files:
+4. **Update navigation** in all `.org` files:
    ```html
    <li><a href="my-page.html">My Page</a></li>
    ```
 
-6. **Update search index** in `search.js`:
-   ```javascript
-   {
-       id: 'my-page',
-       title: 'My Page',
-       url: 'my-page.html',
-       body: 'relevant keywords for search'
-   }
+5. **Export and build**:
+   ```bash
+   make
    ```
 
-7. **Re-export** all pages to get updated navigation
+That's it! The search index is automatically updated.
+
+### Manual Export
+
+If you prefer to export manually:
+
+1. Export in Emacs: `C-c C-e h h`
+2. Re-export all pages (to update navigation)
+3. Rebuild search index: `make index`
 
 ## Exporting Files
 
@@ -292,11 +298,11 @@ Then open `http://localhost:8000/docs/index.html`
 
 ## Tips & Best Practices
 
-### Search Index Maintenance
+### Search Index
 
-- Update `search.js` whenever you add/remove pages
-- Include good keywords for each page
-- Test search after updates
+- ✅ **Automatic**: Index is rebuilt when you run `make`
+- ✅ **Content-based**: Extracts actual text from HTML pages
+- ✅ **No manual maintenance**: Just run `make` after changes
 
 ### Navigation Consistency
 

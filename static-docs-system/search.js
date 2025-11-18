@@ -1,6 +1,9 @@
 /**
  * Documentation Search using Lunr.js
  *
+ * Search index loaded from search-index.js (auto-generated)
+ * To regenerate index: python3 build-search-index.py
+ *
  * To use this, download lunr.js:
  * wget https://unpkg.com/lunr@2.3.9/lunr.min.js
  *
@@ -8,32 +11,20 @@
  * <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
  */
 
-// Page index - add your pages here
-const searchDocuments = [
-    {
-        id: 'index',
-        title: 'Welcome',
-        url: 'index.html',
-        body: 'welcome introduction getting started overview features home documentation org-mode pure export simple offline static'
-    },
-    {
-        id: 'setup',
-        title: 'Setup Guide',
-        url: 'setup.html',
-        body: 'setup guide install configuration header options export emacs org-mode customization tips deployment how to create pages'
-    },
-    {
-        id: 'example',
-        title: 'Example Page',
-        url: 'example.html',
-        body: 'example demonstration features syntax code tables lists formatting links blocks python javascript all features'
-    }
-];
+// Search index will be loaded from search-index.js
+// If that file doesn't exist, you'll need to run: python3 build-search-index.py
+// The searchDocuments array is defined in search-index.js
 
 let searchIndex = null;
 
 // Initialize search index
 function initializeSearch() {
+    // Check if search documents are loaded
+    if (typeof searchDocuments === 'undefined') {
+        console.error('Search index not loaded! Run: python3 build-search-index.py');
+        return null;
+    }
+
     // Check if lunr is available
     if (typeof lunr === 'undefined') {
         console.warn('Lunr.js not loaded. Using simple search fallback.');
@@ -82,6 +73,10 @@ function performSearch(query) {
 
 // Simple search fallback (if lunr not available)
 function simpleSearch(query) {
+    if (typeof searchDocuments === 'undefined') {
+        return [];
+    }
+
     const lowerQuery = query.toLowerCase();
     const words = lowerQuery.split(/\s+/);
 

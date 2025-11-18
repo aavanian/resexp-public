@@ -38,7 +38,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
     gap: 20px;
 }
 
@@ -56,10 +55,11 @@ body {
 
 .nav-search input {
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 15px;
     border: 1px solid var(--border);
     border-radius: 4px;
     font-size: 14px;
+    height: 38px;
 }
 
 .nav-search input:focus {
@@ -124,9 +124,11 @@ body {
     flex-wrap: wrap;
     gap: 10px;
     list-style: none;
+    align-items: center;
 }
 
 .nav-links a {
+    display: inline-block;
     padding: 8px 15px;
     background: white;
     border: 1px solid var(--border);
@@ -134,6 +136,9 @@ body {
     text-decoration: none;
     color: var(--text);
     transition: all 0.2s;
+    height: 38px;
+    line-height: 20px;
+    box-sizing: border-box;
 }
 
 .nav-links a:hover {
