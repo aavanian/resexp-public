@@ -1,5 +1,5 @@
 #+TITLE: Example Page - All Features
-#+OPTIONS: toc:t num:nil html-style:nil html-scripts:nil
+#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
 #+HTML_HEAD: <script src="../lunr.min.js"></script>
 #+HTML_HEAD: <script src="../search-index.js"></script>
