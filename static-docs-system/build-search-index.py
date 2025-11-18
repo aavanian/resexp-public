@@ -21,7 +21,6 @@ class ContentExtractor(HTMLParser):
     def __init__(self):
         super().__init__()
         self.content = []
-        self.skip_tags = {'script', 'style', 'nav', 'div'}
         self.skip_classes = {'nav-bar', 'nav-header', 'nav-search', 'search-results', 'nav-links'}
         self.skip_current = False
         self.skip_depth = 0
@@ -30,17 +29,23 @@ class ContentExtractor(HTMLParser):
         # Check if we should skip this tag
         attrs_dict = dict(attrs)
 
-        if tag in self.skip_tags:
-            # Check if it's a nav-related div
-            if tag == 'div' and 'class' in attrs_dict:
-                classes = attrs_dict['class'].split()
-                if any(c in self.skip_classes for c in classes):
-                    self.skip_current = True
-                    self.skip_depth = 1
-                    return
-        else:
-            if self.skip_current:
-                self.skip_depth += 1
+        # Always skip script, style, and nav tags
+        if tag in {'script', 'style', 'nav'}:
+            self.skip_current = True
+            self.skip_depth = 1
+            return
+
+        # For divs, only skip if they have nav-related classes
+        if tag == 'div' and 'class' in attrs_dict:
+            classes = attrs_dict['class'].split()
+            if any(c in self.skip_classes for c in classes):
+                self.skip_current = True
+                self.skip_depth = 1
+                return
+
+        # Track depth when already skipping
+        if self.skip_current:
+            self.skip_depth += 1
 
     def handle_endtag(self, tag):
         if self.skip_current:
