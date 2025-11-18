@@ -4,9 +4,23 @@ Welcome! Here's the fastest way to get started with your static documentation sy
 
 ## View the Documentation
 
-**Just open `index.html` in your web browser!** That's it.
+### Option 1: Use Simple Server (Recommended)
 
-Double-click the file, or right-click and choose "Open with" your preferred browser.
+Run the included Python server to avoid browser CORS restrictions:
+
+```bash
+python3 serve.py
+```
+
+Then open http://localhost:8000 in your browser.
+
+### Option 2: Open Directly (Firefox Works Best)
+
+**Firefox**: Just double-click `index.html` - works perfectly!
+
+**Chrome/Safari**: May show CORS errors due to security restrictions with `file://` protocol.
+
+If you get CORS errors in Chrome/Safari, use Option 1 (the Python server) instead.
 
 ## Try It Out
 

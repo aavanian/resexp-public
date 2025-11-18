@@ -98,10 +98,12 @@ This research project assesses the viability of creating a standalone, offline-f
    - No search result ranking by relevance beyond simple scoring
    - Manual index updates required
 
-2. **Browser Restrictions**
-   - Chrome requires flag for local file access
-   - Safari requires security setting change
-   - Some browsers block fetch() from file://
+2. **Browser Restrictions (IMPORTANT)**
+   - **Chrome/Safari block local file loading** via CORS policy with file:// protocol
+   - XMLHttpRequest used instead of Fetch API for better compatibility
+   - **Firefox works perfectly** with file:// protocol without any configuration
+   - **Workaround provided:** Simple Python server (`serve.py`) for other browsers
+   - **Recommendation:** Use Firefox for true offline/USB deployment
 
 3. **Manual Updates**
    - Navigation menu requires manual editing

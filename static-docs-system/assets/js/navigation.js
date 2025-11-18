@@ -24,30 +24,32 @@ function loadContent(page) {
     // Show loading state
     contentFrame.innerHTML = '<div class="loading">Loading content...</div>';
 
-    // Load content via fetch
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to load ${url}`);
+    // Load content via XMLHttpRequest (better file:// protocol support)
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200 || xhr.status === 0) {
+                // Status 0 is for file:// protocol
+                const html = xhr.responseText;
+                // Cache the content
+                contentCache[page] = html;
+                contentFrame.innerHTML = html;
+                scrollToTop();
+            } else {
+                console.error('Error loading content:', xhr.status);
+                contentFrame.innerHTML = `
+                    <div style="padding: 20px;">
+                        <h2>Error Loading Content</h2>
+                        <p>Could not load the page: <code>${page}</code></p>
+                        <p>Make sure the file <code>${url}</code> exists.</p>
+                        <p><strong>Tip:</strong> For best results, use Firefox browser or run a local server.</p>
+                    </div>
+                `;
             }
-            return response.text();
-        })
-        .then(html => {
-            // Cache the content
-            contentCache[page] = html;
-            contentFrame.innerHTML = html;
-            scrollToTop();
-        })
-        .catch(error => {
-            console.error('Error loading content:', error);
-            contentFrame.innerHTML = `
-                <div style="padding: 20px;">
-                    <h2>Error Loading Content</h2>
-                    <p>Could not load the page: <code>${page}</code></p>
-                    <p>Make sure the file <code>${url}</code> exists.</p>
-                </div>
-            `;
-        });
+        }
+    };
+    xhr.open('GET', url, true);
+    xhr.send();
 }
 
 /**

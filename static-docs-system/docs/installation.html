@@ -74,27 +74,43 @@ Any browser from the last 5 years should work perfectly, including:
 <h2>Browser Configuration</h2>
 
 <p>
-Some browsers may have restrictions on loading local files. If you encounter issues:
+<strong>Important:</strong> Modern browsers have CORS security restrictions that may block loading local files via JavaScript.
 </p>
 
-<h3>Firefox</h3>
+<h3>Recommended: Use Simple Server</h3>
 
 <p>
-Works out of the box! Firefox handles <code>file://</code> protocol perfectly.
+The easiest solution is to use the included Python server:
 </p>
 
-<h3>Chrome</h3>
-
-<p>
-Chrome may block local file loading. If needed, start Chrome with:
-</p>
-
-<pre><code>chrome --allow-file-access-from-files
+<pre><code>python3 serve.py
 </code></pre>
 
 <p>
-Or simply use Firefox for viewing documentation from <code>file://</code> protocol.
+Then open <code>http://localhost:8000</code> in any browser. This avoids all file:// protocol restrictions.
 </p>
+
+<h3>Firefox (Best for Offline Use)</h3>
+
+<p>
+Works perfectly with <code>file://</code> protocol! No configuration needed. Just double-click <code>index.html</code>.
+</p>
+
+<p>
+<strong>Recommended for USB drives and offline deployment.</strong>
+</p>
+
+<h3>Chrome/Safari</h3>
+
+<p>
+These browsers block local file loading by default. Solutions:
+</p>
+
+<ol>
+<li>Use <code>python3 serve.py</code> (easiest)</li>
+<li>Use Firefox instead</li>
+<li>Start Chrome with flag: <code>chrome --allow-file-access-from-files</code></li>
+</ol>
 
 <h3>Safari</h3>
 

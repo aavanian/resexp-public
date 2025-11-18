@@ -24,7 +24,20 @@ This is a research project demonstrating a simple, robust approach to creating p
 
 ### 1. View the Documentation
 
-Simply open `index.html` in your web browser. That's it!
+**Recommended: Use the included server**
+
+```bash
+python3 serve.py
+```
+
+Then open http://localhost:8000 in your browser.
+
+**Alternative: Open directly (Firefox recommended)**
+
+- **Firefox**: Double-click `index.html` - works perfectly!
+- **Chrome/Safari**: May show CORS errors with `file://` protocol
+
+> **Why use a server?** Modern browsers have security restrictions that can block loading local files via JavaScript when using the `file://` protocol. Using the simple Python server (which serves over `http://`) avoids these restrictions.
 
 ### 2. Add Your Own Content
 
@@ -258,14 +271,17 @@ Works with modern browsers supporting:
 
 ### Browser-Specific Notes
 
-**Firefox**: Works perfectly out of the box
+**Firefox**: ✅ Works perfectly with `file://` protocol - recommended for offline use
 
-**Chrome**: May restrict local file access. Start with:
-```bash
-chrome --allow-file-access-from-files
-```
+**Chrome**: ⚠️ Blocks local file loading by default due to CORS policy
+- Solution 1: Use `python3 serve.py` to run local server
+- Solution 2: Start Chrome with `chrome --allow-file-access-from-files` flag
 
-**Safari**: May need to disable "Local File Restrictions" in Develop menu
+**Safari**: ⚠️ May block local file loading
+- Solution 1: Use `python3 serve.py` to run local server
+- Solution 2: Enable Develop menu → Disable "Local File Restrictions"
+
+**For true offline/USB use:** Firefox is the best option as it works without any configuration.
 
 ## Search System
 
