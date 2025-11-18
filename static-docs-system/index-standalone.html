@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background: #ffffff;
+            --sidebar-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #333;
+            --link-color: #3498db;
+            --link-hover: #2980b9;
+            --code-bg: #f4f4f4;
+            --search-highlight: #fff3cd;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Search Box */
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        .search-results {
+            display: none;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-top: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: var(--sidebar-bg);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .search-result-excerpt {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .search-highlight {
+            background: var(--search-highlight);
+            font-weight: bold;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-menu li {
+            margin-bottom: 5px;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .nav-menu .nav-section {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 40px;
+            max-width: 900px;
+        }
+
+        .content-frame {
+            background: white;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: var(--primary-color);
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 2.5em; margin-top: 0; }
+        h2 { font-size: 2em; border-bottom: 2px solid var(--border-color); padding-bottom: 0.3em; }
+        h3 { font-size: 1.5em; }
+        h4 { font-size: 1.25em; }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-bottom: 1em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        ul, ol {
+            margin-bottom: 1em;
+            margin-left: 2em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--secondary-color);
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            background: var(--sidebar-bg);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background: var(--sidebar-bg);
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Documentation</h1>
+                <p style="font-size: 0.9em; color: #666;">Offline Static Docs</p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-container">
+                <input type="text"
+                       class="search-box"
+                       id="searchInput"
+                       placeholder="Search documentation..."
+                       autocomplete="off">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#" data-page="welcome" class="active">Welcome</a></li>
+                    <li class="nav-section">Getting Started</li>
+                    <li><a href="#" data-page="installation">Installation</a></li>
+                    <li><a href="#" data-page="quick-start">Quick Start</a></li>
+                    <li class="nav-section">Documentation</li>
+                    <li><a href="#" data-page="user-guide">User Guide</a></li>
+                    <li><a href="#" data-page="api-reference">API Reference</a></li>
+                    <li class="nav-section">Examples</li>
+                    <li><a href="#" data-page="examples">Code Examples</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="content-frame" id="contentFrame">
+                <div class="loading">Loading content...</div>
+            </div>
+        </main>
+    </div>
+
+    
+    
+
+    <script>
+// ============================================================================
+// EMBEDDED PAGE CONTENT
+// ============================================================================
+const EMBEDDED_PAGES = {
+    'api-reference': `<h1>API Reference</h1>
+
+<p>
+Technical reference for the JavaScript API used in this documentation system.
+</p>
+
+<h2>Navigation API</h2>
+
+<p>
+Defined in <code>assets/js/navigation.js</code>
+</p>
+
+<h3>loadContent(page)</h3>
+
+<p>
+Load content for a specific page.
+</p>
+
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>page</code> (string): Page identifier (filename without .html extension)</li>
+</ul>
+
+<p><strong>Example:</strong></p>
+<pre><code>loadContent('user-guide');
+// Loads docs/user-guide.html into content frame
+</code></pre>
+
+<h3>updateActiveNav(activeLink)</h3>
+
+<p>
+Update which navigation link is highlighted as active.
+</p>
+
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>activeLink</code> (HTMLElement): The link element to mark as active</li>
+</ul>
+
+<h3>handleNavClick(event)</h3>
+
+<p>
+Event handler for navigation menu clicks.
+</p>
+
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>event</code> (Event): Click event object</li>
+</ul>
+
+<h3>loadFromHash()</h3>
+
+<p>
+Load page based on URL hash fragment.
+</p>
+
+<p><strong>Example:</strong></p>
+<pre><code>// URL: file:///.../index.html#quick-start
+loadFromHash();
+// Loads the quick-start page
+</code></pre>
+
+<h2>Search API</h2>
+
+<p>
+Defined in <code>assets/js/search.js</code>
+</p>
+
+<h3>initializeSearchIndex()</h3>
+
+<p>
+Initialize the search index with document metadata.
+</p>
+
+<p><strong>Returns:</strong> void</p>
+
+<h3>performSearch(query)</h3>
+
+<p>
+Search indexed documents for a query string.
+</p>
+
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>query</code> (string): Search query text</li>
+</ul>
+
+<p><strong>Returns:</strong> Array of result objects</p>
+
+<p><strong>Result object structure:</strong></p>
+<pre><code>{
+    title: "Page Title",
+    url: "docs/page.html",
+    content: "searchable content",
+    excerpt: "Brief description",
+    score: 25  // Relevance score
+}
+</code></pre>
+
+<p><strong>Example:</strong></p>
+<pre><code>const results = performSearch('installation guide');
+// Returns array of matching pages, sorted by relevance
+</code></pre>
+
+<h3>displaySearchResults(results, query)</h3>
+
+<p>
+Display search results in the UI.
+</p>
+
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>results</code> (Array): Array of search result objects</li>
+<li><code>query</code> (string): Original search query for highlighting</li>
+</ul>
+
+<h3>hideSearchResults()</h3>
+
+<p>
+Hide the search results dropdown.
+</p>
+
+<h3>highlightSearchTerms(text, query)</h3>
+
+<p>
+Add HTML highlighting to matching search terms.
+</p>
+
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><code>text</code> (string): Text to highlight</li>
+<li><code>query</code> (string): Search query</li>
+</ul>
+
+<p><strong>Returns:</strong> HTML string with highlighted terms</p>
+
+<p><strong>Example:</strong></p>
+<pre><code>const highlighted = highlightSearchTerms(
+    'Installation instructions',
+    'install'
+);
+// Returns: '&lt;span class="search-highlight"&gt;Install&lt;/span&gt;ation instructions'
+</code></pre>
+
+<h2>Data Structures</h2>
+
+<h3>Search Index Entry</h3>
+
+<p>
+Each entry in the search index should have this structure:
+</p>
+
+<pre><code>{
+    title: string,      // Page title (displayed in results)
+    url: string,        // Relative path to HTML file
+    content: string,    // Space-separated keywords for searching
+    excerpt: string     // Brief description (shown in results)
+}
+</code></pre>
+
+<p><strong>Example:</strong></p>
+<pre><code>{
+    title: "API Reference",
+    url: "docs/api-reference.html",
+    content: "api reference documentation functions methods classes",
+    excerpt: "Complete API documentation for all available functions."
+}
+</code></pre>
+
+<h3>Content Cache</h3>
+
+<p>
+Loaded pages are cached in the <code>contentCache</code> object:
+</p>
+
+<pre><code>// Key: page identifier
+// Value: HTML content string
+{
+    "welcome": "&lt;h1&gt;Welcome&lt;/h1&gt;&lt;p&gt;...&lt;/p&gt;",
+    "installation": "&lt;h1&gt;Installation&lt;/h1&gt;..."
+}
+</code></pre>
+
+<h2>HTML Attributes</h2>
+
+<h3>data-page</h3>
+
+<p>
+Used on navigation links to specify which page to load.
+</p>
+
+<p><strong>Example:</strong></p>
+<pre><code>&lt;a href="#" data-page="user-guide"&gt;User Guide&lt;/a&gt;
+</code></pre>
+
+<p>
+Loads <code>docs/user-guide.html</code> when clicked.
+</p>
+
+<h2>CSS Classes</h2>
+
+<h3>Navigation Classes</h3>
+
+<ul>
+<li><code>.sidebar</code> - Main sidebar container</li>
+<li><code>.nav-menu</code> - Navigation menu list</li>
+<li><code>.nav-section</code> - Section header in navigation</li>
+<li><code>.active</code> - Currently selected navigation item</li>
+</ul>
+
+<h3>Search Classes</h3>
+
+<ul>
+<li><code>.search-container</code> - Search box wrapper</li>
+<li><code>.search-box</code> - Search input field</li>
+<li><code>.search-results</code> - Search results dropdown</li>
+<li><code>.search-result-item</code> - Individual result item</li>
+<li><code>.search-highlight</code> - Highlighted search terms</li>
+</ul>
+
+<h3>Content Classes</h3>
+
+<ul>
+<li><code>.main-content</code> - Main content area</li>
+<li><code>.content-frame</code> - Content container</li>
+<li><code>.loading</code> - Loading state indicator</li>
+</ul>
+
+<h2>CSS Variables</h2>
+
+<p>
+Customize appearance by modifying these CSS custom properties:
+</p>
+
+<pre><code>--primary-color       /* Main heading color */
+--secondary-color     /* Links and accents */
+--background          /* Page background */
+--sidebar-bg          /* Sidebar background */
+--border-color        /* Border colors */
+--text-color          /* Body text color */
+--link-color          /* Link color */
+--link-hover          /* Link hover color */
+--code-bg             /* Code block background */
+--search-highlight    /* Search highlight color */
+</code></pre>
+
+<h2>Events</h2>
+
+<h3>DOMContentLoaded</h3>
+
+<p>
+Both navigation and search initialize on this event:
+</p>
+
+<pre><code>document.addEventListener('DOMContentLoaded', function() {
+    // Initialize search index
+    initializeSearchIndex();
+
+    // Set up navigation handlers
+    // Load initial page
+    loadFromHash();
+});
+</code></pre>
+
+<h3>popstate</h3>
+
+<p>
+Handles browser back/forward navigation:
+</p>
+
+<pre><code>window.addEventListener('popstate', function(e) {
+    // Load page from browser history
+});
+</code></pre>
+
+<h2>Browser Compatibility</h2>
+
+<p>
+Required browser features:
+</p>
+
+<ul>
+<li><strong>Fetch API</strong>: For loading page content</li>
+<li><strong>History API</strong>: For back/forward navigation</li>
+<li><strong>CSS Custom Properties</strong>: For theming</li>
+<li><strong>ES6 Features</strong>: Arrow functions, const/let, template literals</li>
+</ul>
+
+<p>
+Compatible with:
+</p>
+
+<ul>
+<li>Chrome/Edge 60+</li>
+<li>Firefox 60+</li>
+<li>Safari 12+</li>
+<li>Opera 47+</li>
+</ul>
+`,
+    'examples': `<h1>Code Examples</h1>
+
+<p>
+Practical examples showing how to use and extend the documentation system.
+</p>
+
+<h2>Example Org-mode Files</h2>
+
+<h3>Basic Documentation Page</h3>
+
+<p>
+A simple documentation page in Org-mode:
+</p>
+
+<pre><code>#+TITLE: Getting Started with Python
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+
+Python is a versatile programming language perfect for beginners.
+
+* Installation
+
+** On macOS
+
+#+BEGIN_SRC bash
+brew install python3
+#+END_SRC
+
+** On Linux
+
+#+BEGIN_SRC bash
+sudo apt-get install python3
+#+END_SRC
+
+* Your First Program
+
+Create a file called =hello.py=:
+
+#+BEGIN_SRC python
+def greet(name):
+    return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    print(greet("World"))
+#+END_SRC
+
+Run it:
+
+#+BEGIN_SRC bash
+python3 hello.py
+#+END_SRC
+
+* Next Steps
+
+- Read the [[file:python-basics.org][Python Basics]] guide
+- Explore [[file:advanced-topics.org][Advanced Topics]]
+</code></pre>
+
+<h3>Technical Reference Page</h3>
+
+<p>
+A more structured reference page:
+</p>
+
+<pre><code>#+TITLE: API Functions Reference
+#+OPTIONS: toc:2 num:nil html-style:nil
+
+* Overview
+
+This document describes all available API functions.
+
+* Authentication Functions
+
+** login(username, password)
+
+Authenticate a user with credentials.
+
+- *Parameters*
+  - =username= (string): User's username
+  - =password= (string): User's password
+- *Returns*: Authentication token (string)
+- *Throws*: =AuthenticationError= if credentials invalid
+
+*Example:*
+
+#+BEGIN_SRC python
+token = login("alice", "secret123")
+#+END_SRC
+
+** logout(token)
+
+Invalidate an authentication token.
+
+- *Parameters*
+  - =token= (string): Authentication token
+- *Returns*: None
+
+* Data Functions
+
+** fetch_user(user_id)
+
+Retrieve user information by ID.
+
+- *Parameters*
+  - =user_id= (integer): Unique user identifier
+- *Returns*: User object with properties:
+  - =id= (int): User ID
+  - =name= (string): Full name
+  - =email= (string): Email address
+  - =created_at= (datetime): Account creation date
+</code></pre>
+
+<h3>Tutorial Page</h3>
+
+<p>
+Step-by-step tutorial format:
+</p>
+
+<pre><code>#+TITLE: Building a REST API
+#+OPTIONS: toc:1 num:t html-style:nil
+
+* Prerequisites
+
+Before starting, ensure you have:
+
+- Python 3.8 or higher
+- pip package manager
+- Basic understanding of HTTP
+
+* Step 1: Set Up Project
+
+Create a new directory and virtual environment:
+
+#+BEGIN_SRC bash
+mkdir my-api
+cd my-api
+python3 -m venv venv
+source venv/bin/activate
+#+END_SRC
+
+* Step 2: Install Dependencies
+
+#+BEGIN_SRC bash
+pip install flask flask-restful
+#+END_SRC
+
+* Step 3: Create Basic API
+
+Create =app.py=:
+
+#+BEGIN_SRC python
+from flask import Flask
+from flask_restful import Resource, Api
+
+app = Flask(__name__)
+api = Api(app)
+
+class HelloWorld(Resource):
+    def get(self):
+        return {'message': 'Hello, World!'}
+
+api.add_resource(HelloWorld, '/')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+#+END_SRC
+
+* Step 4: Test the API
+
+Run the server:
+
+#+BEGIN_SRC bash
+python app.py
+#+END_SRC
+
+Test with curl:
+
+#+BEGIN_SRC bash
+curl http://localhost:5000/
+#+END_SRC
+
+Expected output:
+
+#+BEGIN_SRC json
+{
+  "message": "Hello, World!"
+}
+#+END_SRC
+</code></pre>
+
+<h2>Org Export Configurations</h2>
+
+<h3>Minimal Export (Recommended)</h3>
+
+<pre><code>#+OPTIONS: toc:nil          # No table of contents
+#+OPTIONS: num:nil          # No section numbering
+#+OPTIONS: html-style:nil   # No inline styles
+#+OPTIONS: html-scripts:nil # No JavaScript
+#+OPTIONS: html-postamble:nil  # No footer
+</code></pre>
+
+<h3>Export with TOC</h3>
+
+<pre><code>#+OPTIONS: toc:2            # 2 levels in TOC
+#+OPTIONS: num:nil          # No numbering
+#+OPTIONS: html-style:nil   # No inline styles
+</code></pre>
+
+<h3>Export with Numbering</h3>
+
+<pre><code>#+OPTIONS: toc:2            # Table of contents
+#+OPTIONS: num:t            # Number sections
+#+OPTIONS: html-style:nil   # No inline styles
+</code></pre>
+
+<h2>Emacs Configuration</h2>
+
+<h3>Basic Org Export Setup</h3>
+
+<p>
+Add to your <code>.emacs</code> or <code>init.el</code>:
+</p>
+
+<pre><code>;; Org-mode HTML export configuration
+(require 'ox-html)
+
+;; Don't include default CSS
+(setq org-html-head-include-default-style nil)
+
+;; Don't include scripts
+(setq org-html-head-include-scripts nil)
+
+;; Use HTML5
+(setq org-html-html5-fancy t)
+(setq org-html-doctype "html5")
+
+;; No validation link
+(setq org-html-validation-link nil)
+</code></pre>
+
+<h3>Custom Export Command</h3>
+
+<pre><code>;; Custom export function
+(defun my/org-export-to-docs ()
+  "Export current org file to HTML body only in docs directory."
+  (interactive)
+  (let* ((base-name (file-name-sans-extension
+                     (file-name-nondirectory (buffer-file-name))))
+         (output-file (concat "../docs/" base-name ".html")))
+    (org-html-export-to-html nil nil nil t)
+    (rename-file (concat base-name ".html") output-file t)
+    (message "Exported to %s" output-file)))
+
+;; Bind to a key
+(define-key org-mode-map (kbd "C-c e d") 'my/org-export-to-docs)
+</code></pre>
+
+<h3>Batch Export Script</h3>
+
+<p>
+Create <code>export-all-org.el</code>:
+</p>
+
+<pre><code>(require 'ox-html)
+
+;; Configure export
+(setq org-html-head-include-default-style nil)
+(setq org-html-head-include-scripts nil)
+(setq org-html-validation-link nil)
+
+;; Export function
+(defun batch-export-org-files ()
+  "Export all .org files in current directory to HTML."
+  (dolist (file (directory-files "." t "\\\\.org$"))
+    (with-current-buffer (find-file-noselect file)
+      (org-html-export-to-html nil nil nil t)
+      (kill-buffer))))
+
+(batch-export-org-files)
+</code></pre>
+
+<p>
+Use it:
+</p>
+
+<pre><code>emacs --batch -l export-all-org.el --kill
+</code></pre>
+
+<h2>Navigation Updates</h2>
+
+<h3>Adding a New Page</h3>
+
+<p>
+In <code>index.html</code>, add to navigation:
+</p>
+
+<pre><code>&lt;ul class="nav-menu" id="navMenu"&gt;
+    &lt;!-- Existing items... --&gt;
+
+    &lt;li class="nav-section"&gt;New Section&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" data-page="my-new-page"&gt;My New Page&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<h3>Adding Subsections</h3>
+
+<p>
+Create nested navigation with CSS:
+</p>
+
+<pre><code>&lt;ul class="nav-menu"&gt;
+    &lt;li class="nav-section"&gt;Guides&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#" data-page="intro"&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+
+    &lt;!-- Subsection --&gt;
+    &lt;li style="padding-left: 20px;"&gt;
+        &lt;a href="#" data-page="intro-basics"&gt;Basics&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li style="padding-left: 20px;"&gt;
+        &lt;a href="#" data-page="intro-advanced"&gt;Advanced&lt;/a&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<h2>Search Index Updates</h2>
+
+<h3>Adding Pages to Search</h3>
+
+<p>
+In <code>assets/js/search.js</code>, update the index:
+</p>
+
+<pre><code>searchIndex = [
+    // ... existing entries ...
+
+    {
+        title: "Python Tutorial",
+        url: "docs/python-tutorial.html",
+        content: "python programming tutorial beginner guide installation hello world functions classes",
+        excerpt: "Complete Python tutorial for beginners covering installation, basics, and first programs."
+    },
+
+    {
+        title: "Advanced Python Patterns",
+        url: "docs/python-advanced.html",
+        content: "python advanced patterns decorators generators context managers metaclasses",
+        excerpt: "Advanced Python programming patterns and best practices for experienced developers."
+    }
+];
+</code></pre>
+
+<h3>Optimizing Search Keywords</h3>
+
+<p>
+Tips for effective search keywords:
+</p>
+
+<ul>
+<li>Include synonyms: "tutorial guide walkthrough"</li>
+<li>Add common typos: "python pyton"</li>
+<li>Include abbreviations: "api application programming interface"</li>
+<li>Add related terms: "install setup configure deployment"</li>
+</ul>
+
+<h2>Styling Examples</h2>
+
+<h3>Custom Color Scheme</h3>
+
+<pre><code>:root {
+    --primary-color: #1a202c;      /* Dark slate */
+    --secondary-color: #4299e1;    /* Blue */
+    --background: #f7fafc;         /* Light gray */
+    --sidebar-bg: #edf2f7;        /* Lighter gray */
+    --border-color: #cbd5e0;      /* Medium gray */
+}
+</code></pre>
+
+<h3>Dark Mode</h3>
+
+<pre><code>:root {
+    --primary-color: #e2e8f0;      /* Light text */
+    --secondary-color: #63b3ed;    /* Light blue */
+    --background: #1a202c;         /* Dark background */
+    --sidebar-bg: #2d3748;        /* Dark sidebar */
+    --border-color: #4a5568;      /* Dark border */
+    --text-color: #e2e8f0;        /* Light text */
+    --code-bg: #2d3748;           /* Dark code */
+}
+</code></pre>
+
+<h2>Complete Workflow Example</h2>
+
+<ol>
+<li>
+<p>Create <code>tutorial.org</code>:</p>
+<pre><code>#+TITLE: My Tutorial
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+This is my tutorial content...
+</code></pre>
+</li>
+
+<li>
+<p>Export in Emacs: <code>C-c C-e h b</code></p>
+</li>
+
+<li>
+<p>Move to docs:</p>
+<pre><code>mv tutorial.html docs/
+</code></pre>
+</li>
+
+<li>
+<p>Update <code>index.html</code> navigation:</p>
+<pre><code>&lt;li&gt;&lt;a href="#" data-page="tutorial"&gt;Tutorial&lt;/a&gt;&lt;/li&gt;
+</code></pre>
+</li>
+
+<li>
+<p>Update <code>assets/js/search.js</code>:</p>
+<pre><code>{
+    title: "Tutorial",
+    url: "docs/tutorial.html",
+    content: "tutorial guide introduction",
+    excerpt: "Tutorial introduction"
+}
+</code></pre>
+</li>
+
+<li>
+<p>Test: Open <code>index.html</code> and verify!</p>
+</li>
+</ol>
+`,
+    'installation': `<h1>Installation</h1>
+
+<p>
+This documentation system is designed to be simple and portable. There's no traditional "installation" required - just copy and use!
+</p>
+
+<h2>Requirements</h2>
+
+<p>
+The only requirement is a modern web browser that supports:
+</p>
+
+<ul>
+<li>HTML5</li>
+<li>CSS3</li>
+<li>ES6 JavaScript</li>
+<li>Fetch API</li>
+</ul>
+
+<p>
+Any browser from the last 5 years should work perfectly, including:
+</p>
+
+<ul>
+<li>Chrome/Chromium (version 60+)</li>
+<li>Firefox (version 60+)</li>
+<li>Safari (version 12+)</li>
+<li>Edge (version 79+)</li>
+</ul>
+
+<h2>Setup</h2>
+
+<h3>Option 1: USB Drive</h3>
+
+<ol>
+<li>Copy the entire documentation folder to a USB drive</li>
+<li>Open <code>index.html</code> in your web browser</li>
+<li>Done! No server needed.</li>
+</ol>
+
+<h3>Option 2: Local Storage</h3>
+
+<ol>
+<li>Copy the documentation folder to your computer</li>
+<li>Double-click <code>index.html</code> to open</li>
+<li>Bookmark the page for easy access</li>
+</ol>
+
+<h3>Option 3: Network Share</h3>
+
+<ol>
+<li>Place the folder on a network share</li>
+<li>Team members can access via <code>file://</code> protocol</li>
+<li>Everyone sees the same documentation</li>
+</ol>
+
+<h2>File Structure</h2>
+
+<pre><code>documentation/
+├── index.html           # Main entry point
+├── docs/               # Documentation HTML files
+│   ├── welcome.html
+│   ├── installation.html
+│   └── ...
+├── assets/
+│   ├── css/           # Styles (embedded in index.html)
+│   └── js/            # JavaScript functionality
+│       ├── search.js
+│       └── navigation.js
+└── sample-org/        # Example Org-mode files
+    └── example.org
+</code></pre>
+
+<h2>Browser Configuration</h2>
+
+<p>
+<strong>Important:</strong> Modern browsers have CORS security restrictions that may block loading local files via JavaScript.
+</p>
+
+<h3>Recommended: Use Simple Server</h3>
+
+<p>
+The easiest solution is to use the included Python server:
+</p>
+
+<pre><code>python3 serve.py
+</code></pre>
+
+<p>
+Then open <code>http://localhost:8000</code> in any browser. This avoids all file:// protocol restrictions.
+</p>
+
+<h3>Firefox (Best for Offline Use)</h3>
+
+<p>
+Works perfectly with <code>file://</code> protocol! No configuration needed. Just double-click <code>index.html</code>.
+</p>
+
+<p>
+<strong>Recommended for USB drives and offline deployment.</strong>
+</p>
+
+<h3>Chrome/Safari</h3>
+
+<p>
+These browsers block local file loading by default. Solutions:
+</p>
+
+<ol>
+<li>Use <code>python3 serve.py</code> (easiest)</li>
+<li>Use Firefox instead</li>
+<li>Start Chrome with flag: <code>chrome --allow-file-access-from-files</code></li>
+</ol>
+
+<h3>Safari</h3>
+
+<ol>
+<li>Open Safari Preferences</li>
+<li>Go to "Advanced" tab</li>
+<li>Enable "Show Develop menu"</li>
+<li>In Develop menu, disable "Local File Restrictions"</li>
+</ol>
+
+<h2>Next Steps</h2>
+
+<p>
+Now that you have the system set up, check out the <a href="#quick-start">Quick Start</a> guide to learn how to add your own content!
+</p>
+`,
+    'quick-start': `<h1>Quick Start Guide</h1>
+
+<p>
+Get your documentation up and running in minutes!
+</p>
+
+<h2>Step 1: Write Content in Org-mode</h2>
+
+<p>
+Create your documentation in Emacs using Org-mode. Here's a simple example:
+</p>
+
+<pre><code>#+TITLE: My Documentation Page
+#+OPTIONS: toc:nil num:nil html-style:nil
+
+* Introduction
+
+This is my documentation content.
+
+** Features
+
+- Feature one
+- Feature two
+- Feature three
+
+** Code Example
+
+#+BEGIN_SRC python
+def hello_world():
+    print("Hello, World!")
+#+END_SRC
+</code></pre>
+
+<h2>Step 2: Export to HTML</h2>
+
+<p>
+In Emacs, export your Org file to HTML <strong>body only</strong>:
+</p>
+
+<ol>
+<li>Open your <code>.org</code> file in Emacs</li>
+<li>Press <code>C-c C-e</code> to open the export dispatcher</li>
+<li>Press <code>h</code> for HTML export</li>
+<li>Press <code>b</code> for "body only" export</li>
+</ol>
+
+<p>
+This creates a clean HTML file without <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code>, or <code>&lt;body&gt;</code> tags - just the content.
+</p>
+
+<h2>Step 3: Add to Documentation</h2>
+
+<ol>
+<li>Save the exported HTML file to the <code>docs/</code> directory</li>
+<li>Name it descriptively, e.g., <code>my-feature.html</code></li>
+</ol>
+
+<h2>Step 4: Update Navigation</h2>
+
+<p>
+Edit <code>index.html</code> and add your page to the navigation menu:
+</p>
+
+<pre><code>&lt;ul class="nav-menu" id="navMenu"&gt;
+    &lt;!-- Add your page here --&gt;
+    &lt;li&gt;&lt;a href="#" data-page="my-feature"&gt;My Feature&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<p>
+The <code>data-page</code> attribute should match your filename without the <code>.html</code> extension.
+</p>
+
+<h2>Step 5: Update Search Index</h2>
+
+<p>
+Edit <code>assets/js/search.js</code> and add your page to the search index:
+</p>
+
+<pre><code>searchIndex = [
+    // ... existing entries ...
+    {
+        title: "My Feature",
+        url: "docs/my-feature.html",
+        content: "keywords describing your content",
+        excerpt: "Brief description of the page"
+    }
+];
+</code></pre>
+
+<h2>Step 6: Test</h2>
+
+<ol>
+<li>Open <code>index.html</code> in your browser</li>
+<li>Click on your new page in the navigation</li>
+<li>Try searching for keywords from your page</li>
+</ol>
+
+<h2>Tips for Success</h2>
+
+<h3>Org-mode Export Settings</h3>
+
+<p>
+Add these settings at the top of your Org files for optimal export:
+</p>
+
+<pre><code>#+OPTIONS: toc:nil          # No table of contents
+#+OPTIONS: num:nil          # No section numbers
+#+OPTIONS: html-style:nil   # No inline styles
+#+OPTIONS: html-scripts:nil # No scripts
+</code></pre>
+
+<h3>File Naming</h3>
+
+<ul>
+<li>Use lowercase with hyphens: <code>user-guide.html</code></li>
+<li>Be descriptive: <code>api-authentication.html</code> not <code>auth.html</code></li>
+<li>Keep names short but clear</li>
+</ul>
+
+<h3>Content Organization</h3>
+
+<ul>
+<li>Start with a clear H1 heading</li>
+<li>Use H2 and H3 for subsections</li>
+<li>Include code examples where helpful</li>
+<li>Add links to related pages</li>
+</ul>
+
+<h2>Example Workflow</h2>
+
+<p>
+Here's a complete example workflow:
+</p>
+
+<ol>
+<li>Create <code>tutorial.org</code> in Emacs</li>
+<li>Write your content using Org-mode syntax</li>
+<li>Export: <code>C-c C-e h b</code> (HTML body only)</li>
+<li>Move <code>tutorial.html</code> to <code>docs/</code> folder</li>
+<li>Update navigation in <code>index.html</code></li>
+<li>Update search index in <code>assets/js/search.js</code></li>
+<li>Open and test!</li>
+</ol>
+
+<h2>Next Steps</h2>
+
+<p>
+Ready for more details? Check out:
+</p>
+
+<ul>
+<li><a href="#user-guide">User Guide</a> - Comprehensive documentation</li>
+<li><a href="#examples">Examples</a> - More Org-mode examples</li>
+</ul>
+`,
+    'user-guide': `<h1>User Guide</h1>
+
+<p>
+Complete guide to using and customizing your static documentation system.
+</p>
+
+<h2>System Overview</h2>
+
+<p>
+This documentation system is built on three core principles:
+</p>
+
+<ol>
+<li><strong>Simplicity</strong>: Pure HTML/CSS/JS, no build process</li>
+<li><strong>Portability</strong>: Works from any location, even offline</li>
+<li><strong>Longevity</strong>: No dependencies means it works for years</li>
+</ol>
+
+<h2>Components</h2>
+
+<h3>Navigation System</h3>
+
+<p>
+The sidebar navigation (<code>assets/js/navigation.js</code>) handles:
+</p>
+
+<ul>
+<li>Loading page content dynamically</li>
+<li>Managing browser history (back/forward buttons)</li>
+<li>Caching pages for faster subsequent loads</li>
+<li>Highlighting the active page</li>
+</ul>
+
+<h3>Search System</h3>
+
+<p>
+The search functionality (<code>assets/js/search.js</code>) provides:
+</p>
+
+<ul>
+<li>Real-time search as you type</li>
+<li>Keyword highlighting in results</li>
+<li>Title and content matching with scoring</li>
+<li>Simple index format for easy updates</li>
+</ul>
+
+<h3>Styling</h3>
+
+<p>
+All CSS is embedded in <code>index.html</code> for:
+</p>
+
+<ul>
+<li>No external file dependencies</li>
+<li>Guaranteed consistent styling</li>
+<li>Easy customization in one place</li>
+</ul>
+
+<h2>Customization</h2>
+
+<h3>Changing Colors</h3>
+
+<p>
+Edit the CSS variables in <code>index.html</code>:
+</p>
+
+<pre><code>:root {
+    --primary-color: #2c3e50;      /* Dark blue-gray */
+    --secondary-color: #3498db;    /* Bright blue */
+    --background: #ffffff;         /* White */
+    --sidebar-bg: #f8f9fa;        /* Light gray */
+    --border-color: #dee2e6;      /* Border gray */
+    --text-color: #333;           /* Dark text */
+    --link-color: #3498db;        /* Link blue */
+    --link-hover: #2980b9;        /* Darker blue */
+    --code-bg: #f4f4f4;          /* Code background */
+    --search-highlight: #fff3cd;  /* Yellow highlight */
+}
+</code></pre>
+
+<h3>Changing Layout</h3>
+
+<p>
+The sidebar width can be adjusted:
+</p>
+
+<pre><code>.sidebar {
+    width: 280px;  /* Change this value */
+}
+
+.main-content {
+    margin-left: 280px;  /* Should match sidebar width */
+}
+</code></pre>
+
+<h3>Adding Custom Sections</h3>
+
+<p>
+To add a new section to the navigation:
+</p>
+
+<pre><code>&lt;li class="nav-section"&gt;My New Section&lt;/li&gt;
+&lt;li&gt;&lt;a href="#" data-page="my-page"&gt;My Page&lt;/a&gt;&lt;/li&gt;
+</code></pre>
+
+<h2>Org-mode Integration</h2>
+
+<h3>Export Configuration</h3>
+
+<p>
+Create a <code>.dir-locals.el</code> file in your org documentation directory:
+</p>
+
+<pre><code>((org-mode . ((org-html-doctype . "html5")
+              (org-html-html5-fancy . t)
+              (org-html-validation-link . nil))))
+</code></pre>
+
+<h3>Batch Export Script</h3>
+
+<p>
+For exporting multiple files, create a bash script:
+</p>
+
+<pre><code>#!/bin/bash
+# export-all.sh
+
+for file in *.org; do
+    emacs "$file" \\
+        --batch \\
+        --eval "(progn (org-html-export-to-html nil nil nil t))" \\
+        --kill
+
+    # Move to docs directory
+    html_file="\${file%.org}.html"
+    mv "$html_file" ../docs/
+done
+</code></pre>
+
+<h3>Recommended Org Settings</h3>
+
+<p>
+For consistent exports, use these options in your Org files:
+</p>
+
+<pre><code>#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
+#+OPTIONS: html-postamble:nil
+#+HTML_HEAD:
+</code></pre>
+
+<h2>Best Practices</h2>
+
+<h3>Content Organization</h3>
+
+<ul>
+<li><strong>One topic per page</strong>: Keep pages focused</li>
+<li><strong>Clear hierarchy</strong>: Use headings consistently</li>
+<li><strong>Cross-link</strong>: Link related pages together</li>
+<li><strong>Examples</strong>: Include practical code examples</li>
+</ul>
+
+<h3>Search Optimization</h3>
+
+<p>
+When adding pages to the search index:
+</p>
+
+<ul>
+<li>Include relevant keywords in <code>content</code> field</li>
+<li>Write clear, descriptive <code>excerpt</code> text</li>
+<li>Use the exact page <code>title</code> from your HTML</li>
+</ul>
+
+<h3>File Management</h3>
+
+<ul>
+<li>Keep source <code>.org</code> files in <code>sample-org/</code></li>
+<li>Export only to <code>docs/</code> directory</li>
+<li>Use version control (Git) to track changes</li>
+</ul>
+
+<h2>Troubleshooting</h2>
+
+<h3>Page Won't Load</h3>
+
+<ul>
+<li>Check filename matches <code>data-page</code> attribute</li>
+<li>Ensure file is in <code>docs/</code> directory</li>
+<li>Verify file has <code>.html</code> extension</li>
+<li>Check browser console for errors</li>
+</ul>
+
+<h3>Search Not Finding Page</h3>
+
+<ul>
+<li>Verify page is in search index</li>
+<li>Check keywords in <code>content</code> field</li>
+<li>Try different search terms</li>
+</ul>
+
+<h3>Styling Issues</h3>
+
+<ul>
+<li>Ensure HTML is exported as "body only"</li>
+<li>Remove any inline styles from Org export</li>
+<li>Check for conflicting CSS in exported HTML</li>
+</ul>
+
+<h2>Advanced Topics</h2>
+
+<h3>Adding Table of Contents</h3>
+
+<p>
+You can add a TOC to individual pages using Org-mode:
+</p>
+
+<pre><code>#+OPTIONS: toc:2  # Two levels of headings
+</code></pre>
+
+<h3>Syntax Highlighting</h3>
+
+<p>
+Org-mode can export code blocks with syntax highlighting. Configure in Emacs:
+</p>
+
+<pre><code>(setq org-html-htmlize-output-type 'inline-css)
+</code></pre>
+
+<h3>Adding Images</h3>
+
+<ol>
+<li>Create <code>assets/images/</code> directory</li>
+<li>Store images there</li>
+<li>Reference in Org-mode: <code>[[file:../assets/images/my-image.png]]</code></li>
+</ol>
+
+<h2>Maintenance</h2>
+
+<p>
+This system requires minimal maintenance:
+</p>
+
+<ul>
+<li><strong>Update content</strong>: Just export new HTML from your Org files</li>
+<li><strong>Add pages</strong>: Follow the quick start process</li>
+<li><strong>Backup</strong>: Copy the entire folder periodically</li>
+<li><strong>No updates needed</strong>: The code is stable and dependency-free</li>
+</ul>
+`,
+    'welcome': `<h1>Welcome to the Documentation</h1>
+
+<p>
+This is a static documentation system designed to run entirely offline from a USB drive or local file system. No server required!
+</p>
+
+<h2>Features</h2>
+
+<ul>
+<li><strong>Offline-First</strong>: Works perfectly from <code>file://</code> protocol</li>
+<li><strong>Client-Side Search</strong>: Fast, built-in search functionality</li>
+<li><strong>No Dependencies</strong>: All assets embedded, no CDN links</li>
+<li><strong>Responsive Design</strong>: Works on desktop, tablet, and mobile</li>
+<li><strong>Long-Term Stability</strong>: Simple, maintainable code that will work for years</li>
+</ul>
+
+<h2>Getting Started</h2>
+
+<p>
+To get started with this documentation system:
+</p>
+
+<ol>
+<li>Navigate to the <a href="#installation">Installation</a> guide</li>
+<li>Follow the <a href="#quick-start">Quick Start</a> tutorial</li>
+<li>Explore the <a href="#user-guide">User Guide</a> for detailed information</li>
+</ol>
+
+<h2>How It Works</h2>
+
+<p>
+This system uses pure HTML, CSS, and JavaScript with no external dependencies. The content is loaded dynamically from HTML files in the <code>docs/</code> directory, which can be exported from Org-mode in Emacs.
+</p>
+
+<blockquote>
+<p>
+<strong>Note:</strong> All content is indexed for search automatically. The search implementation is lightweight and fast, perfect for documentation use cases.
+</p>
+</blockquote>
+
+<h2>Organization</h2>
+
+<p>
+The documentation is organized into several sections:
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Getting Started</td>
+<td>Installation and quick start guides</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>Comprehensive user guides and API reference</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>Practical code examples and tutorials</td>
+</tr>
+</tbody>
+</table>
+`,
+};
+
+
+// ============================================================================
+// SEARCH FUNCTIONALITY
+// ============================================================================
+/**
+ * Simple client-side search implementation
+ * No external dependencies - works entirely offline
+ */
+
+// Search index - will be populated from docs
+let searchIndex = [];
+
+/**
+ * Initialize search index from documents
+ */
+function initializeSearchIndex() {
+    // This will be populated with content from all documentation files
+    // Format: { title, content, url, excerpt }
+    searchIndex = [
+        {
+            title: "Welcome",
+            url: "docs/welcome.html",
+            content: "welcome documentation getting started introduction overview",
+            excerpt: "Welcome to the documentation. Get started with our comprehensive guides."
+        },
+        {
+            title: "Installation",
+            url: "docs/installation.html",
+            content: "installation setup install configure requirements dependencies",
+            excerpt: "Learn how to install and set up the system on your machine."
+        },
+        {
+            title: "Quick Start",
+            url: "docs/quick-start.html",
+            content: "quick start tutorial guide first steps hello world",
+            excerpt: "Get up and running quickly with this step-by-step tutorial."
+        },
+        {
+            title: "User Guide",
+            url: "docs/user-guide.html",
+            content: "user guide manual documentation how to usage instructions",
+            excerpt: "Comprehensive guide covering all features and functionality."
+        },
+        {
+            title: "API Reference",
+            url: "docs/api-reference.html",
+            content: "api reference methods functions classes interfaces types",
+            excerpt: "Complete API documentation with all available methods and types."
+        },
+        {
+            title: "Code Examples",
+            url: "docs/examples.html",
+            content: "examples code samples snippets demonstrations tutorials",
+            excerpt: "Practical code examples showing common use cases and patterns."
+        }
+    ];
+}
+
+/**
+ * Perform search across all indexed documents
+ * @param {string} query - Search query
+ * @returns {Array} - Array of matching results
+ */
+function performSearch(query) {
+    if (!query || query.length < 2) {
+        return [];
+    }
+
+    const normalizedQuery = query.toLowerCase().trim();
+    const queryWords = normalizedQuery.split(/\s+/);
+
+    // Score each document
+    const results = searchIndex.map(doc => {
+        let score = 0;
+        const titleLower = doc.title.toLowerCase();
+        const contentLower = doc.content.toLowerCase();
+
+        // Check each query word
+        queryWords.forEach(word => {
+            // Title matches are worth more
+            if (titleLower.includes(word)) {
+                score += 10;
+            }
+
+            // Content matches
+            if (contentLower.includes(word)) {
+                score += 5;
+            }
+
+            // Exact phrase match bonus
+            if (contentLower.includes(normalizedQuery)) {
+                score += 15;
+            }
+        });
+
+        return {
+            ...doc,
+            score: score
+        };
+    });
+
+    // Filter and sort by score
+    return results
+        .filter(result => result.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10); // Limit to top 10 results
+}
+
+/**
+ * Highlight search terms in text
+ * @param {string} text - Text to highlight
+ * @param {string} query - Search query
+ * @returns {string} - HTML with highlighted terms
+ */
+function highlightSearchTerms(text, query) {
+    if (!query) return text;
+
+    const queryWords = query.toLowerCase().trim().split(/\s+/);
+    let result = text;
+
+    queryWords.forEach(word => {
+        if (word.length < 2) return;
+        const regex = new RegExp(`(${escapeRegex(word)})`, 'gi');
+        result = result.replace(regex, '<span class="search-highlight">$1</span>');
+    });
+
+    return result;
+}
+
+/**
+ * Escape special regex characters
+ * @param {string} str - String to escape
+ * @returns {string} - Escaped string
+ */
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Display search results
+ * @param {Array} results - Search results to display
+ * @param {string} query - Original search query
+ */
+function displaySearchResults(results, query) {
+    const searchResults = document.getElementById('searchResults');
+
+    if (results.length === 0) {
+        searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
+        searchResults.classList.add('active');
+        return;
+    }
+
+    const html = results.map(result => `
+        <div class="search-result-item" onclick="loadPage('${result.url}')">
+            <div class="search-result-title">${highlightSearchTerms(result.title, query)}</div>
+            <div class="search-result-excerpt">${highlightSearchTerms(result.excerpt, query)}</div>
+        </div>
+    `).join('');
+
+    searchResults.innerHTML = html;
+    searchResults.classList.add('active');
+}
+
+/**
+ * Hide search results
+ */
+function hideSearchResults() {
+    const searchResults = document.getElementById('searchResults');
+    setTimeout(() => {
+        searchResults.classList.remove('active');
+    }, 200);
+}
+
+/**
+ * Load a page (referenced by search results)
+ * @param {string} url - URL of page to load
+ */
+function loadPage(url) {
+    // Extract page identifier from URL
+    const pageId = url.replace('docs/', '').replace('.html', '');
+    const navLink = document.querySelector(`[data-page="${pageId}"]`);
+    if (navLink) {
+        navLink.click();
+    }
+}
+
+// Initialize search when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSearchIndex();
+
+    const searchInput = document.getElementById('searchInput');
+
+    // Perform search on input
+    searchInput.addEventListener('input', function(e) {
+        const query = e.target.value;
+
+        if (query.length < 2) {
+            hideSearchResults();
+            return;
+        }
+
+        const results = performSearch(query);
+        displaySearchResults(results, query);
+    });
+
+    // Hide results when clicking outside
+    searchInput.addEventListener('blur', hideSearchResults);
+
+    // Keep results visible when clicking on them
+    document.getElementById('searchResults').addEventListener('mousedown', function(e) {
+        e.preventDefault();
+    });
+});
+
+
+// ============================================================================
+// NAVIGATION FUNCTIONALITY
+// ============================================================================
+
+/**
+ * Navigation for embedded content version
+ * Content is loaded from EMBEDDED_PAGES object instead of files
+ */
+
+// Content cache
+const contentCache = {};
+
+/**
+ * Load content for a specific page from embedded data
+ */
+function loadContent(page) {
+    const contentFrame = document.getElementById('contentFrame');
+
+    // Check cache first
+    if (contentCache[page]) {
+        contentFrame.innerHTML = contentCache[page];
+        scrollToTop();
+        return;
+    }
+
+    // Load from embedded pages
+    if (EMBEDDED_PAGES[page]) {
+        const html = EMBEDDED_PAGES[page];
+        contentCache[page] = html;
+        contentFrame.innerHTML = html;
+        scrollToTop();
+    } else {
+        contentFrame.innerHTML = `
+            <div style="padding: 20px;">
+                <h2>Page Not Found</h2>
+                <p>The page <code>${page}</code> could not be found.</p>
+            </div>
+        `;
+    }
+}
+
+/**
+ * Scroll main content to top
+ */
+function scrollToTop() {
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        mainContent.scrollTop = 0;
+    }
+    window.scrollTo(0, 0);
+}
+
+/**
+ * Update active navigation link
+ */
+function updateActiveNav(activeLink) {
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.classList.remove('active');
+    });
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+}
+
+/**
+ * Handle navigation click
+ */
+function handleNavClick(e) {
+    e.preventDefault();
+
+    const link = e.target.closest('a');
+    if (!link) return;
+
+    const page = link.getAttribute('data-page');
+    if (!page) return;
+
+    history.pushState({ page }, '', `#${page}`);
+    loadContent(page);
+    updateActiveNav(link);
+}
+
+/**
+ * Load page from URL hash
+ */
+function loadFromHash() {
+    const hash = window.location.hash.slice(1);
+    const page = hash || 'welcome';
+
+    const navLink = document.querySelector(`[data-page="${page}"]`);
+    loadContent(page);
+    updateActiveNav(navLink);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.addEventListener('click', handleNavClick);
+    loadFromHash();
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.page) {
+            const navLink = document.querySelector(`[data-page="${e.state.page}"]`);
+            loadContent(e.state.page);
+            updateActiveNav(navLink);
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

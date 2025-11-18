@@ -24,7 +24,13 @@ This is a research project demonstrating a simple, robust approach to creating p
 
 ### 1. View the Documentation
 
-**Recommended: Use the included server**
+**Easiest: Use the standalone file (works everywhere!)**
+
+Just double-click **`index-standalone.html`** - works in ALL browsers with zero configuration!
+
+This single-file version has all content embedded, eliminating CORS issues entirely.
+
+**Alternative 1: Use the included server**
 
 ```bash
 python3 serve.py
@@ -32,12 +38,15 @@ python3 serve.py
 
 Then open http://localhost:8000 in your browser.
 
-**Alternative: Open directly (Firefox recommended)**
+**Alternative 2: Open directly (Firefox only)**
 
-- **Firefox**: Double-click `index.html` - works perfectly!
-- **Chrome/Safari**: May show CORS errors with `file://` protocol
+- **Firefox**: Can double-click `index.html` (multi-file version)
+- **Chrome/Safari**: Will show CORS errors - use standalone file or server instead
 
-> **Why use a server?** Modern browsers have security restrictions that can block loading local files via JavaScript when using the `file://` protocol. Using the simple Python server (which serves over `http://`) avoids these restrictions.
+> **About the versions:**
+> - `index-standalone.html` - Single file, all content embedded, works everywhere
+> - `index.html` - Multi-file version, requires server or Firefox
+> - Both have identical functionality!
 
 ### 2. Add Your Own Content
 
@@ -86,15 +95,26 @@ This creates a clean HTML file with just your content.
    }
    ```
 
-4. Reload `index.html` and test!
+4. **Rebuild the standalone version**:
+   ```bash
+   python3 build-standalone.py
+   ```
+
+5. Test by opening `index-standalone.html`!
 
 ## Project Structure
 
 ```
 static-docs-system/
-├── index.html              # Main entry point (open this)
-├── README.md              # This file
-├── docs/                  # Documentation HTML files (exported from Org)
+├── index-standalone.html   # 👈 RECOMMENDED: Single-file version (works everywhere!)
+├── index.html              # Multi-file version (requires server or Firefox)
+├── serve.py                # Simple HTTP server for local viewing
+├── build-standalone.py     # Build script for standalone version
+├── export-all.sh           # Batch export Org files to HTML
+├── README.md               # This file
+├── GETTING-STARTED.md      # Quick start guide
+├── RESEARCH-FINDINGS.md    # Research analysis and findings
+├── docs/                   # Documentation HTML files (exported from Org)
 │   ├── welcome.html
 │   ├── installation.html
 │   ├── quick-start.html
@@ -103,10 +123,10 @@ static-docs-system/
 │   └── examples.html
 ├── assets/
 │   └── js/
-│       ├── search.js      # Client-side search implementation
-│       └── navigation.js  # Page loading and navigation
-└── sample-org/            # Example Org-mode source files
-    └── example.org        # Comprehensive Org-mode example
+│       ├── search.js       # Client-side search implementation
+│       └── navigation.js   # Page loading and navigation
+└── sample-org/             # Example Org-mode source files
+    └── example.org         # Comprehensive Org-mode example
 ```
 
 ## Org-mode Export Configuration
