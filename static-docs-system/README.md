@@ -22,22 +22,18 @@ This system demonstrates that you don't need complex build processes for offline
 
 ## Quick Start
 
-### View the Documentation
+### Build and View
 
-1. Download lunr.min.js (required for search):
-   ```bash
-   wget https://unpkg.com/lunr@2.3.9/lunr.min.js -O lunr.min.js
-   # Or download from browser: https://unpkg.com/lunr@2.3.9/lunr.min.js
-   ```
-
-2. Export the Org files:
+1. Build the site (exports .org files and generates search index):
    ```bash
    make
    ```
 
-3. Open `docs/index.html` in your browser
+2. Open `site/index.html` in your browser
 
-4. Try the search box in the navigation bar!
+3. Try the search box in the navigation bar!
+
+**Note**: lunr.min.js is already included in the repository (`site/vendor/lunr.min.js`).
 
 ### Create a New Page
 
@@ -51,20 +47,28 @@ This system demonstrates that you don't need complex build processes for offline
 
 ```
 static-docs-system/
-├── style.css               # Shared CSS for all pages
-├── search.js               # Lunr.js search implementation
-├── search-index.js         # Auto-generated search index
-├── build-search-index.py   # Script to build search index
-├── Makefile                # Build: export + generate index
-├── docs/
-│   ├── index.org           # Source files
-│   ├── index.html          # Exported HTML (generated)
+├── Makefile                # Build automation
+├── build-search-index.py   # Generates search index
+├── README.md               # This file
+├── .gitignore              # Ignore site/ directory
+├── docs/                   # Source files (user edits these)
+│   ├── index.org
 │   ├── setup.org
-│   ├── setup.html          # (generated)
-│   ├── example.org
-│   └── example.html        # (generated)
-└── README.md               # This file
+│   └── example.org
+└── site/                   # Generated output (self-contained)
+    ├── index.html          # Entry point!
+    ├── setup.html
+    ├── example.html
+    ├── search-index.js     # Auto-generated
+    ├── css/
+    │   └── style.css
+    ├── scripts/
+    │   └── search.js
+    └── vendor/
+        └── lunr.min.js
 ```
+
+**Key insight**: `site/` is completely self-contained. Just zip it or copy it to deploy!
 
 ## How It Works
 
@@ -75,10 +79,10 @@ Every Org file includes this header:
 ```org
 #+TITLE: Page Title
 #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-#+HTML_HEAD: <script src="../lunr.min.js"></script>
-#+HTML_HEAD: <script src="../search-index.js"></script>
-#+HTML_HEAD: <script src="../search.js"></script>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/style.css" />
+#+HTML_HEAD: <script src="vendor/lunr.min.js"></script>
+#+HTML_HEAD: <script src="search-index.js"></script>
+#+HTML_HEAD: <script src="scripts/search.js"></script>
 
 #+BEGIN_EXPORT html
 <div class="nav-bar">
@@ -102,12 +106,12 @@ Every Org file includes this header:
 
 - `#+TITLE:` - Sets the page title
 - `#+OPTIONS:` - Controls export behavior
-- `#+HTML_HEAD:` - Includes CSS and JavaScript
-  - `style.css` - Shared styles
-  - `lunr.min.js` - Search library (local file)
+- `#+HTML_HEAD:` - Includes CSS and JavaScript (paths relative to site/)
+  - `css/style.css` - Shared styles
+  - `vendor/lunr.min.js` - Search library
   - `search-index.js` - Auto-generated search index
-  - `search.js` - Search implementation
-- `#+BEGIN_EXPORT html` - Adds navigation bar with search
+  - `scripts/search.js` - Search implementation
+- `#+BEGIN_EXPORT html` - Adds navigation bar with integrated search
 
 ## Lunr.js Search
 
@@ -115,53 +119,28 @@ Every Org file includes this header:
 
 The system uses [lunr.js](https://lunrjs.com/) for powerful full-text search:
 
-- Loaded from local file (`lunr.min.js`) for offline use
-- Search index pre-generated and loaded from `search-index.js`
+- Loaded from `site/vendor/lunr.min.js` (included in repo)
+- Search index auto-generated in `site/search-index.js`
 - Instant search as you type
 - Dropdown results in navigation bar
 - Progressive search (partial word matching)
-
-### For Offline Use
-
-**lunr.min.js is now configured to load from a local file** for complete offline functionality.
-
-To download lunr.js manually:
-
-```bash
-# Download lunr.js to the static-docs-system directory
-wget https://unpkg.com/lunr@2.3.9/lunr.min.js -O static-docs-system/lunr.min.js
-
-# Or using curl:
-curl -L -o static-docs-system/lunr.min.js https://unpkg.com/lunr@2.3.9/lunr.min.js
-
-# Or download directly from your browser:
-# Visit: https://unpkg.com/lunr@2.3.9/lunr.min.js
-# Save as: static-docs-system/lunr.min.js
-```
-
-All `.org` files are already configured to use `../lunr.min.js` for local loading.
+- **Completely offline** - no internet required!
 
 ### Search Index Auto-Generation
 
 The search index is **automatically generated** from your HTML files!
 
 When you run `make`, it:
-1. Exports all `.org` files to HTML
+1. Exports all `.org` files to HTML (in `site/`)
 2. Extracts content from each HTML file
-3. Generates `search-index.js` with the index
+3. Generates `site/search-index.js` with the index
 
-**No manual maintenance needed!** The index is rebuilt every time you export.
+**No manual maintenance needed!** The index is rebuilt every time.
 
 To manually rebuild just the index:
 
 ```bash
 python3 build-search-index.py
-```
-
-Or:
-
-```bash
-make index
 ```
 
 ## Adding a New Page
@@ -285,35 +264,46 @@ Works in all modern browsers:
 - ✅ Safari 12+
 - ✅ Edge 79+
 
-**Note**: For offline use from USB without internet, download `lunr.min.js` locally (see above).
-
 ## Deployment
 
-### USB Drive
+### USB Drive / Network Share / Anywhere!
 
-1. Download `lunr.min.js` (see instructions above)
-2. Export all `.org` files to HTML: `make`
-3. Copy to USB:
-   - All `.html` files from `docs/`
-   - `style.css`
-   - `search.js`
-   - `search-index.js`
-   - `lunr.min.js`
-4. Users open `docs/index.html`
+**The entire site is self-contained in the `site/` directory:**
 
-### Network Share
+1. Build the site:
+   ```bash
+   make
+   ```
 
-1. Export all files
-2. Place on shared drive
-3. Team accesses via `file://` path
+2. Deploy (choose one):
+   ```bash
+   # Copy to USB drive
+   cp -r site/ /media/usb/docs/
+
+   # Create a zip
+   zip -r documentation.zip site/
+
+   # Copy to network share
+   cp -r site/ /mnt/shared/documentation/
+   ```
+
+3. **Entry point**: Open `site/index.html` in any browser!
+
+**That's it!** The `site/` directory has everything:
+- HTML files
+- CSS (`site/css/`)
+- JavaScript (`site/scripts/`)
+- Search library (`site/vendor/`)
+- Search index (`site/search-index.js`)
 
 ### Web Server (Optional)
 
 ```bash
+cd site
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000/docs/index.html`
+Then open `http://localhost:8000/index.html`
 
 ## Tips & Best Practices
 

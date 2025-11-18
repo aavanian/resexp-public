@@ -2,7 +2,7 @@
 
 # Find all .org files in docs/ directory
 ORG_FILES = $(wildcard docs/*.org)
-HTML_FILES = $(patsubst %.org,%.html,$(ORG_FILES))
+HTML_FILES = $(patsubst docs/%.org,site/%.html,$(ORG_FILES))
 
 .PHONY: all clean help index
 
@@ -10,13 +10,19 @@ HTML_FILES = $(patsubst %.org,%.html,$(ORG_FILES))
 all: $(HTML_FILES) index
 	@echo "✓ All files exported and search index built!"
 
-# Rule to export individual org files
-docs/%.html: docs/%.org
-	@echo "Exporting $<..."
+# Rule to export individual org files to site/
+site/%.html: docs/%.org | site
+	@echo "Exporting $< to $@..."
 	@emacs $< --batch \
 		--eval "(require 'ox-html)" \
+		--eval "(setq org-html-htmlize-output-type 'inline-css)" \
 		--eval "(org-html-export-to-html)" \
 		--kill
+	@mv docs/$*.html site/
+
+# Create site directory if it doesn't exist
+site:
+	@mkdir -p site
 
 # Build search index from HTML files
 index: $(HTML_FILES)
@@ -27,8 +33,7 @@ index: $(HTML_FILES)
 # Clean all generated files
 clean:
 	@echo "Cleaning generated files..."
-	@rm -f $(HTML_FILES)
-	@rm -f search-index.js
+	@rm -rf site/
 	@echo "✓ Clean complete!"
 
 # Help target

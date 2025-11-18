@@ -1,9 +1,9 @@
 #+TITLE: Setup Guide
 #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-#+HTML_HEAD: <script src="../lunr.min.js"></script>
-#+HTML_HEAD: <script src="../search-index.js"></script>
-#+HTML_HEAD: <script src="../search.js"></script>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/style.css" />
+#+HTML_HEAD: <script src="vendor/lunr.min.js"></script>
+#+HTML_HEAD: <script src="search-index.js"></script>
+#+HTML_HEAD: <script src="scripts/search.js"></script>
 
 #+BEGIN_EXPORT html
 <div class="nav-bar">
@@ -43,10 +43,10 @@ Copy this header to the top of your file:
 #+BEGIN_EXAMPLE
 ,#+TITLE: My Page Title
 ,#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
-,#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-,#+HTML_HEAD: <script src="../lunr.min.js"></script>
-,#+HTML_HEAD: <script src="../search-index.js"></script>
-,#+HTML_HEAD: <script src="../search.js"></script>
+,#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/style.css" />
+,#+HTML_HEAD: <script src="vendor/lunr.min.js"></script>
+,#+HTML_HEAD: <script src="search-index.js"></script>
+,#+HTML_HEAD: <script src="scripts/search.js"></script>
 
 ,#+BEGIN_EXPORT html
 <div class="nav-bar">

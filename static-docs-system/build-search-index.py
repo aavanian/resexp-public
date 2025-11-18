@@ -2,7 +2,7 @@
 """
 Build search index from HTML documentation files.
 
-This script reads all HTML files in the docs/ directory, extracts their
+This script reads all HTML files in the site/ directory, extracts their
 content, and generates a search-index.js file for use with lunr.js.
 
 Usage:
@@ -89,16 +89,17 @@ def extract_content(html):
 def generate_search_index():
     """Generate search index from HTML files."""
 
-    docs_dir = Path('docs')
+    site_dir = Path('site')
 
-    if not docs_dir.exists():
-        print("Error: docs/ directory not found")
+    if not site_dir.exists():
+        print("Error: site/ directory not found")
+        print("Run 'make' to generate HTML files first")
         return
 
     documents = []
 
     # Process each HTML file
-    for html_file in sorted(docs_dir.glob('*.html')):
+    for html_file in sorted(site_dir.glob('*.html')):
         print(f"Processing: {html_file.name}")
 
         try:
@@ -134,14 +135,12 @@ def generate_search_index():
 const searchDocuments = {json.dumps(documents, indent=4)};
 """
 
-    output_file = Path('search-index.js')
+    output_file = site_dir / 'search-index.js'
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(js_content)
 
     print(f"\n✓ Generated: {output_file}")
     print(f"  Indexed {len(documents)} documents")
-    print(f"\nUpdate search.js to load this file:")
-    print("  Add to HTML_HEAD: <script src=\"../search-index.js\"></script>")
 
 if __name__ == '__main__':
     generate_search_index()
