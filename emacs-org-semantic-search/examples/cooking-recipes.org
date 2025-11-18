@@ -1,0 +1,222 @@
+#+TITLE: Cooking Recipes
+#+AUTHOR: Chef Test
+#+DATE: 2025-11-18
+
+* Breakfast Recipes                                            :breakfast:
+
+** Pancakes                                               :breakfast:easy:
+
+Fluffy pancakes are a classic breakfast staple.
+
+*** Ingredients
+
+- 1 cup all-purpose flour
+- 2 tablespoons sugar
+- 2 teaspoons baking powder
+- 1/2 teaspoon salt
+- 1 cup milk
+- 1 egg
+- 2 tablespoons melted butter
+
+*** Instructions
+
+1. Mix dry ingredients in a bowl
+2. Whisk wet ingredients separately
+3. Combine wet and dry ingredients
+4. Cook on griddle until bubbles form
+5. Flip and cook other side
+
+** Scrambled Eggs                                      :breakfast:protein:
+
+Quick and easy protein-rich breakfast.
+
+- Beat eggs with milk
+- Cook in butter over medium heat
+- Stir continuously until done
+- Season with salt and pepper
+
+* Lunch Recipes                                                    :lunch:
+
+** Chicken Caesar Salad                                  :lunch:salad:chicken:
+
+A satisfying salad with protein.
+
+*** Ingredients
+
+- Romaine lettuce
+- Grilled chicken breast
+- Caesar dressing
+- Parmesan cheese
+- Croutons
+
+*** Preparation
+
+1. Grill and slice chicken
+2. Chop romaine lettuce
+3. Toss with dressing
+4. Top with chicken, cheese, and croutons
+
+** Vegetable Soup                                     :lunch:soup:vegetarian:
+
+Healthy and warming vegetable soup.
+
+*** Vegetables Used
+
+- Carrots
+- Celery
+- Onions
+- Tomatoes
+- Potatoes
+- Green beans
+
+* Dinner Recipes                                                  :dinner:
+
+** Spaghetti Carbonara                                    :dinner:pasta:italian:
+
+Classic Italian pasta dish.
+
+*** Ingredients
+
+- Spaghetti
+- Eggs
+- Parmesan cheese
+- Pancetta or bacon
+- Black pepper
+
+*** Cooking Steps
+
+1. Cook pasta according to package
+2. Fry pancetta until crispy
+3. Mix eggs and cheese
+4. Combine hot pasta with egg mixture
+5. Add pancetta and pepper
+
+** Grilled Salmon                                     :dinner:fish:healthy:
+
+Nutritious and delicious grilled salmon.
+
+*** Marinade
+
+- Olive oil
+- Lemon juice
+- Garlic
+- Herbs (dill, parsley)
+
+*** Grilling
+
+1. Marinate salmon for 30 minutes
+2. Preheat grill to medium-high
+3. Grill skin-side down for 5-6 minutes
+4. Flip and grill 3-4 minutes more
+
+* Desserts                                                        :dessert:
+
+** Chocolate Chip Cookies                               :dessert:baking:sweet:
+
+Classic homemade cookies.
+
+*** Cookie Dough
+
+- 2 cups flour
+- 1 cup butter
+- 3/4 cup brown sugar
+- 3/4 cup white sugar
+- 2 eggs
+- 2 cups chocolate chips
+
+*** Baking
+
+1. Cream butter and sugars
+2. Add eggs and vanilla
+3. Mix in flour
+4. Fold in chocolate chips
+5. Bake at 375°F for 10-12 minutes
+
+** Tiramisu                                            :dessert:italian:coffee:
+
+Italian coffee-flavored dessert.
+
+*** Layers
+
+1. Espresso-soaked ladyfingers
+2. Mascarpone cream
+3. Cocoa powder dusting
+
+* Healthy Eating Tips                                            :health:
+
+** Balanced Diet                                          :health:nutrition:
+
+A balanced diet includes:
+
+- Proteins (meat, fish, legumes)
+- Carbohydrates (whole grains)
+- Healthy fats (olive oil, avocado)
+- Fruits and vegetables
+- Adequate hydration
+
+** Meal Prep Ideas                                      :health:mealprep:
+
+*** Weekly Meal Preparation
+
+1. Plan meals for the week
+2. Create shopping list
+3. Prep ingredients on Sunday
+4. Store in containers
+5. Reheat as needed
+
+** Nutritional Information
+
+Understanding macronutrients:
+
+- Proteins: 4 calories per gram
+- Carbohydrates: 4 calories per gram
+- Fats: 9 calories per gram
+
+* International Cuisine                                       :international:
+
+** Asian Dishes                                          :asian:international:
+
+*** Fried Rice
+
+Quick and versatile Asian dish using leftover rice.
+
+*** Pad Thai
+
+Thai stir-fried noodle dish with sweet, sour, and savory flavors.
+
+** Mediterranean Cuisine                           :mediterranean:international:
+
+*** Greek Salad
+
+Fresh salad with tomatoes, cucumbers, olives, and feta cheese.
+
+*** Hummus
+
+Middle Eastern chickpea dip perfect for appetizers.
+
+* Cooking Techniques                                          :techniques:
+
+** Knife Skills                                      :techniques:fundamental:
+
+Proper knife techniques improve safety and efficiency:
+
+- Julienne: Thin matchstick cuts
+- Dice: Cube-shaped cuts
+- Chiffonade: Ribbon-like cuts for herbs
+- Mince: Very fine cuts
+
+** Cooking Methods                                    :techniques:methods:
+
+*** Dry Heat Methods
+
+- Roasting
+- Baking
+- Grilling
+- Sautéing
+
+*** Moist Heat Methods
+
+- Boiling
+- Steaming
+- Poaching
+- Braising
