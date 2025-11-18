@@ -35,10 +35,6 @@ body {
 }
 
 .nav-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
     margin-bottom: 15px;
 }
 
@@ -48,10 +44,11 @@ body {
     margin: 0;
 }
 
-/* Search Box in Nav */
-.nav-search {
+/* Search Box in Nav Links */
+.nav-links li.nav-search {
     position: relative;
     flex: 0 0 250px;
+    list-style: none;
 }
 
 .nav-search input {

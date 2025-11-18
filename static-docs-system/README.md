@@ -84,15 +84,15 @@ Every Org file includes this header:
 <div class="nav-bar">
   <div class="nav-header">
     <h1>📚 Documentation</h1>
-    <div class="nav-search">
-      <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
-      <div id="searchResults" class="search-results"></div>
-    </div>
   </div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="setup.html">Setup</a></li>
     <li><a href="example.html">Example</a></li>
+    <li class="nav-search">
+      <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </li>
   </ul>
 </div>
 #+END_EXPORT
