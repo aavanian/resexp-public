@@ -1,16 +1,22 @@
 #+TITLE: Welcome to Your Documentation
 #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-#+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
+#+HTML_HEAD: <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
+#+HTML_HEAD: <script src="../search.js"></script>
 
 #+BEGIN_EXPORT html
 <div class="nav-bar">
-  <h1>📚 Documentation</h1>
+  <div class="nav-header">
+    <h1>📚 Documentation</h1>
+    <div class="nav-search">
+      <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="setup.html">Setup Guide</a></li>
     <li><a href="example.html">Example Page</a></li>
-    <li><a href="../search.html">Search</a></li>
   </ul>
 </div>
 #+END_EXPORT
@@ -22,37 +28,40 @@ This is a static documentation system built entirely with *Org-mode*.
 ** Key Features
 
 - ✅ *Pure Org-mode*: No build scripts, just export!
-- ✅ *Embedded CSS*: Consistent styling across all pages
+- ✅ *Shared CSS*: Consistent styling via =style.css=
+- ✅ *Integrated Search*: Lunr.js search in navigation bar
 - ✅ *Direct Links*: No CORS issues, works from =file://=
-- ✅ *Search Page*: Simple client-side search
 - ✅ *Responsive*: Works on all screen sizes
+- ✅ *No Build Process*: Just export from Emacs
 
 ** How It Works
 
 This system uses Org-mode's built-in HTML export with:
 
 1. Shared CSS file (=style.css=)
-2. Navigation bar in each file
-3. Consistent export settings
-4. Optional search page
+2. Navigation bar with integrated search
+3. Lunr.js for powerful search
+4. Consistent export settings
 
 ** Getting Started
 
 1. Read the [[file:setup.html][Setup Guide]]
 2. See the [[file:example.html][Example Page]]
-3. Start writing your own Org files!
+3. Try the search box above!
+4. Start writing your own Org files
 
 ** The Simplicity
 
 Each Org file is self-contained:
 
 - Includes CSS via =#+HTML_HEAD=
+- Includes search scripts
 - Adds navigation via =#+BEGIN_EXPORT html=
 - Exports to complete, standalone HTML
 - *That's it!*
 
 #+BEGIN_QUOTE
-*No build process.* *No JavaScript complexity.* Just Org-mode doing what it does best.
+*No build process.* *No JavaScript complexity.* Just Org-mode doing what it does best, enhanced with lunr.js for great search.
 #+END_QUOTE
 
 ** Next Steps

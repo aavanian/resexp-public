@@ -1,16 +1,22 @@
 #+TITLE: Setup Guide
 #+OPTIONS: toc:t num:nil html-style:nil html-scripts:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-#+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
+#+HTML_HEAD: <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
+#+HTML_HEAD: <script src="../search.js"></script>
 
 #+BEGIN_EXPORT html
 <div class="nav-bar">
-  <h1>📚 Documentation</h1>
+  <div class="nav-header">
+    <h1>📚 Documentation</h1>
+    <div class="nav-search">
+      <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="setup.html">Setup Guide</a></li>
     <li><a href="example.html">Example Page</a></li>
-    <li><a href="../search.html">Search</a></li>
   </ul>
 </div>
 #+END_EXPORT

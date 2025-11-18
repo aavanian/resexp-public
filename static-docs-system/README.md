@@ -1,13 +1,13 @@
-# Static Documentation System - Pure Org-mode
+# Static Documentation System - Pure Org-mode + Lunr.js
 
-**The simplest approach**: Use Org-mode's built-in HTML export with shared CSS. No build scripts, no dependencies, just Org-mode.
+**The simplest approach**: Use Org-mode's built-in HTML export with shared CSS and lunr.js for powerful search. No build scripts, just export!
 
 ## Overview
 
-This system demonstrates that you don't need complex build processes for offline documentation. Just:
+This system demonstrates that you don't need complex build processes for offline documentation:
 
 1. Write in Org-mode
-2. Include shared CSS
+2. Include shared CSS and search script
 3. Export to HTML
 4. Done!
 
@@ -15,30 +15,39 @@ This system demonstrates that you don't need complex build processes for offline
 
 - ✅ **Pure Org-mode**: No build scripts, just export
 - ✅ **Shared CSS**: Consistent styling via `style.css`
+- ✅ **Lunr.js Search**: Powerful search integrated in navigation bar
 - ✅ **Direct Links**: No CORS issues, works from `file://`
-- ✅ **Simple Search**: Optional search page
-- ✅ **No Dependencies**: Just Emacs and Org-mode
+- ✅ **No Build Process**: Just Emacs and Org-mode
 - ✅ **Offline-First**: Works perfectly from USB drives
 
 ## Quick Start
 
 ### View the Documentation
 
-Open `docs/index.html` in your browser (or export it first - see below).
+1. Export the Org files (if not already done):
+   ```bash
+   make
+   ```
+
+2. Open `docs/index.html` in your browser
+
+3. Try the search box in the navigation bar!
 
 ### Create a New Page
 
 1. **Copy the template** from an existing `.org` file
 2. **Write your content** using Org-mode syntax
 3. **Export to HTML**: `C-c C-e h h` in Emacs
-4. **Done!** Open the `.html` file
+4. **Update search index** in `search.js`
+5. **Done!** Open the `.html` file
 
 ## Project Structure
 
 ```
 static-docs-system/
 ├── style.css               # Shared CSS for all pages
-├── search.html             # Optional search page
+├── search.js               # Lunr.js search implementation
+├── Makefile                # Batch export utility
 ├── docs/
 │   ├── index.org           # Source files
 │   ├── index.html          # Exported HTML
@@ -59,16 +68,22 @@ Every Org file includes this header:
 #+TITLE: Page Title
 #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-#+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
+#+HTML_HEAD: <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
+#+HTML_HEAD: <script src="../search.js"></script>
 
 #+BEGIN_EXPORT html
 <div class="nav-bar">
-  <h1>📚 Documentation</h1>
+  <div class="nav-header">
+    <h1>📚 Documentation</h1>
+    <div class="nav-search">
+      <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </div>
+  </div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
-    <li><a href="setup.html">Setup Guide</a></li>
+    <li><a href="setup.html">Setup</a></li>
     <li><a href="example.html">Example</a></li>
-    <li><a href="../search.html">Search</a></li>
   </ul>
 </div>
 #+END_EXPORT
@@ -78,12 +93,57 @@ Every Org file includes this header:
 
 - `#+TITLE:` - Sets the page title
 - `#+OPTIONS:` - Controls export behavior
-  - `toc:nil` - No table of contents (use `toc:t` to include)
-  - `num:nil` - No section numbering
-  - `html-style:nil` - Don't include default Org CSS
-  - `html-scripts:nil` - Don't include default Org JavaScript
-- `#+HTML_HEAD:` - Includes shared CSS
-- `#+BEGIN_EXPORT html` - Adds navigation bar
+- `#+HTML_HEAD:` - Includes CSS and JavaScript
+  - `style.css` - Shared styles
+  - `lunr.min.js` - Search library (from CDN)
+  - `search.js` - Search implementation
+- `#+BEGIN_EXPORT html` - Adds navigation bar with search
+
+## Lunr.js Search
+
+### How It Works
+
+The system uses [lunr.js](https://lunrjs.com/) for powerful full-text search:
+
+- Loaded from CDN (unpkg.com) or can be downloaded locally
+- Search index built client-side
+- Instant search as you type
+- Dropdown results in navigation bar
+- Fallback to simple search if lunr.js unavailable
+
+### For Offline Use
+
+To use completely offline, download lunr.js:
+
+```bash
+# Download lunr.js
+wget https://unpkg.com/lunr@2.3.9/lunr.min.js
+
+# Update org files to use local copy
+#+HTML_HEAD: <script src="../lunr.min.js"></script>
+```
+
+### Adding Pages to Search Index
+
+Edit `search.js` and update the `searchDocuments` array:
+
+```javascript
+const searchDocuments = [
+    {
+        id: 'my-page',
+        title: 'My New Page',
+        url: 'my-page.html',
+        body: 'keywords describing your page content search terms'
+    },
+    // ... more pages
+];
+```
+
+**Tips for good search:**
+- Include relevant keywords in `body`
+- Use synonyms and related terms
+- Include common search phrases
+- Update whenever you add new pages
 
 ## Adding a New Page
 
@@ -91,36 +151,33 @@ Every Org file includes this header:
 
 1. **Create new file**: `docs/my-page.org`
 
-2. **Add standard header**:
+2. **Add standard header** (copy from existing file)
+
+3. **Write your content**:
    ```org
-   #+TITLE: My Page
-   #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
-   #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-   #+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
+   * My First Section
 
-   #+BEGIN_EXPORT html
-   <div class="nav-bar">
-     <h1>📚 Documentation</h1>
-     <ul class="nav-links">
-       <li><a href="index.html">Home</a></li>
-       <li><a href="setup.html">Setup</a></li>
-       <li><a href="my-page.html">My Page</a></li>
-       <li><a href="example.html">Example</a></li>
-       <li><a href="../search.html">Search</a></li>
-     </ul>
-   </div>
-   #+END_EXPORT
-
-   * My Content
-
-   Write your content here...
+   Your content here...
    ```
-
-3. **Update navigation** in all existing `.org` files to include link to new page
 
 4. **Export**: `C-c C-e h h` in Emacs
 
-5. **Update search index** in `search.html` (optional)
+5. **Update navigation** in all `.org` files:
+   ```html
+   <li><a href="my-page.html">My Page</a></li>
+   ```
+
+6. **Update search index** in `search.js`:
+   ```javascript
+   {
+       id: 'my-page',
+       title: 'My Page',
+       url: 'my-page.html',
+       body: 'relevant keywords for search'
+   }
+   ```
+
+7. **Re-export** all pages to get updated navigation
 
 ## Exporting Files
 
@@ -128,38 +185,22 @@ Every Org file includes this header:
 
 In Emacs:
 1. Open the `.org` file
-2. Press `C-c C-e` (export dispatcher)
-3. Press `h` for HTML
-4. Press `h` again for "export to HTML"
-
-This creates `filename.html` in the same directory.
+2. Press `C-c C-e h h`
 
 ### Batch Export
 
-To export all files at once, run this in the `docs/` directory:
-
 ```bash
-for file in *.org; do
-    emacs "$file" --batch \
-        --eval "(org-html-export-to-html)" \
-        --kill
-done
+make          # Export all .org files
+make clean    # Remove all .html files
 ```
 
-Or use this Makefile:
+Or manually:
 
-```makefile
-HTML_FILES = $(patsubst %.org,%.html,$(wildcard docs/*.org))
-
-all: $(HTML_FILES)
-
-docs/%.html: docs/%.org
-	emacs $< --batch --eval "(org-html-export-to-html)" --kill
-
-clean:
-	rm -f docs/*.html
-
-.PHONY: all clean
+```bash
+cd docs
+for file in *.org; do
+    emacs "$file" --batch --eval "(org-html-export-to-html)" --kill
+done
 ```
 
 ## Customization
@@ -170,117 +211,70 @@ Edit `style.css`:
 
 ```css
 :root {
-    --primary: #2c3e50;      /* Headings */
-    --secondary: #3498db;    /* Links */
-    --bg: #ffffff;           /* Background */
-    --text: #333;            /* Text */
-    --code-bg: #f4f4f4;      /* Code blocks */
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --bg: #ffffff;
+    /* etc */
 }
 ```
 
-### Add Table of Contents
+### Table of Contents
 
-In your Org file header, change:
+To add a table of contents to a page:
 
 ```org
 #+OPTIONS: toc:t num:nil
 ```
 
-This will auto-generate a TOC from your headings.
+### Search in Specific Fields
 
-### Enable Section Numbering
-
-```org
-#+OPTIONS: toc:t num:t
-```
-
-### Custom Navigation
-
-Modify the navigation HTML in each file's header to match your site structure.
-
-## Search Functionality
-
-### How It Works
-
-The `search.html` page provides simple client-side search:
-
-1. Maintains an index of all pages
-2. Searches titles, keywords, and descriptions
-3. Highlights matching terms
-4. No server required
-
-### Adding Pages to Search
-
-Edit `search.html` and update the `pages` array:
+Edit `search.js` to add more fields to index:
 
 ```javascript
-const pages = [
-    {
-        title: "My New Page",
-        url: "docs/my-new-page.html",
-        keywords: "relevant search keywords",
-        description: "Brief description of the page"
-    },
-    // ... more pages
-];
+searchIndex = lunr(function() {
+    this.ref('id');
+    this.field('title', { boost: 10 });    // Titles weighted higher
+    this.field('body');
+    this.field('tags', { boost: 5 });      // Add new field
+    // ...
+});
 ```
 
-## Emacs Configuration (Optional)
+## Advantages of This Approach
 
-### Recommended Settings
+### vs. Build Scripts
 
-Add to your `.emacs` or `init.el`:
+✅ **Simpler**: No build dependencies
+✅ **Native**: Uses Org-mode's built-in export
+✅ **Flexible**: Easy to customize per-page
+✅ **Maintainable**: Less moving parts
 
-```elisp
-;; Org HTML export settings
-(require 'ox-html)
+### vs. Complex Search Solutions
 
-;; Don't include default CSS/scripts
-(setq org-html-head-include-default-style nil)
-(setq org-html-head-include-scripts nil)
+✅ **Client-side**: No server needed
+✅ **Lunr.js**: Powerful, mature library
+✅ **Offline**: Works without internet
+✅ **Integrated**: Search in navigation, not separate page
 
-;; Use HTML5
-(setq org-html-html5-fancy t)
-(setq org-html-doctype "html5")
+## Browser Compatibility
 
-;; No validation link
-(setq org-html-validation-link nil)
-```
+Works in all modern browsers:
 
-### Syntax Highlighting
+- ✅ Chrome 60+
+- ✅ Firefox 60+
+- ✅ Safari 12+
+- ✅ Edge 79+
 
-For colored syntax highlighting in code blocks:
-
-1. Install `htmlize`:
-   ```
-   M-x package-install RET htmlize RET
-   ```
-
-2. Configure:
-   ```elisp
-   (setq org-html-htmlize-output-type 'inline-css)
-   ```
-
-### Export Shortcut
-
-Create a custom export command:
-
-```elisp
-(defun my/org-export-to-html-custom ()
-  "Export org file to HTML with custom settings."
-  (interactive)
-  (org-html-export-to-html))
-
-(define-key org-mode-map (kbd "C-c e") 'my/org-export-to-html-custom)
-```
+**Note**: For offline use from USB without internet, download `lunr.min.js` locally (see above).
 
 ## Deployment
 
 ### USB Drive
 
 1. Export all `.org` files to HTML
-2. Copy `style.css` and all `.html` files to USB
-3. Users open `docs/index.html`
+2. Download lunr.js locally (optional, for offline)
+3. Copy all `.html` files, `style.css`, `search.js`, and `lunr.min.js` to USB
+4. Users open `docs/index.html`
 
 ### Network Share
 
@@ -290,133 +284,78 @@ Create a custom export command:
 
 ### Web Server (Optional)
 
-While designed for offline use, you can serve over HTTP:
-
 ```bash
 python3 -m http.server 8000
 ```
 
 Then open `http://localhost:8000/docs/index.html`
 
-## Advantages of This Approach
+## Tips & Best Practices
 
-### vs. Build Scripts
+### Search Index Maintenance
 
-✅ **Simpler**: No Python/Node.js dependencies
-✅ **Native**: Uses Org-mode's built-in export
-✅ **Flexible**: Easy to customize per-page
-✅ **Debuggable**: Just HTML and CSS
-✅ **Maintainable**: Less moving parts
+- Update `search.js` whenever you add/remove pages
+- Include good keywords for each page
+- Test search after updates
 
-### vs. Static Site Generators
+### Navigation Consistency
 
-✅ **No Build Process**: Just export in Emacs
-✅ **No Node Modules**: No dependency hell
-✅ **Works Offline**: Always, everywhere
-✅ **Simple**: Easy to understand and modify
-✅ **Portable**: Just files, no framework
+- Update navigation in **all** `.org` files when adding a page
+- Re-export all files after navigation changes
+- Keep nav links in the same order across pages
 
-## Trade-offs
+### File Organization
 
-### Duplication
-
-Each HTML file includes:
-- Full CSS (via link)
-- Navigation HTML
-- Page structure
-
-This is acceptable because:
-- CSS is linked (not embedded), so just one copy
-- Navigation is small (~1KB)
-- Offline reliability > file size optimization
-
-### Manual Updates
-
-When adding a page, you must:
-- Update navigation in all existing `.org` files
-- Re-export affected files
-- Update search index (optional)
-
-This is acceptable because:
-- Documentation doesn't change that often
-- Process is simple and predictable
-- No build system to debug
+- Keep `.org` files for editing
+- Export `.html` files for distribution
+- Optionally commit both to version control
 
 ## Examples
 
 See the included pages:
 
 - `docs/index.org` - Simple welcome page
-- `docs/setup.org` - Complete setup guide with TOC
+- `docs/setup.org` - Complete setup guide
 - `docs/example.org` - All Org-mode features demonstrated
-
-## Tips & Best Practices
-
-### File Organization
-
-- Keep `.org` files for editing
-- Generate `.html` files for distribution
-- Optionally commit both to version control
-
-### Consistent Headers
-
-Create a snippet or template file with the standard header to copy/paste.
-
-### CSS Path
-
-Use relative paths based on file location:
-- `../style.css` from subdirectories (like `docs/`)
-- `style.css` from root directory
-
-### Link to HTML
-
-In Org files, link to the `.html` version:
-
-```org
-[[file:other-page.html][Other Page]]
-```
-
-Not the `.org` version.
-
-### Test Locally
-
-Always test exported HTML files by opening them directly (not through Emacs).
 
 ## Troubleshooting
 
+### Search Not Working
+
+- **Check browser console** for JavaScript errors
+- **Verify lunr.js loaded**: Look in Network tab of dev tools
+- **Test with simple search**: The fallback should still work
+- **Check search index**: Make sure pages are listed in `search.js`
+
 ### CSS Not Loading
 
-- Check the path in `#+HTML_HEAD:`
-- Verify `style.css` exists at the specified location
-- Try absolute path: `file:///full/path/to/style.css`
+- Verify path: `../style.css` from docs subdirectory
+- Try absolute path for testing
+- Check browser console for 404 errors
 
-### Links Not Working
+### Export Issues
 
-- Use `.html` extension, not `.org`
-- Use relative paths: `other-page.html` not `/other-page.html`
-
-### Navigation Bar Not Showing
-
-- Ensure `#+BEGIN_EXPORT html` and `#+END_EXPORT` are on their own lines
-- Check for typos in the HTML
-
-### Export Not Working
-
-- Verify Org-mode is installed
-- Check Emacs version (need 24.4+)
+- Ensure Org-mode is installed
 - Try `M-x org-html-export-to-html` directly
+- Check for syntax errors in Org file
 
 ## Why This Approach?
 
-After trying various methods (build scripts, embedded content, etc.), this approach offers the **best balance** of:
+After exploring various methods, this offers the **best balance** of:
 
-- **Simplicity**: Just Org-mode export
-- **Reliability**: No CORS issues, works everywhere
-- **Maintainability**: Easy to understand and modify
-- **Portability**: Pure HTML + CSS
-- **Flexibility**: Full Org-mode power
+- **Simplicity**: Just Org-mode export + lunr.js
+- **Power**: Full-text search with lunr.js
+- **Reliability**: No CORS issues
+- **Maintainability**: Standard tools, minimal code
+- **Usability**: Search integrated in navigation
 
-It's the **simplest thing that could possibly work**, and that's often the best solution.
+**Key insight**: Sometimes the best solution combines simple, proven tools (Org-mode + lunr.js) rather than building everything from scratch.
+
+## Further Reading
+
+- [Org Mode Manual](https://orgmode.org/manual/)
+- [Lunr.js Documentation](https://lunrjs.com/)
+- [Org HTML Export](https://orgmode.org/manual/HTML-Export.html)
 
 ## License
 
@@ -426,4 +365,4 @@ This is research/experimental code. Use freely for learning and assessment.
 
 **Created as part of the Research & Experiments Repository**
 
-This project demonstrates that pure Org-mode export with shared CSS is sufficient for offline documentation needs.
+This project demonstrates that pure Org-mode export with lunr.js provides excellent offline documentation with minimal complexity.
