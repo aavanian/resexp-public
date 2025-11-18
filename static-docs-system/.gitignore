@@ -1,0 +1,5 @@
+# Generated HTML files from Org-mode export
+docs/*.html
+
+# Auto-generated search index
+search-index.js
