@@ -119,7 +119,7 @@ The system uses [lunr.js](https://lunrjs.com/) for powerful full-text search:
 - Search index pre-generated and loaded from `search-index.js`
 - Instant search as you type
 - Dropdown results in navigation bar
-- Fallback to simple search if lunr.js unavailable
+- Progressive search (partial word matching)
 
 ### For Offline Use
 
@@ -349,8 +349,8 @@ See the included pages:
 
 - **Check browser console** for JavaScript errors
 - **Verify lunr.js loaded**: Look in Network tab of dev tools
-- **Test with simple search**: The fallback should still work
-- **Check search index**: Make sure pages are listed in `search.js`
+- **Rebuild search index**: Run `python3 build-search-index.py`
+- **Check search-index.js**: Make sure it contains your pages
 
 ### CSS Not Loading
 

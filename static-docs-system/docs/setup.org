@@ -44,17 +44,24 @@ Copy this header to the top of your file:
 ,#+TITLE: My Page Title
 ,#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
 ,#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-,#+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
+,#+HTML_HEAD: <script src="../lunr.min.js"></script>
+,#+HTML_HEAD: <script src="../search-index.js"></script>
+,#+HTML_HEAD: <script src="../search.js"></script>
 
 ,#+BEGIN_EXPORT html
 <div class="nav-bar">
-  <h1>📚 Documentation</h1>
+  <div class="nav-header">
+    <h1>📚 Documentation</h1>
+  </div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="setup.html">Setup Guide</a></li>
     <li><a href="my-page.html">My Page</a></li>
     <li><a href="example.html">Example Page</a></li>
-    <li><a href="../search.html">Search</a></li>
+    <li class="nav-search">
+      <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </li>
   </ul>
 </div>
 ,#+END_EXPORT
@@ -140,18 +147,23 @@ Inline styles for page layout. Centers content with max width.
 #+BEGIN_EXAMPLE
 ,#+BEGIN_EXPORT html
 <div class="nav-bar">
-  <h1>📚 Documentation</h1>
+  <div class="nav-header">
+    <h1>📚 Documentation</h1>
+  </div>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="setup.html">Setup Guide</a></li>
     <li><a href="example.html">Example</a></li>
-    <li><a href="../search.html">Search</a></li>
+    <li class="nav-search">
+      <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
+      <div id="searchResults" class="search-results"></div>
+    </li>
   </ul>
 </div>
 ,#+END_EXPORT
 #+END_EXAMPLE
 
-Adds a navigation bar at the top. Update links when adding new pages.
+Adds a navigation bar with integrated search. Update links when adding new pages.
 
 * Customization
 
@@ -173,7 +185,7 @@ Edit =style.css= and modify the CSS variables:
 1. Create new =.org= file with standard header
 2. Add link to navigation bar in *all* existing pages
 3. Export to HTML
-4. Update =search.html= index (see below)
+4. Rebuild search index: =make index= or =python3 build-search-index.py=
 
 ** Table of Contents
 
@@ -187,21 +199,28 @@ This will auto-generate a TOC from your headings.
 
 * Search Functionality
 
-The =search.html= page provides simple client-side search.
+The system uses [[https://lunrjs.com/][Lunr.js]] for client-side full-text search integrated directly into the navigation bar.
+
+** How It Works
+
+- Search is built into every page via the navigation bar
+- As you type, results appear in a dropdown below the search box
+- The search index is automatically generated from your HTML files
+- Supports progressive search (partial word matching)
 
 ** Updating the Search Index
 
-Edit =search.html= and update the =pages= array:
+The search index is automatically generated from your HTML files:
 
-#+BEGIN_SRC javascript
-const pages = [
-    {
-        title: "My New Page",
-        url: "docs/my-new-page.html",
-        keywords: "relevant search keywords here"
-    }
-];
+#+BEGIN_SRC bash
+# After exporting .org files to HTML, rebuild the search index
+python3 build-search-index.py
+
+# Or use make to do both
+make
 #+END_SRC
+
+The =build-search-index.py= script extracts content from all HTML files in =docs/= and generates =search-index.js=.
 
 * Tips & Best Practices
 
@@ -210,7 +229,10 @@ const pages = [
 #+BEGIN_EXAMPLE
 static-docs-system/
 ├── style.css           # Shared CSS
-├── search.html         # Search page
+├── search.js           # Search functionality
+├── search-index.js     # Auto-generated search index
+├── lunr.min.js         # Lunr.js library
+├── build-search-index.py  # Index generator
 ├── docs/
 │   ├── index.org       # Source files
 │   ├── index.html      # Generated files
@@ -306,7 +328,11 @@ Check the path in =#+HTML_HEAD=:
 
 ** Search Not Finding Pages
 
-Update the search index in =search.html= when adding pages.
+Rebuild the search index after adding or updating pages:
+
+#+BEGIN_SRC bash
+python3 build-search-index.py
+#+END_SRC
 
 * Next Steps
 

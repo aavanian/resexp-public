@@ -1,14 +1,11 @@
 /**
  * Documentation Search using Lunr.js
  *
- * Search index loaded from search-index.js (auto-generated)
+ * Requires:
+ * - lunr.min.js (local file)
+ * - search-index.js (auto-generated from HTML files)
+ *
  * To regenerate index: python3 build-search-index.py
- *
- * To use this, download lunr.js:
- * wget https://unpkg.com/lunr@2.3.9/lunr.min.js
- *
- * Or from CDN (requires internet):
- * <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
  */
 
 // Search index will be loaded from search-index.js
@@ -27,7 +24,7 @@ function initializeSearch() {
 
     // Check if lunr is available
     if (typeof lunr === 'undefined') {
-        console.warn('Lunr.js not loaded. Using simple search fallback.');
+        console.error('Lunr.js not loaded! Ensure lunr.min.js is available.');
         return null;
     }
 
@@ -45,65 +42,32 @@ function initializeSearch() {
     return searchIndex;
 }
 
-// Perform search using lunr or fallback
+// Perform search using lunr
 function performSearch(query) {
     if (!query || query.length < 2) {
         return [];
     }
 
-    // Try lunr search first
-    if (searchIndex) {
-        try {
-            // Add trailing wildcard to each term for progressive search
-            const wildcardQuery = query.trim().split(/\s+/).map(term => term + '*').join(' ');
-            const results = searchIndex.search(wildcardQuery);
-            return results.map(result => {
-                const doc = searchDocuments.find(d => d.id === result.ref);
-                return {
-                    ...doc,
-                    score: result.score
-                };
-            });
-        } catch (e) {
-            console.warn('Lunr search failed, using fallback:', e);
-        }
-    }
-
-    // Fallback to simple search
-    return simpleSearch(query);
-}
-
-// Simple search fallback (if lunr not available)
-function simpleSearch(query) {
-    if (typeof searchDocuments === 'undefined') {
+    if (!searchIndex) {
+        console.error('Search index not initialized');
         return [];
     }
 
-    const lowerQuery = query.toLowerCase();
-    const words = lowerQuery.split(/\s+/);
-
-    return searchDocuments
-        .map(doc => {
-            let score = 0;
-            const titleLower = doc.title.toLowerCase();
-            const bodyLower = doc.body.toLowerCase();
-            const titleWords = titleLower.split(/\s+/);
-            const bodyWords = bodyLower.split(/\s+/);
-
-            words.forEach(queryWord => {
-                // Check for partial matches at word boundaries (progressive search)
-                titleWords.forEach(word => {
-                    if (word.startsWith(queryWord)) score += 10;
-                });
-                bodyWords.forEach(word => {
-                    if (word.startsWith(queryWord)) score += 5;
-                });
-            });
-
-            return { ...doc, score };
-        })
-        .filter(doc => doc.score > 0)
-        .sort((a, b) => b.score - a.score);
+    try {
+        // Add trailing wildcard to each term for progressive search
+        const wildcardQuery = query.trim().split(/\s+/).map(term => term + '*').join(' ');
+        const results = searchIndex.search(wildcardQuery);
+        return results.map(result => {
+            const doc = searchDocuments.find(d => d.id === result.ref);
+            return {
+                ...doc,
+                score: result.score
+            };
+        });
+    } catch (e) {
+        console.error('Lunr search failed:', e);
+        return [];
+    }
 }
 
 // Highlight matching terms
