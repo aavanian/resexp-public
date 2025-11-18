@@ -1,182 +1,238 @@
-# Static Documentation System
+# Static Documentation System - Pure Org-mode
 
-A truly offline-first documentation system that works from USB drives with **zero CORS issues**. Uses direct HTML links instead of JavaScript loading for maximum compatibility.
+**The simplest approach**: Use Org-mode's built-in HTML export with shared CSS. No build scripts, no dependencies, just Org-mode.
 
-## Key Features
+## Overview
 
-- ✅ **No CORS Issues**: Uses direct HTML links, not dynamic loading
-- ✅ **Works Everywhere**: ALL browsers, no configuration needed
-- ✅ **Truly Offline**: No server, no network, just files
-- ✅ **Client-Side Search**: Fast embedded search on every page
-- ✅ **Org-mode Integration**: Export directly from Emacs
-- ✅ **Responsive Design**: Works on all screen sizes
-- ✅ **Long-Term Stable**: No dependencies to maintain
+This system demonstrates that you don't need complex build processes for offline documentation. Just:
+
+1. Write in Org-mode
+2. Include shared CSS
+3. Export to HTML
+4. Done!
+
+## Features
+
+- ✅ **Pure Org-mode**: No build scripts, just export
+- ✅ **Shared CSS**: Consistent styling via `style.css`
+- ✅ **Direct Links**: No CORS issues, works from `file://`
+- ✅ **Simple Search**: Optional search page
+- ✅ **No Dependencies**: Just Emacs and Org-mode
+- ✅ **Offline-First**: Works perfectly from USB drives
 
 ## Quick Start
 
 ### View the Documentation
 
-Simply **double-click `index.html`** - it works in ALL browsers!
+Open `docs/index.html` in your browser (or export it first - see below).
 
-### Add Your Own Content
+### Create a New Page
 
-1. Write content in Org-mode (see `sample-org/example.org`)
-2. Export to HTML body only: `C-c C-e h b` in Emacs
-3. Move HTML to `content/` directory
-4. Update template, build script, and search index
-5. Run `python3 build.py`
-6. Done!
+1. **Copy the template** from an existing `.org` file
+2. **Write your content** using Org-mode syntax
+3. **Export to HTML**: `C-c C-e h h` in Emacs
+4. **Done!** Open the `.html` file
 
 ## Project Structure
 
 ```
 static-docs-system/
-├── index.html              # Main page (generated)
-├── *.html                  # All pages (generated)
-├── build.py                # Build script
-├── README.md               # This file
-├── templates/
-│   └── page-template.html  # Base template for all pages
-├── content/
-│   ├── welcome.html        # Content files (from Org exports)
-│   ├── installation.html
-│   └── ...
-└── sample-org/
-    └── example.org         # Example Org-mode file
+├── style.css               # Shared CSS for all pages
+├── search.html             # Optional search page
+├── docs/
+│   ├── index.org           # Source files
+│   ├── index.html          # Exported HTML
+│   ├── setup.org
+│   ├── setup.html
+│   ├── example.org
+│   └── example.html
+└── README.md               # This file
 ```
 
 ## How It Works
 
-Unlike other documentation systems, this one uses a **fundamentally different approach**:
+### Standard Header Template
 
-### Traditional Approach (Doesn't Work Offline)
-- Single page with JavaScript
-- Fetch/XMLHttpRequest to load content
-- CORS errors from `file://` protocol
-- Requires server or special browser flags
+Every Org file includes this header:
 
-### This System (Works Everywhere)
-- Each page is a complete HTML file
-- Navigation uses normal `<a href="page.html">` links
-- No dynamic loading = no CORS issues
-- Works perfectly from `file://` protocol
+```org
+#+TITLE: Page Title
+#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
+#+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
 
-## Architecture
-
+#+BEGIN_EXPORT html
+<div class="nav-bar">
+  <h1>📚 Documentation</h1>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="setup.html">Setup Guide</a></li>
+    <li><a href="example.html">Example</a></li>
+    <li><a href="../search.html">Search</a></li>
+  </ul>
+</div>
+#+END_EXPORT
 ```
-┌─────────────┐
-│  Org Files  │ (Source)
-└─────┬───────┘
-      │ Export (C-c C-e h b)
-      ▼
-┌─────────────┐
-│ HTML Content│ (Body only)
-└─────┬───────┘
-      │
-      ▼
-┌──────────────────┐
-│  build.py        │ ◄─── Template
-│  (Combines)      │      (with nav, search, styles)
-└────────┬─────────┘
-         │
-         ▼
-   ┌─────────────────┐
-   │  Complete Pages │ (Standalone HTML files)
-   │  - index.html   │
-   │  - page1.html   │
-   │  - page2.html   │
-   └─────────────────┘
-```
+
+### What Each Part Does
+
+- `#+TITLE:` - Sets the page title
+- `#+OPTIONS:` - Controls export behavior
+  - `toc:nil` - No table of contents (use `toc:t` to include)
+  - `num:nil` - No section numbering
+  - `html-style:nil` - Don't include default Org CSS
+  - `html-scripts:nil` - Don't include default Org JavaScript
+- `#+HTML_HEAD:` - Includes shared CSS
+- `#+BEGIN_EXPORT html` - Adds navigation bar
 
 ## Adding a New Page
 
-### Step 1: Create Content in Org-mode
+### Step-by-Step
 
-Create `sample-org/my-page.org`:
+1. **Create new file**: `docs/my-page.org`
 
-```org
-#+TITLE: My Page
-#+OPTIONS: toc:nil num:nil html-style:nil
+2. **Add standard header**:
+   ```org
+   #+TITLE: My Page
+   #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
+   #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
+   #+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
 
-* Introduction
+   #+BEGIN_EXPORT html
+   <div class="nav-bar">
+     <h1>📚 Documentation</h1>
+     <ul class="nav-links">
+       <li><a href="index.html">Home</a></li>
+       <li><a href="setup.html">Setup</a></li>
+       <li><a href="my-page.html">My Page</a></li>
+       <li><a href="example.html">Example</a></li>
+       <li><a href="../search.html">Search</a></li>
+     </ul>
+   </div>
+   #+END_EXPORT
 
-Your content here...
-```
+   * My Content
 
-### Step 2: Export to HTML
+   Write your content here...
+   ```
+
+3. **Update navigation** in all existing `.org` files to include link to new page
+
+4. **Export**: `C-c C-e h h` in Emacs
+
+5. **Update search index** in `search.html` (optional)
+
+## Exporting Files
+
+### Single File
 
 In Emacs:
-1. Open the .org file
+1. Open the `.org` file
 2. Press `C-c C-e` (export dispatcher)
 3. Press `h` for HTML
-4. Press `b` for body only
+4. Press `h` again for "export to HTML"
 
-### Step 3: Move to Content Directory
+This creates `filename.html` in the same directory.
 
-```bash
-mv my-page.html content/
-```
+### Batch Export
 
-### Step 4: Update Template Navigation
-
-Edit `templates/page-template.html`, find the nav menu and add:
-
-```html
-<li><a href="my-page.html">My Page</a></li>
-```
-
-### Step 5: Update Build Script
-
-Edit `build.py`, add to the `pages` list:
-
-```python
-('my-page', 'My Page', 'content/my-page.html', 'my-page.html'),
-```
-
-### Step 6: Update Search Index
-
-Edit `templates/page-template.html`, find `searchIndex` array and add:
-
-```javascript
-{
-    title: "My Page",
-    url: "my-page.html",
-    content: "keywords for search",
-    excerpt: "Brief description shown in search results"
-},
-```
-
-### Step 7: Build
+To export all files at once, run this in the `docs/` directory:
 
 ```bash
-python3 build.py
+for file in *.org; do
+    emacs "$file" --batch \
+        --eval "(org-html-export-to-html)" \
+        --kill
+done
 ```
 
-### Step 8: Test
+Or use this Makefile:
 
-Open `my-page.html` in your browser!
+```makefile
+HTML_FILES = $(patsubst %.org,%.html,$(wildcard docs/*.org))
 
-## Org-mode Export Configuration
+all: $(HTML_FILES)
 
-### Recommended Settings
+docs/%.html: docs/%.org
+	emacs $< --batch --eval "(org-html-export-to-html)" --kill
 
-Add to the top of your .org files:
+clean:
+	rm -f docs/*.html
+
+.PHONY: all clean
+```
+
+## Customization
+
+### Change Colors
+
+Edit `style.css`:
+
+```css
+:root {
+    --primary: #2c3e50;      /* Headings */
+    --secondary: #3498db;    /* Links */
+    --bg: #ffffff;           /* Background */
+    --text: #333;            /* Text */
+    --code-bg: #f4f4f4;      /* Code blocks */
+}
+```
+
+### Add Table of Contents
+
+In your Org file header, change:
 
 ```org
-#+TITLE: Your Page Title
-#+OPTIONS: toc:nil          # No table of contents
-#+OPTIONS: num:nil          # No section numbering
-#+OPTIONS: html-style:nil   # No inline styles
-#+OPTIONS: html-scripts:nil # No JavaScript
-#+OPTIONS: html-postamble:nil  # No footer
+#+OPTIONS: toc:t num:nil
 ```
 
-### Emacs Configuration
+This will auto-generate a TOC from your headings.
+
+### Enable Section Numbering
+
+```org
+#+OPTIONS: toc:t num:t
+```
+
+### Custom Navigation
+
+Modify the navigation HTML in each file's header to match your site structure.
+
+## Search Functionality
+
+### How It Works
+
+The `search.html` page provides simple client-side search:
+
+1. Maintains an index of all pages
+2. Searches titles, keywords, and descriptions
+3. Highlights matching terms
+4. No server required
+
+### Adding Pages to Search
+
+Edit `search.html` and update the `pages` array:
+
+```javascript
+const pages = [
+    {
+        title: "My New Page",
+        url: "docs/my-new-page.html",
+        keywords: "relevant search keywords",
+        description: "Brief description of the page"
+    },
+    // ... more pages
+];
+```
+
+## Emacs Configuration (Optional)
+
+### Recommended Settings
 
 Add to your `.emacs` or `init.el`:
 
 ```elisp
-;; Org-mode HTML export configuration
+;; Org HTML export settings
 (require 'ox-html)
 
 ;; Don't include default CSS/scripts
@@ -191,161 +247,183 @@ Add to your `.emacs` or `init.el`:
 (setq org-html-validation-link nil)
 ```
 
-## Customization
+### Syntax Highlighting
 
-### Change Colors
+For colored syntax highlighting in code blocks:
 
-Edit CSS variables in `templates/page-template.html`:
+1. Install `htmlize`:
+   ```
+   M-x package-install RET htmlize RET
+   ```
 
-```css
-:root {
-    --primary: #2c3e50;
-    --secondary: #3498db;
-    --bg: #ffffff;
-    /* ... etc ... */
-}
+2. Configure:
+   ```elisp
+   (setq org-html-htmlize-output-type 'inline-css)
+   ```
+
+### Export Shortcut
+
+Create a custom export command:
+
+```elisp
+(defun my/org-export-to-html-custom ()
+  "Export org file to HTML with custom settings."
+  (interactive)
+  (org-html-export-to-html))
+
+(define-key org-mode-map (kbd "C-c e") 'my/org-export-to-html-custom)
 ```
-
-### Change Layout
-
-Adjust sidebar width in the template:
-
-```css
-.sidebar {
-    width: 280px;  /* Change this */
-}
-
-.main-content {
-    margin-left: 280px;  /* Must match sidebar width */
-}
-```
-
-## Search System
-
-Search is embedded as JavaScript in each page. It's simple but effective:
-
-- Searches titles and content keywords
-- Highlights matching terms
-- Scores results by relevance
-- Shows top 10 results
-
-To optimize search, include relevant keywords in the `content` field of the search index.
 
 ## Deployment
 
-### For USB Drive
+### USB Drive
 
-1. Build all pages: `python3 build.py`
-2. Copy only the `*.html` files to USB
-3. Done! Users just open `index.html`
+1. Export all `.org` files to HTML
+2. Copy `style.css` and all `.html` files to USB
+3. Users open `docs/index.html`
 
-### For Network Share
+### Network Share
 
-1. Build pages
-2. Copy `*.html` files to shared folder
+1. Export all files
+2. Place on shared drive
 3. Team accesses via `file://` path
 
-### For Distribution
+### Web Server (Optional)
 
-1. Build pages
-2. Zip the `*.html` files
-3. Send to users
-4. They extract and open `index.html`
+While designed for offline use, you can serve over HTTP:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/docs/index.html`
+
+## Advantages of This Approach
+
+### vs. Build Scripts
+
+✅ **Simpler**: No Python/Node.js dependencies
+✅ **Native**: Uses Org-mode's built-in export
+✅ **Flexible**: Easy to customize per-page
+✅ **Debuggable**: Just HTML and CSS
+✅ **Maintainable**: Less moving parts
+
+### vs. Static Site Generators
+
+✅ **No Build Process**: Just export in Emacs
+✅ **No Node Modules**: No dependency hell
+✅ **Works Offline**: Always, everywhere
+✅ **Simple**: Easy to understand and modify
+✅ **Portable**: Just files, no framework
+
+## Trade-offs
+
+### Duplication
+
+Each HTML file includes:
+- Full CSS (via link)
+- Navigation HTML
+- Page structure
+
+This is acceptable because:
+- CSS is linked (not embedded), so just one copy
+- Navigation is small (~1KB)
+- Offline reliability > file size optimization
+
+### Manual Updates
+
+When adding a page, you must:
+- Update navigation in all existing `.org` files
+- Re-export affected files
+- Update search index (optional)
+
+This is acceptable because:
+- Documentation doesn't change that often
+- Process is simple and predictable
+- No build system to debug
+
+## Examples
+
+See the included pages:
+
+- `docs/index.org` - Simple welcome page
+- `docs/setup.org` - Complete setup guide with TOC
+- `docs/example.org` - All Org-mode features demonstrated
+
+## Tips & Best Practices
+
+### File Organization
+
+- Keep `.org` files for editing
+- Generate `.html` files for distribution
+- Optionally commit both to version control
+
+### Consistent Headers
+
+Create a snippet or template file with the standard header to copy/paste.
+
+### CSS Path
+
+Use relative paths based on file location:
+- `../style.css` from subdirectories (like `docs/`)
+- `style.css` from root directory
+
+### Link to HTML
+
+In Org files, link to the `.html` version:
+
+```org
+[[file:other-page.html][Other Page]]
+```
+
+Not the `.org` version.
+
+### Test Locally
+
+Always test exported HTML files by opening them directly (not through Emacs).
+
+## Troubleshooting
+
+### CSS Not Loading
+
+- Check the path in `#+HTML_HEAD:`
+- Verify `style.css` exists at the specified location
+- Try absolute path: `file:///full/path/to/style.css`
+
+### Links Not Working
+
+- Use `.html` extension, not `.org`
+- Use relative paths: `other-page.html` not `/other-page.html`
+
+### Navigation Bar Not Showing
+
+- Ensure `#+BEGIN_EXPORT html` and `#+END_EXPORT` are on their own lines
+- Check for typos in the HTML
+
+### Export Not Working
+
+- Verify Org-mode is installed
+- Check Emacs version (need 24.4+)
+- Try `M-x org-html-export-to-html` directly
 
 ## Why This Approach?
 
-### Advantages
+After trying various methods (build scripts, embedded content, etc.), this approach offers the **best balance** of:
 
-✅ **No CORS Issues**: Direct links work from `file://` protocol
-✅ **Maximum Compatibility**: Works in ALL browsers
-✅ **Zero Configuration**: No flags, no settings needed
-✅ **True Offline**: No network requests ever
-✅ **Simple**: Just HTML files, nothing complex
-✅ **Robust**: Will work for years without updates
-✅ **Fast**: No loading delays, instant navigation
+- **Simplicity**: Just Org-mode export
+- **Reliability**: No CORS issues, works everywhere
+- **Maintainability**: Easy to understand and modify
+- **Portability**: Pure HTML + CSS
+- **Flexibility**: Full Org-mode power
 
-### Trade-offs
-
-⚠️ **Duplication**: Each page includes full template (nav, styles)
-⚠️ **Manual Updates**: Need to rebuild after changes
-⚠️ **Fixed Navigation**: Nav is the same on all pages
-
-These trade-offs are worth it for true offline capability!
-
-## Browser Compatibility
-
-Works in ALL modern browsers:
-
-- ✅ Chrome 60+
-- ✅ Firefox 60+
-- ✅ Safari 12+
-- ✅ Edge 79+
-
-No configuration, flags, or special settings needed!
-
-## File Sizes
-
-Typical page sizes:
-
-- Index page: ~15 KB
-- Documentation page: ~15-20 KB
-- Total for 6 pages: ~100 KB
-
-Still very portable and fast!
-
-## Maintenance
-
-This system requires minimal maintenance:
-
-1. **Update content**: Export from Org, rebuild
-2. **Add pages**: Follow the steps above
-3. **Backup**: Just copy the `*.html` files
-4. **Version control**: Commit source files and generated pages
-
-## Research Findings
-
-This project demonstrates that:
-
-✅ **Direct HTML links** are more robust than JavaScript loading
-✅ **Simple architecture** beats complex systems for offline use
-✅ **Duplication** is acceptable for portability
-✅ **Embedded search** can be lightweight and effective
-
-## Comparison
-
-| Feature | This System | Dynamic Systems |
-|---------|-------------|-----------------|
-| CORS Issues | ✅ None | ❌ Yes |
-| Works from file:// | ✅ All browsers | ⚠️ Firefox only |
-| Configuration needed | ✅ None | ⚠️ Flags/settings |
-| True offline | ✅ Yes | ⚠️ Sometimes |
-| Build process | ⚠️ Required | ❌ Not needed |
-| Page size | ⚠️ ~15KB each | ✅ Smaller |
+It's the **simplest thing that could possibly work**, and that's often the best solution.
 
 ## License
 
 This is research/experimental code. Use freely for learning and assessment.
 
-## Example Content
-
-See `sample-org/example.org` for a comprehensive example showing:
-- All Org-mode syntax features
-- Export configuration
-- Code examples
-- Tables, lists, and formatting
-- Best practices
-
-## Getting Help
-
-All documentation is included:
-
-- Open `index.html` for the full guide
-- Check `sample-org/example.org` for Org-mode examples
-- See `templates/page-template.html` for the template structure
-- Read `build.py` for build process details
-
 ---
 
 **Created as part of the Research & Experiments Repository**
 
-This project assesses the viability of using direct HTML links instead of JavaScript for truly portable, offline-first documentation.
+This project demonstrates that pure Org-mode export with shared CSS is sufficient for offline documentation needs.

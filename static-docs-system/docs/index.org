@@ -1,0 +1,60 @@
+#+TITLE: Welcome to Your Documentation
+#+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
+#+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
+
+#+BEGIN_EXPORT html
+<div class="nav-bar">
+  <h1>📚 Documentation</h1>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="setup.html">Setup Guide</a></li>
+    <li><a href="example.html">Example Page</a></li>
+    <li><a href="../search.html">Search</a></li>
+  </ul>
+</div>
+#+END_EXPORT
+
+* Welcome!
+
+This is a static documentation system built entirely with *Org-mode*.
+
+** Key Features
+
+- ✅ *Pure Org-mode*: No build scripts, just export!
+- ✅ *Embedded CSS*: Consistent styling across all pages
+- ✅ *Direct Links*: No CORS issues, works from =file://=
+- ✅ *Search Page*: Simple client-side search
+- ✅ *Responsive*: Works on all screen sizes
+
+** How It Works
+
+This system uses Org-mode's built-in HTML export with:
+
+1. Shared CSS file (=style.css=)
+2. Navigation bar in each file
+3. Consistent export settings
+4. Optional search page
+
+** Getting Started
+
+1. Read the [[file:setup.html][Setup Guide]]
+2. See the [[file:example.html][Example Page]]
+3. Start writing your own Org files!
+
+** The Simplicity
+
+Each Org file is self-contained:
+
+- Includes CSS via =#+HTML_HEAD=
+- Adds navigation via =#+BEGIN_EXPORT html=
+- Exports to complete, standalone HTML
+- *That's it!*
+
+#+BEGIN_QUOTE
+*No build process.* *No JavaScript complexity.* Just Org-mode doing what it does best.
+#+END_QUOTE
+
+** Next Steps
+
+Check out the [[file:setup.html][Setup Guide]] to learn how to create your own documentation pages.

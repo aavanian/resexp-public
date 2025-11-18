@@ -1,0 +1,310 @@
+#+TITLE: Example Page - All Features
+#+OPTIONS: toc:t num:nil html-style:nil html-scripts:nil
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
+#+HTML_HEAD: <style>body { max-width: 900px; margin: 0 auto; padding: 20px; }</style>
+
+#+BEGIN_EXPORT html
+<div class="nav-bar">
+  <h1>📚 Documentation</h1>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="setup.html">Setup Guide</a></li>
+    <li><a href="example.html">Example Page</a></li>
+    <li><a href="../search.html">Search</a></li>
+  </ul>
+</div>
+#+END_EXPORT
+
+* Introduction
+
+This page demonstrates all the features available in Org-mode for documentation.
+
+* Text Formatting
+
+** Basic Formatting
+
+You can use *bold*, /italic/, =verbatim=, ~code~, +strikethrough+, and _underline_.
+
+Combine them: *bold and /italic/* or =~code verbatim~=.
+
+** Paragraphs
+
+This is a normal paragraph. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+This is another paragraph after a blank line.
+
+* Lists
+
+** Unordered Lists
+
+- First item
+- Second item
+  - Nested item
+  - Another nested item
+    - Deeply nested
+- Third item
+
+** Ordered Lists
+
+1. First step
+2. Second step
+   1. Sub-step A
+   2. Sub-step B
+3. Third step
+
+** Definition Lists
+
+- Term :: Definition of the term goes here
+- Another term :: This is the definition of another term
+- Technical term :: A more detailed explanation of a technical concept
+
+* Code Examples
+
+** Inline Code
+
+Use =print("hello")= for output or call =my_function()= to execute.
+
+** Python Code Block
+
+#+BEGIN_SRC python
+def fibonacci(n):
+    """Calculate the nth Fibonacci number."""
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# Example usage
+for i in range(10):
+    print(f"fib({i}) = {fibonacci(i)}")
+#+END_SRC
+
+** JavaScript Code Block
+
+#+BEGIN_SRC javascript
+function greet(name) {
+    return `Hello, ${name}!`;
+}
+
+class Person {
+    constructor(name) {
+        this.name = name;
+    }
+
+    sayHello() {
+        console.log(greet(this.name));
+    }
+}
+
+const person = new Person("World");
+person.sayHello();
+#+END_SRC
+
+** Bash Script
+
+#+BEGIN_SRC bash
+#!/bin/bash
+
+# Process all org files
+for file in *.org; do
+    echo "Exporting: $file"
+    emacs "$file" --batch \
+        --eval "(org-html-export-to-html)" \
+        --kill
+done
+
+echo "Export complete!"
+#+END_SRC
+
+** Example Block (Preserves Formatting)
+
+#+BEGIN_EXAMPLE
+This is an example block.
+    Whitespace is preserved.
+        Including indentation.
+
+Perfect for showing file structures or ASCII art.
+#+END_EXAMPLE
+
+* Tables
+
+** Simple Table
+
+| Name    | Role       | Department |
+|---------+------------+------------|
+| Alice   | Developer  | Engineering |
+| Bob     | Designer   | UX         |
+| Charlie | Manager    | Product    |
+| Diana   | Analyst    | Data       |
+
+** Table with Alignment
+
+|  ID | Product      |   Price |
+|-----+--------------+---------|
+|   1 | Widget       | $  9.99 |
+|   2 | Gadget       | $ 24.99 |
+| 123 | Super Widget | $199.99 |
+
+* Links
+
+** Internal Links
+
+Link to another page: [[file:setup.html][Setup Guide]]
+
+Link to the home page: [[file:index.html][Home]]
+
+** External Links
+
+Visit the [[https://orgmode.org][Org Mode website]] for documentation.
+
+Read about [[https://www.gnu.org/software/emacs/][Emacs]] the text editor.
+
+** Link with Description
+
+[[https://github.com][GitHub - Where the world builds software]]
+
+* Quotes and Blocks
+
+** Blockquote
+
+#+BEGIN_QUOTE
+This is a quotation block. Use it for important notes, quotes from other sources, or to highlight key information.
+
+It can span multiple paragraphs if needed.
+#+END_QUOTE
+
+** Important Note
+
+#+BEGIN_QUOTE
+*Important:* This documentation system works entirely offline. No internet connection required!
+#+END_QUOTE
+
+* Special Blocks
+
+** Verse (Poetry/Lyrics)
+
+#+BEGIN_VERSE
+Great clouds overhead
+Tiny black birds rise and fall
+Snow covers the field
+#+END_VERSE
+
+** Center Text
+
+#+BEGIN_CENTER
+This text is centered.
+
+Perfect for titles or important announcements.
+#+END_CENTER
+
+* Images (If You Have Them)
+
+To include an image:
+
+#+BEGIN_EXAMPLE
+[[file:../images/screenshot.png]]
+#+END_EXAMPLE
+
+With a caption:
+
+#+BEGIN_EXAMPLE
+,#+CAPTION: Screenshot of the documentation system
+[[file:../images/screenshot.png]]
+#+END_EXAMPLE
+
+* Headings at Different Levels
+
+** Level 2 Heading
+
+Some content here.
+
+*** Level 3 Heading
+
+More content.
+
+**** Level 4 Heading
+
+Even more nested content.
+
+***** Level 5 Heading
+
+This is quite deeply nested!
+
+* Mathematical Notation (If Configured)
+
+If you have MathJax or LaTeX configured:
+
+#+BEGIN_EXAMPLE
+Inline math: $E = mc^2$
+
+Display math:
+$$\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$$
+#+END_EXAMPLE
+
+* Footnotes
+
+This is a sentence with a footnote[fn:1].
+
+Here's another reference[fn:2].
+
+[fn:1] This is the first footnote.
+
+[fn:2] This is the second footnote with more detailed information.
+
+* Todo Items (Optional)
+
+If you want to show TODO items:
+
+- [X] Completed task
+- [-] Partially completed task
+- [ ] Pending task
+
+* Source Code with Line Numbers
+
+#+BEGIN_SRC python -n
+def factorial(n):
+    """Calculate factorial with recursion."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+# Test the function
+print(factorial(5))  # 120
+#+END_SRC
+
+* Advanced Table Features
+
+** Table with Formulas
+
+| Item     | Quantity | Price | Total |
+|----------+----------+-------+-------|
+| Apples   |        5 |  0.50 |  2.50 |
+| Oranges  |        3 |  0.75 |  2.25 |
+| Bananas  |       12 |  0.25 |  3.00 |
+|----------+----------+-------+-------|
+| Total    |       20 |       |  7.75 |
+
+* Summary
+
+This page has demonstrated:
+
+1. *Text formatting* - bold, italic, code, etc.
+2. *Lists* - ordered, unordered, and definition lists
+3. *Code blocks* - with syntax highlighting
+4. *Tables* - simple and formatted
+5. *Links* - internal and external
+6. *Quotes* - blockquotes and special blocks
+7. *Images* - how to include them
+8. *Headings* - multiple levels
+9. *Footnotes* - for additional information
+
+** Next Steps
+
+- Use these examples in your own documentation
+- Refer to the [[file:setup.html][Setup Guide]] for creating new pages
+- Customize the CSS in =style.css= to match your preferences
+
+** Resources
+
+- [[https://orgmode.org/manual/][Org Mode Manual]]
+- [[https://orgmode.org/worg/org-tutorials/][Org Tutorials]]
+- [[https://orgmode.org/manual/HTML-Export.html][HTML Export Documentation]]

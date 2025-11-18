@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Documentation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <h1>📚 Documentation</h1>
+        <ul class="nav-links">
+            <li><a href="docs/index.html">Home</a></li>
+            <li><a href="docs/setup.html">Setup Guide</a></li>
+            <li><a href="docs/example.html">Example Page</a></li>
+            <li><a href="search.html">Search</a></li>
+        </ul>
+    </div>
+
+    <div class="search-container">
+        <h1>🔍 Search Documentation</h1>
+
+        <input type="text"
+               id="searchBox"
+               class="search-box"
+               placeholder="Type to search..."
+               autofocus>
+
+        <div id="searchResults" class="search-results"></div>
+    </div>
+
+    <script>
+        // Page index - add your pages here
+        const pages = [
+            {
+                title: "Welcome",
+                url: "docs/index.html",
+                keywords: "welcome introduction getting started overview features home documentation org-mode",
+                description: "Welcome to the documentation. Learn about the features and get started."
+            },
+            {
+                title: "Setup Guide",
+                url: "docs/setup.html",
+                keywords: "setup guide install configuration header options export emacs org-mode customization tips deployment",
+                description: "Complete setup guide for creating documentation pages with Org-mode."
+            },
+            {
+                title: "Example Page",
+                url: "docs/example.html",
+                keywords: "example demonstration features syntax code tables lists formatting links blocks",
+                description: "Comprehensive example showing all Org-mode features and syntax."
+            }
+        ];
+
+        const searchBox = document.getElementById('searchBox');
+        const searchResults = document.getElementById('searchResults');
+
+        function performSearch(query) {
+            if (!query || query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            const lowerQuery = query.toLowerCase();
+            const words = lowerQuery.split(/\s+/);
+
+            // Score each page
+            const results = pages.map(page => {
+                let score = 0;
+                const titleLower = page.title.toLowerCase();
+                const keywordsLower = page.keywords.toLowerCase();
+                const descLower = page.description.toLowerCase();
+
+                words.forEach(word => {
+                    // Title matches worth most
+                    if (titleLower.includes(word)) score += 10;
+
+                    // Keyword matches
+                    if (keywordsLower.includes(word)) score += 5;
+
+                    // Description matches
+                    if (descLower.includes(word)) score += 3;
+                });
+
+                return { ...page, score };
+            });
+
+            // Filter and sort
+            const matches = results
+                .filter(r => r.score > 0)
+                .sort((a, b) => b.score - a.score);
+
+            displayResults(matches, query);
+        }
+
+        function highlightText(text, query) {
+            const words = query.toLowerCase().split(/\s+/);
+            let result = text;
+
+            words.forEach(word => {
+                if (word.length < 2) return;
+                const regex = new RegExp(`(${escapeRegex(word)})`, 'gi');
+                result = result.replace(regex, '<span class="highlight">$1</span>');
+            });
+
+            return result;
+        }
+
+        function escapeRegex(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function displayResults(results, query) {
+            if (results.length === 0) {
+                searchResults.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">No results found</p>';
+                return;
+            }
+
+            const html = results.map(page => `
+                <div class="search-result">
+                    <h3><a href="${page.url}">${highlightText(page.title, query)}</a></h3>
+                    <p>${highlightText(page.description, query)}</p>
+                </div>
+            `).join('');
+
+            searchResults.innerHTML = html;
+        }
+
+        // Search as user types
+        searchBox.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Search on load if there's a query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialQuery = urlParams.get('q');
+        if (initialQuery) {
+            searchBox.value = initialQuery;
+            performSearch(initialQuery);
+        }
+    </script>
+</body>
+</html>
