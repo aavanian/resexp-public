@@ -109,7 +109,7 @@ def generate_search_index():
                 'id': html_file.stem,
                 'title': title,
                 'url': html_file.name,
-                'body': content[:500]  # Limit to first 500 chars for index
+                'body': content  # Full content for comprehensive search
             }
 
             documents.append(doc)

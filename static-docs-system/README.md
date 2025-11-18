@@ -24,14 +24,20 @@ This system demonstrates that you don't need complex build processes for offline
 
 ### View the Documentation
 
-1. Export the Org files (if not already done):
+1. Download lunr.min.js (required for search):
+   ```bash
+   wget https://unpkg.com/lunr@2.3.9/lunr.min.js -O lunr.min.js
+   # Or download from browser: https://unpkg.com/lunr@2.3.9/lunr.min.js
+   ```
+
+2. Export the Org files:
    ```bash
    make
    ```
 
-2. Open `docs/index.html` in your browser
+3. Open `docs/index.html` in your browser
 
-3. Try the search box in the navigation bar!
+4. Try the search box in the navigation bar!
 
 ### Create a New Page
 
@@ -70,7 +76,7 @@ Every Org file includes this header:
 #+TITLE: Page Title
 #+OPTIONS: toc:nil num:nil html-style:nil html-scripts:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-#+HTML_HEAD: <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
+#+HTML_HEAD: <script src="../lunr.min.js"></script>
 #+HTML_HEAD: <script src="../search-index.js"></script>
 #+HTML_HEAD: <script src="../search.js"></script>
 
@@ -98,7 +104,7 @@ Every Org file includes this header:
 - `#+OPTIONS:` - Controls export behavior
 - `#+HTML_HEAD:` - Includes CSS and JavaScript
   - `style.css` - Shared styles
-  - `lunr.min.js` - Search library (from CDN)
+  - `lunr.min.js` - Search library (local file)
   - `search-index.js` - Auto-generated search index
   - `search.js` - Search implementation
 - `#+BEGIN_EXPORT html` - Adds navigation bar with search
@@ -109,23 +115,31 @@ Every Org file includes this header:
 
 The system uses [lunr.js](https://lunrjs.com/) for powerful full-text search:
 
-- Loaded from CDN (unpkg.com) or can be downloaded locally
-- Search index built client-side
+- Loaded from local file (`lunr.min.js`) for offline use
+- Search index pre-generated and loaded from `search-index.js`
 - Instant search as you type
 - Dropdown results in navigation bar
 - Fallback to simple search if lunr.js unavailable
 
 ### For Offline Use
 
-To use completely offline, download lunr.js:
+**lunr.min.js is now configured to load from a local file** for complete offline functionality.
+
+To download lunr.js manually:
 
 ```bash
-# Download lunr.js
-wget https://unpkg.com/lunr@2.3.9/lunr.min.js
+# Download lunr.js to the static-docs-system directory
+wget https://unpkg.com/lunr@2.3.9/lunr.min.js -O static-docs-system/lunr.min.js
 
-# Update org files to use local copy
-#+HTML_HEAD: <script src="../lunr.min.js"></script>
+# Or using curl:
+curl -L -o static-docs-system/lunr.min.js https://unpkg.com/lunr@2.3.9/lunr.min.js
+
+# Or download directly from your browser:
+# Visit: https://unpkg.com/lunr@2.3.9/lunr.min.js
+# Save as: static-docs-system/lunr.min.js
 ```
+
+All `.org` files are already configured to use `../lunr.min.js` for local loading.
 
 ### Search Index Auto-Generation
 
@@ -277,9 +291,14 @@ Works in all modern browsers:
 
 ### USB Drive
 
-1. Export all `.org` files to HTML
-2. Download lunr.js locally (optional, for offline)
-3. Copy all `.html` files, `style.css`, `search.js`, and `lunr.min.js` to USB
+1. Download `lunr.min.js` (see instructions above)
+2. Export all `.org` files to HTML: `make`
+3. Copy to USB:
+   - All `.html` files from `docs/`
+   - `style.css`
+   - `search.js`
+   - `search-index.js`
+   - `lunr.min.js`
 4. Users open `docs/index.html`
 
 ### Network Share

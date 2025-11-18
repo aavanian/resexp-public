@@ -1,7 +1,7 @@
 #+TITLE: Setup Guide
 #+OPTIONS: toc:t num:nil html-style:nil html-scripts:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../style.css" />
-#+HTML_HEAD: <script src="https://unpkg.com/lunr@2.3.9/lunr.min.js"></script>
+#+HTML_HEAD: <script src="../lunr.min.js"></script>
 #+HTML_HEAD: <script src="../search-index.js"></script>
 #+HTML_HEAD: <script src="../search.js"></script>
 

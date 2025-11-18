@@ -39,6 +39,7 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+    margin-bottom: 15px;
 }
 
 .nav-header h1 {
@@ -60,6 +61,7 @@ body {
     border-radius: 4px;
     font-size: 14px;
     height: 38px;
+    box-sizing: border-box;
 }
 
 .nav-search input:focus {
